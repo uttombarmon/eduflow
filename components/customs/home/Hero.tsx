@@ -5,8 +5,8 @@ function Hero() {
   return (
     <section className="relative pt-32 pb-24 lg:pt-52 lg:pb-40 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 text-center">
-        <div className="mx-auto flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border border-slate-200 bg-slate-50/50 px-7 py-2 mb-8 animate-in fade-in slide-in-from-bottom-2">
-          <Sparkles className="h-4 w-4 text-slate-900" />
+        <div className="mx-auto flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border border-slate-200 bg-linear-to-tr from-orange-500/30 to-pink-300/30 px-7 py-2 mb-8 animate-in fade-in slide-in-from-bottom-2">
+          <Sparkles className="h-4 w-4 text-rose-700 animate-pulse" />
           <p className="text-sm font-medium text-slate-900">
             Experience AI-augmented education
           </p>
@@ -32,6 +32,29 @@ function Hero() {
           <button className="inline-flex h-12 items-center justify-center rounded-md border border-slate-200 bg-white px-8 text-base font-medium shadow-sm hover:bg-slate-100 transition-all">
             Learn More
           </button>
+        </div>
+        {/* Partner Logos */}
+        <div className="mt-20">
+          <p className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-8">
+            Trusted by teams at
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 opacity-50 grayscale">
+            <span className="text-2xl font-bold tracking-tighter text-slate-900">
+              STRIPE
+            </span>
+            <span className="text-2xl font-bold tracking-tighter text-slate-900">
+              VERCEL
+            </span>
+            <span className="text-2xl font-bold tracking-tighter text-slate-900">
+              LINEAR
+            </span>
+            <span className="text-2xl font-bold tracking-tighter text-slate-900">
+              AIRBNB
+            </span>
+            <span className="text-2xl font-bold tracking-tighter text-slate-900">
+              NOTION
+            </span>
+          </div>
         </div>
       </div>
     </section>

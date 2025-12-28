@@ -1,20 +1,28 @@
 import Courses from "@/components/customs/home/Courses";
 import Features from "@/components/customs/home/Features";
 import Hero from "@/components/customs/home/Hero";
+import HowWorks from "@/components/customs/home/HowWorks";
 import Navbar from "@/components/customs/home/Navbar";
-import Image from "next/image";
+import States from "@/components/customs/home/States";
+import Testimonials from "@/components/customs/home/Testimonials";
 
 export default function Home() {
   return (
-    <div className="bg-white">
+    <div className="bg-linear-to-l from-blue-300/30 to-orange-200/30">
       <Navbar />
       <main>
         {/* Hero Section */}
         <Hero />
+        {/* Stats Section */}
+        <States />
         {/* Features Grid */}
         <Features />
+        {/* How it Works Section */}
+        <HowWorks />
         {/* Course Previews */}
         <Courses />
+        {/* Testimonials */}
+        <Testimonials />
       </main>
       <footer className="border-t py-12 bg-white">
         <div className="mx-auto max-w-7xl px-6 flex flex-col md:flex-row justify-between items-center gap-6">

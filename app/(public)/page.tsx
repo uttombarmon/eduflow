@@ -1,5 +1,6 @@
 import Courses from "@/components/customs/home/Courses";
 import Features from "@/components/customs/home/Features";
+import FinalCTA from "@/components/customs/home/FinalCTA";
 import Hero from "@/components/customs/home/Hero";
 import HowWorks from "@/components/customs/home/HowWorks";
 import Navbar from "@/components/customs/home/Navbar";
@@ -23,6 +24,8 @@ export default function Home() {
         <Courses />
         {/* Testimonials */}
         <Testimonials />
+        {/* Final CTA Section */}
+        <FinalCTA />
       </main>
       <footer className="border-t py-12 bg-white">
         <div className="mx-auto max-w-7xl px-6 flex flex-col md:flex-row justify-between items-center gap-6">

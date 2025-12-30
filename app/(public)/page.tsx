@@ -9,7 +9,7 @@ import Testimonials from "@/components/customs/home/Testimonials";
 
 export default function Home() {
   return (
-    <div className="bg-linear-to-l from-blue-300/30 to-orange-200/30">
+    <div>
       <Navbar />
       <main>
         {/* Hero Section */}

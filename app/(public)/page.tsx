@@ -1,15 +1,10 @@
-"use client";
-import AuthModal from "@/components/customs/auth/AuthModal";
 import Courses from "@/components/customs/home/Courses";
 import Features from "@/components/customs/home/Features";
 import FinalCTA from "@/components/customs/home/FinalCTA";
 import Hero from "@/components/customs/home/Hero";
 import HowWorks from "@/components/customs/home/HowWorks";
-import Navbar from "@/components/customs/home/Navbar";
 import States from "@/components/customs/home/States";
 import Testimonials from "@/components/customs/home/Testimonials";
-import { RootState } from "@/lib/store";
-import { useDispatch, useSelector } from "react-redux";
 
 export default function Home() {
   // const [authmodal, setAuthModal] = useState<"login" | "signup">("login");
@@ -19,9 +14,6 @@ export default function Home() {
   // const onClose = () => setOpen(!isOpen);
   return (
     <div>
-      <AuthModal
-      />
-      <Navbar/>
       <main>
         {/* Hero Section */}
         <Hero />

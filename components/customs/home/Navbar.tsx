@@ -2,6 +2,7 @@
 import { setAuthModalOpen, setAuthMode } from "@/lib/features/UIslice";
 import { RootState } from "@/lib/store";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -38,26 +39,31 @@ const Navbar: React.FC = () => {
         </div>
 
         <nav className="hidden md:flex items-center gap-6">
-          {["Features", "Courses", "Pricing", "Enterprise"].map((item) => (
-            <a
-              key={item}
-              href="#"
+          {[
+            { name: "Features", path: "#features" },
+            { name: "Courses", path: "/courses" },
+            { name: "Blog", path: "/blogs" },
+            { name: "Contact Us", path: "/contact-us" },
+          ].map((item) => (
+            <Link
+              key={item.name}
+              href={item?.path}
               className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
             >
-              {item}
-            </a>
+              {item?.name}
+            </Link>
           ))}
         </nav>
 
         <div className="flex items-center gap-3">
           {user ? (
-            <button
-              onClick={() => handleAuthTrigger("login")}
+            <Link
+              href={"/dashboard"}
               className="text-sm font-medium flex bg-slate-400/20 rounded-3xl text-slate-700 hover:text-slate-900 px-4 py-2"
             >
               Dashboard
               <ArrowRight size={20} />
-            </button>
+            </Link>
           ) : (
             <>
               <button

@@ -8,9 +8,10 @@ export const MOCK_COURSES: Course[] = [
     instructorId: "t1",
     description:
       "Master enterprise-scale React applications with clean architecture and performance patterns.",
-    thumbnail:
-      "https://img.freepik.com/free-vector/quantum-computing-abstract-concept-illustration_335657-3847.jpg",
+    thumbnail: "https://picsum.photos/seed/react/800/450",
     category: "Development",
+    level: "Advanced",
+    totalDuration: "12h 30m",
     price: 89.99,
     rating: 4.8,
     studentsCount: 1240,
@@ -52,9 +53,10 @@ export const MOCK_COURSES: Course[] = [
     instructorId: "t2",
     description:
       "Learn to build intelligent applications using Google's latest multimodal AI models.",
-    thumbnail:
-      "https://img.freepik.com/free-photo/futuristic-ai-chip-circuit-board_23-2151977487.jpg",
+    thumbnail: "https://picsum.photos/seed/ai/800/450",
     category: "Artificial Intelligence",
+    level: "Intermediate",
+    totalDuration: "8h 15m",
     price: 129.99,
     rating: 4.9,
     studentsCount: 850,
@@ -87,9 +89,10 @@ export const MOCK_COURSES: Course[] = [
     instructorId: "t3",
     description:
       "From wireframes to high-fidelity prototypes. Become a professional product designer.",
-    thumbnail:
-      "https://img.freepik.com/free-vector/atom-science-education-icon-vector-neon-digital-graphic_53876-114080.jpg",
+    thumbnail: "https://picsum.photos/seed/design/800/450",
     category: "Design",
+    level: "Beginner",
+    totalDuration: "15h 45m",
     price: 59.99,
     rating: 4.7,
     studentsCount: 3100,
@@ -105,5 +108,39 @@ export const MOCK_COURSES: Course[] = [
         isCompleted: false,
       },
     ],
+  },
+  {
+    id: "c4",
+    title: "Business Strategy & Growth",
+    instructor: "Robert Vance",
+    instructorId: "t4",
+    description:
+      "Frameworks for scaling startups and established businesses in a competitive market.",
+    thumbnail: "https://picsum.photos/seed/business/800/450",
+    category: "Business",
+    level: "Intermediate",
+    totalDuration: "10h 00m",
+    price: 0,
+    rating: 4.5,
+    studentsCount: 5200,
+    progress: 0,
+    lessons: [],
+  },
+  {
+    id: "c5",
+    title: "Fullstack Web3 Development",
+    instructor: "Satoshi Nakamoto",
+    instructorId: "t5",
+    description:
+      "Build decentralized applications using Ethereum, Solidity, and React.",
+    thumbnail: "https://picsum.photos/seed/web3/800/450",
+    category: "Development",
+    level: "Advanced",
+    totalDuration: "22h 30m",
+    price: 199.99,
+    rating: 4.9,
+    studentsCount: 420,
+    progress: 0,
+    lessons: [],
   },
 ];

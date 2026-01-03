@@ -1,7 +1,9 @@
 "use client";
 import { setAuthModalOpen, setAuthMode } from "@/lib/features/UIslice";
+import { RootState } from "@/lib/store";
+import { ArrowRight } from "lucide-react";
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Navbar: React.FC = () => {
   const dispatch = useDispatch();
@@ -9,6 +11,7 @@ const Navbar: React.FC = () => {
     dispatch(setAuthMode(mode));
     dispatch(setAuthModalOpen(true));
   };
+  const { user } = useSelector((state: RootState) => state.auth);
   // const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -47,18 +50,30 @@ const Navbar: React.FC = () => {
         </nav>
 
         <div className="flex items-center gap-3">
-          <button
-            onClick={() => handleAuthTrigger("login")}
-            className="text-sm font-medium text-slate-500 hover:text-slate-900 px-4 py-2"
-          >
-            Log in
-          </button>
-          <button
-            onClick={() => handleAuthTrigger("signup")}
-            className="inline-flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-sm font-medium text-slate-50 shadow hover:bg-slate-900/90 transition-all"
-          >
-            Join Free
-          </button>
+          {user ? (
+            <button
+              onClick={() => handleAuthTrigger("login")}
+              className="text-sm font-medium flex bg-slate-400/20 rounded-3xl text-slate-700 hover:text-slate-900 px-4 py-2"
+            >
+              Dashboard
+              <ArrowRight size={20} />
+            </button>
+          ) : (
+            <>
+              <button
+                onClick={() => handleAuthTrigger("login")}
+                className="text-sm font-medium text-slate-500 hover:text-slate-900 px-4 py-2"
+              >
+                Log in
+              </button>
+              <button
+                onClick={() => handleAuthTrigger("signup")}
+                className="inline-flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-sm font-medium text-slate-50 shadow hover:bg-slate-900/90 transition-all"
+              >
+                Join Free
+              </button>
+            </>
+          )}
         </div>
       </div>
     </header>

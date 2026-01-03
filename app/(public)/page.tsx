@@ -1,3 +1,5 @@
+"use client";
+import AuthModal from "@/components/customs/auth/AuthModal";
 import Courses from "@/components/customs/home/Courses";
 import Features from "@/components/customs/home/Features";
 import FinalCTA from "@/components/customs/home/FinalCTA";
@@ -6,11 +8,18 @@ import HowWorks from "@/components/customs/home/HowWorks";
 import Navbar from "@/components/customs/home/Navbar";
 import States from "@/components/customs/home/States";
 import Testimonials from "@/components/customs/home/Testimonials";
+import { useState } from "react";
 
 export default function Home() {
+  const [authmodal, setAuthModal] = useState<"login" | "signup">("login");
+  const [isOpen, setOpen] = useState<boolean>(false);
+  const onLogin = () => setAuthModal("login");
+  const onSignup = () => setAuthModal("signup");
+  const onClose = () => setOpen(!isOpen);
   return (
     <div>
-      <Navbar />
+      <AuthModal isOpen={isOpen} onClose={onClose} initialMode={authmodal} />
+      <Navbar onLogin={onLogin} onSignup={onSignup} />
       <main>
         {/* Hero Section */}
         <Hero />

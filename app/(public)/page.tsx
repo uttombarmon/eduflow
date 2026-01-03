@@ -3,14 +3,17 @@ import Features from "@/components/customs/home/Features";
 import FinalCTA from "@/components/customs/home/FinalCTA";
 import Hero from "@/components/customs/home/Hero";
 import HowWorks from "@/components/customs/home/HowWorks";
-import Navbar from "@/components/customs/home/Navbar";
 import States from "@/components/customs/home/States";
 import Testimonials from "@/components/customs/home/Testimonials";
 
 export default function Home() {
+  // const [authmodal, setAuthModal] = useState<"login" | "signup">("login");
+  // const [isOpen, setOpen] = useState<boolean>(false);
+  // const onLogin = () => setAuthModal("login");
+  // const onSignup = () => setAuthModal("signup");
+  // const onClose = () => setOpen(!isOpen);
   return (
-    <div className="bg-linear-to-l from-blue-300/30 to-orange-200/30">
-      <Navbar />
+    <div>
       <main>
         {/* Hero Section */}
         <Hero />

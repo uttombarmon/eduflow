@@ -1,3 +1,4 @@
+import { Search } from "lucide-react";
 export type UserRole = "student" | "tutor" | "admin";
 
 export interface User {
@@ -25,11 +26,23 @@ export interface Course {
   description: string;
   thumbnail: string;
   category: string;
+  totalDuration: string;
+  level: string;
   price: number;
   rating: number;
   studentsCount: number;
   lessons: Lesson[];
   progress?: number;
+}
+export interface CourseCategories {
+  categories: string[];
+}
+export interface Filters {
+  categorie: string;
+  level: string;
+  price: string;
+  sortBy: string;
+  search: string;
 }
 
 export interface QuizQuestion {

@@ -1,9 +1,15 @@
-import React from "react";
+"use client";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { easeIn, motion } from "motion/react";
 
 function Hero() {
   return (
-    <section className="relative pt-32 pb-24 lg:pt-52 lg:pb-40 overflow-hidden">
+    <motion.section
+      initial={{ opacity: 0, filter: "blur(20px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
+      transition={{ ease: easeIn, duration: 1 }}
+      className="relative pt-32 pb-24 lg:pt-52 lg:pb-40 overflow-hidden"
+    >
       <div className="mx-auto max-w-7xl px-6 text-center">
         <div className="mx-auto flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border border-slate-200 bg-linear-to-tr from-orange-500/30 to-pink-300/30 px-7 py-2 mb-8 animate-in fade-in slide-in-from-bottom-2">
           <Sparkles className="h-4 w-4 text-rose-700 animate-pulse" />
@@ -57,7 +63,7 @@ function Hero() {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 

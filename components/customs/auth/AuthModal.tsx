@@ -1,29 +1,24 @@
+"use client";
 import React, { useState, useEffect } from "react";
-import {
-  X,
-  Mail,
-  Lock,
-  User,
-  ArrowRight,
-  GraduationCap,
-  Laptop,
-} from "lucide-react";
+import { X, GraduationCap, Laptop } from "lucide-react";
 import { UserRole, User as UserType } from "@/types/TypesAll";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import { setAuthModalOpen, setAuthMode } from "@/lib/features/UIslice";
 
-interface AuthModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  // onSuccess: (user: UserType) => void;
-  initialMode?: "login" | "signup";
-}
-
-const AuthModal: React.FC<AuthModalProps> = ({
-  isOpen,
-  onClose,
-  // onSuccess,
-  initialMode = "login",
-}) => {
-  const [mode, setMode] = useState<"login" | "signup">(initialMode);
+const AuthModal: React.FC = () => {
+  const dispatch = useDispatch();
+  const { isAuthModalOpen, authMode } = useSelector(
+    (state: RootState) => state.ui
+  );
+  const handleAuthTrigger = (mode: "login" | "signup") => {
+    dispatch(setAuthMode(mode));
+    dispatch(setAuthModalOpen(true));
+  };
+  const handleModalToggle = () => {
+    dispatch(setAuthModalOpen(!isAuthModalOpen));
+  };
+  // const [mode, setMode] = useState<"login" | "signup">(initialMode);
   const [role, setRole] = useState<UserRole>("student");
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -33,7 +28,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
   });
 
   useEffect(() => {
-    if (isOpen) {
+    if (isAuthModalOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -41,9 +36,9 @@ const AuthModal: React.FC<AuthModalProps> = ({
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isOpen]);
+  }, [isAuthModalOpen]);
 
-  if (!isOpen) return null;
+  if (!isAuthModalOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,25 +48,25 @@ const AuthModal: React.FC<AuthModalProps> = ({
         id: Math.random().toString(36).substr(2, 9),
         name: formData.name || "User",
         email: formData.email,
-        role: mode === "signup" ? role : "student",
+        role: authMode === "signup" ? role : "student",
         avatar: `https://avatar.vercel.sh/${formData.email}`,
       };
       setIsLoading(false);
       // onSuccess(newUser);
-      onClose();
+      handleModalToggle();
     }, 1200);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[400] flex items-center justify-center p-4">
       <div
         className="absolute inset-0 bg-white/80 backdrop-blur-sm animate-in fade-in duration-300"
-        onClick={onClose}
+        onClick={handleModalToggle}
       />
       <div className="relative w-full max-w-100 bg-white rounded-lg border border-slate-200 shadow-lg animate-in zoom-in-95 duration-200">
         <div className="p-6">
           <button
-            onClick={onClose}
+            onClick={handleModalToggle}
             className="absolute top-4 right-4 p-1 text-slate-400 hover:text-slate-900 rounded-sm opacity-70 transition-opacity hover:opacity-100"
           >
             <X size={18} />
@@ -79,17 +74,17 @@ const AuthModal: React.FC<AuthModalProps> = ({
 
           <div className="space-y-1.5 text-center sm:text-left mb-6">
             <h2 className="text-2xl font-semibold tracking-tight leading-none">
-              {mode === "login" ? "Login" : "Create an account"}
+              {authMode === "login" ? "Login" : "Create an account"}
             </h2>
             <p className="text-sm text-slate-500">
-              {mode === "login"
+              {authMode === "login"
                 ? "Enter your email below to login"
                 : "Enter your information to get started"}
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {mode === "signup" && (
+            {authMode === "signup" && (
               <div className="space-y-2">
                 <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                   Full Name
@@ -136,7 +131,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
               />
             </div>
 
-            {mode === "signup" && (
+            {authMode === "signup" && (
               <div className="grid grid-cols-2 gap-2 mt-4">
                 <button
                   type="button"
@@ -169,7 +164,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
             >
               {isLoading
                 ? "Please wait..."
-                : mode === "login"
+                : authMode === "login"
                 ? "Sign In"
                 : "Sign Up"}
             </button>
@@ -177,15 +172,17 @@ const AuthModal: React.FC<AuthModalProps> = ({
 
           <div className="mt-4 text-center text-sm">
             <span className="text-slate-500">
-              {mode === "login"
+              {authMode === "login"
                 ? "Don't have an account?"
                 : "Already have an account?"}{" "}
             </span>
             <button
-              onClick={() => setMode(mode === "login" ? "signup" : "login")}
+              onClick={() =>
+                handleAuthTrigger(authMode === "login" ? "signup" : "login")
+              }
               className="underline underline-offset-4 hover:text-slate-900 font-medium"
             >
-              {mode === "login" ? "Sign up" : "Login"}
+              {authMode === "login" ? "Sign up" : "Login"}
             </button>
           </div>
         </div>

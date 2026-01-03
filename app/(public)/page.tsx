@@ -8,18 +8,20 @@ import HowWorks from "@/components/customs/home/HowWorks";
 import Navbar from "@/components/customs/home/Navbar";
 import States from "@/components/customs/home/States";
 import Testimonials from "@/components/customs/home/Testimonials";
-import { useState } from "react";
+import { RootState } from "@/lib/store";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Home() {
-  const [authmodal, setAuthModal] = useState<"login" | "signup">("login");
-  const [isOpen, setOpen] = useState<boolean>(false);
-  const onLogin = () => setAuthModal("login");
-  const onSignup = () => setAuthModal("signup");
-  const onClose = () => setOpen(!isOpen);
+  // const [authmodal, setAuthModal] = useState<"login" | "signup">("login");
+  // const [isOpen, setOpen] = useState<boolean>(false);
+  // const onLogin = () => setAuthModal("login");
+  // const onSignup = () => setAuthModal("signup");
+  // const onClose = () => setOpen(!isOpen);
   return (
     <div>
-      <AuthModal isOpen={isOpen} onClose={onClose} initialMode={authmodal} />
-      <Navbar onLogin={onLogin} onSignup={onSignup} />
+      <AuthModal
+      />
+      <Navbar/>
       <main>
         {/* Hero Section */}
         <Hero />

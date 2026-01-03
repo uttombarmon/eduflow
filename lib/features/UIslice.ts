@@ -27,3 +27,4 @@ export const uiSlice = createSlice({
     },
   },
 });
+export const { setAuthModalOpen, setAuthMode } = uiSlice.actions;

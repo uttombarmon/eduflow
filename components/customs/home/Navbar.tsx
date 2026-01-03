@@ -1,12 +1,14 @@
 "use client";
+import { setAuthModalOpen, setAuthMode } from "@/lib/features/UIslice";
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-interface LandingNavbarProps {
-  onLogin: () => void;
-  onSignup: () => void;
-}
-
-const Navbar: React.FC<LandingNavbarProps> = ({ onLogin, onSignup }) => {
+const Navbar: React.FC = () => {
+  const dispatch = useDispatch();
+  const handleAuthTrigger = (mode: "login" | "signup") => {
+    dispatch(setAuthMode(mode));
+    dispatch(setAuthModalOpen(true));
+  };
   // const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -46,13 +48,13 @@ const Navbar: React.FC<LandingNavbarProps> = ({ onLogin, onSignup }) => {
 
         <div className="flex items-center gap-3">
           <button
-            onClick={onLogin}
+            onClick={() => handleAuthTrigger("login")}
             className="text-sm font-medium text-slate-500 hover:text-slate-900 px-4 py-2"
           >
             Log in
           </button>
           <button
-            onClick={onSignup}
+            onClick={() => handleAuthTrigger("signup")}
             className="inline-flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-sm font-medium text-slate-50 shadow hover:bg-slate-900/90 transition-all"
           >
             Join Free

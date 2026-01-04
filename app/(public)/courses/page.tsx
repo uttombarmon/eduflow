@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
-import { MOCK_COURSES } from "@/components/customs/constants/MockDatas";
 import {
   Search,
   Star,
@@ -14,13 +13,13 @@ import Image from "next/image";
 import FilterSection from "@/components/customs/courses/FilterSection";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
-import { setCategories } from "@/lib/features/courses/CategoriesSlice";
-import { setCourses } from "@/lib/features/courses/CoursesSlice";
 import {
   setClearAll,
   setSearch,
   setSort,
 } from "@/lib/features/courses/FiltersSlice";
+import { useGetCoursesQuery } from "@/lib/features/courses/courseApi";
+import { Course } from "@/types/TypesAll";
 
 export const CATEGORIES = [
   "All",
@@ -39,28 +38,16 @@ type SortOption =
 const CourseExplorer: React.FC<{ onCourseSelect: (id: string) => void }> = ({
   onCourseSelect,
 }) => {
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [courses, setCourses] = useState<Course[]>([]);
   const dispatch = useDispatch();
-  const { courses } = useSelector((state: RootState) => state.course);
+  // const { courses } = useSelector((state: RootState) => state.course);
+  const { data, isLoading, error } = useGetCoursesQuery();
   const { categorie, level, price, search, sortBy } = useSelector(
     (state: RootState) => state.filters
   );
-  useEffect(() => {
-    return () => {
-      console.log(MOCK_COURSES);
-      dispatch(setCategories(CATEGORIES));
-      dispatch(setCourses(MOCK_COURSES));
-    };
-  }, []);
-
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const [selectedCategory, setSelectedCategory] = useState("All");
-  // const [selectedLevel, setSelectedLevel] = useState("All");
-  // const [selectedPrice, setSelectedPrice] = useState("All");
-  // const [sortBy, setSortBy] = useState<SortOption>("Popularity");
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
-
   const filteredAndSortedCourses = useMemo(() => {
-    const results = courses.filter((course) => {
+    const results = courses?.filter((course) => {
       const matchesSearch =
         course.title.toLowerCase().includes(search.toLowerCase()) ||
         course.instructor.toLowerCase().includes(search.toLowerCase());
@@ -93,6 +80,49 @@ const CourseExplorer: React.FC<{ onCourseSelect: (id: string) => void }> = ({
     // dispatch(setCourses(results));
     return results;
   }, [courses, sortBy, search, categorie, level, price]);
+  if (isLoading) {
+    return (
+      <div className=" w-dvw h-dvh flex justify-center items-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className=" w-dvw h-dvh flex justify-center items-center">
+        <p>Error Fetching Course...</p>
+      </div>
+    );
+  }
+  if (!data) {
+    return (
+      <div className=" w-dvw h-dvh flex justify-center items-center">
+        <p>Not Found Course...</p>
+      </div>
+    );
+  }
+  setCourses(data);
+  // useEffect(() => {
+  //   const fetchingData = async () => {
+  //     const res = await fetch(`/mockdata/courses.json`);
+  //     console.log("res: ", res);
+  //     const data = await res.json();
+  //     if (!data) {
+  //       console.log("No get data");
+  //     } else {
+  //       console.log("courses:", data);
+  //       setCourses(data);
+  //     }
+  //   };
+  //   fetchingData();
+  //   return;
+  // }, []);
+
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [selectedCategory, setSelectedCategory] = useState("All");
+  // const [selectedLevel, setSelectedLevel] = useState("All");
+  // const [selectedPrice, setSelectedPrice] = useState("All");
+  // const [sortBy, setSortBy] = useState<SortOption>("Popularity");
 
   // const resetFilters = () => {
   //   setSelectedCategory("All");
@@ -171,101 +201,101 @@ const CourseExplorer: React.FC<{ onCourseSelect: (id: string) => void }> = ({
         {/* Results Grid */}
         <div className="flex-1">
           <div className="mb-4 text-sm text-slate-500 font-medium">
-            Showing {courses.length} courses
+            Showing {courses?.length} courses
           </div>
+          {filteredAndSortedCourses &&
+            (filteredAndSortedCourses.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                {filteredAndSortedCourses?.map((course) => (
+                  <div
+                    key={course.id}
+                    className="group flex flex-col rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md overflow-hidden cursor-pointer"
+                    onClick={() => onCourseSelect(course.id)}
+                  >
+                    <div className="aspect-video relative overflow-hidden bg-slate-100">
+                      <Image
+                        src={course.thumbnail}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        width={200}
+                        height={200}
+                        alt={course.title}
+                      />
+                      <div className="absolute top-3 left-3 flex gap-2">
+                        <span className="bg-white/90 backdrop-blur border border-slate-200 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter">
+                          {course.level}
+                        </span>
+                      </div>
+                    </div>
 
-          {filteredAndSortedCourses?.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-              {filteredAndSortedCourses.map((course) => (
-                <div
-                  key={course.id}
-                  className="group flex flex-col rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md overflow-hidden cursor-pointer"
-                  onClick={() => onCourseSelect(course.id)}
-                >
-                  <div className="aspect-video relative overflow-hidden bg-slate-100">
-                    <Image
-                      src={course.thumbnail}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      width={200}
-                      height={200}
-                      alt={course.title}
-                    />
-                    <div className="absolute top-3 left-3 flex gap-2">
-                      <span className="bg-white/90 backdrop-blur border border-slate-200 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter">
-                        {course.level}
-                      </span>
+                    <div className="p-5 flex-1 flex flex-col">
+                      <div className="flex items-center gap-1.5 mb-2">
+                        <div className="flex items-center text-amber-500">
+                          <Star size={12} fill="currentColor" />
+                          <span className="ml-1 text-xs font-bold text-slate-700">
+                            {course.rating}
+                          </span>
+                        </div>
+                        <span className="text-slate-300 text-xs">•</span>
+                        <span className="text-[10px] font-medium text-slate-500 uppercase">
+                          {course.category}
+                        </span>
+                      </div>
+
+                      <h3 className="text-base font-bold leading-tight mb-2 group-hover:text-indigo-600 transition-colors line-clamp-2">
+                        {course.title}
+                      </h3>
+                      <p className="text-xs text-slate-500 mb-4 truncate">
+                        by {course.instructor}
+                      </p>
+
+                      <div className="flex items-center gap-4 mt-auto mb-4">
+                        <div className="flex items-center text-[11px] text-slate-500">
+                          <Clock size={12} className="mr-1" />
+                          {course.totalDuration}
+                        </div>
+                        <div className="flex items-center text-[11px] text-slate-500">
+                          <BookOpen size={12} className="mr-1" />
+                          {course.lessons.length} Lessons
+                        </div>
+                      </div>
+
+                      <div className="pt-4 border-t flex items-center justify-between">
+                        <div className="flex flex-col leading-none">
+                          <span className="text-[10px] text-slate-400 font-bold uppercase mb-0.5">
+                            Price
+                          </span>
+                          <span className="text-lg font-bold text-slate-900">
+                            {course.price === 0 ? "Free" : `$${course.price}`}
+                          </span>
+                        </div>
+                        <button className="inline-flex h-9 items-center justify-center rounded-md bg-slate-900 px-4 text-xs font-semibold text-slate-50 hover:bg-slate-900/90 transition-colors">
+                          Explore Now
+                        </button>
+                      </div>
                     </div>
                   </div>
-
-                  <div className="p-5 flex-1 flex flex-col">
-                    <div className="flex items-center gap-1.5 mb-2">
-                      <div className="flex items-center text-amber-500">
-                        <Star size={12} fill="currentColor" />
-                        <span className="ml-1 text-xs font-bold text-slate-700">
-                          {course.rating}
-                        </span>
-                      </div>
-                      <span className="text-slate-300 text-xs">•</span>
-                      <span className="text-[10px] font-medium text-slate-500 uppercase">
-                        {course.category}
-                      </span>
-                    </div>
-
-                    <h3 className="text-base font-bold leading-tight mb-2 group-hover:text-indigo-600 transition-colors line-clamp-2">
-                      {course.title}
-                    </h3>
-                    <p className="text-xs text-slate-500 mb-4 truncate">
-                      by {course.instructor}
-                    </p>
-
-                    <div className="flex items-center gap-4 mt-auto mb-4">
-                      <div className="flex items-center text-[11px] text-slate-500">
-                        <Clock size={12} className="mr-1" />
-                        {course.totalDuration}
-                      </div>
-                      <div className="flex items-center text-[11px] text-slate-500">
-                        <BookOpen size={12} className="mr-1" />
-                        {course.lessons.length} Lessons
-                      </div>
-                    </div>
-
-                    <div className="pt-4 border-t flex items-center justify-between">
-                      <div className="flex flex-col leading-none">
-                        <span className="text-[10px] text-slate-400 font-bold uppercase mb-0.5">
-                          Price
-                        </span>
-                        <span className="text-lg font-bold text-slate-900">
-                          {course.price === 0 ? "Free" : `$${course.price}`}
-                        </span>
-                      </div>
-                      <button className="inline-flex h-9 items-center justify-center rounded-md bg-slate-900 px-4 text-xs font-semibold text-slate-50 hover:bg-slate-900/90 transition-colors">
-                        Explore Now
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border border-dashed border-slate-200">
-              <div className="h-12 w-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 mb-4">
-                <Search size={24} />
+                ))}
               </div>
-              <h3 className="text-lg font-semibold text-slate-900">
-                No courses found
-              </h3>
-              <p className="text-slate-500 mt-1 max-w-xs text-center">
-                Try adjusting your search or filters to find what you&aps;re
-                looking for.
-              </p>
-              <button
-                onClick={() => dispatch(setClearAll())}
-                className="mt-6 text-sm font-bold text-indigo-600 hover:underline"
-              >
-                Clear all filters
-              </button>
-            </div>
-          )}
+            ) : (
+              <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border border-dashed border-slate-200">
+                <div className="h-12 w-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 mb-4">
+                  <Search size={24} />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900">
+                  No courses found
+                </h3>
+                <p className="text-slate-500 mt-1 max-w-xs text-center">
+                  Try adjusting your search or filters to find what you&aps;re
+                  looking for.
+                </p>
+                <button
+                  onClick={() => dispatch(setClearAll())}
+                  className="mt-6 text-sm font-bold text-indigo-600 hover:underline"
+                >
+                  Clear all filters
+                </button>
+              </div>
+            ))}
         </div>
       </div>
 

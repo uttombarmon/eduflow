@@ -3,14 +3,11 @@ import React, { useState, useMemo, useEffect } from "react";
 import { MOCK_COURSES } from "@/components/customs/constants/MockDatas";
 import {
   Search,
-  Filter,
   Star,
-  Users,
   Clock,
   ChevronDown,
   X,
   SlidersHorizontal,
-  Check,
   BookOpen,
 } from "lucide-react";
 import Image from "next/image";

@@ -1,9 +1,9 @@
 "use client";
 import { setUser } from "@/lib/features/auth/AuthSlice";
+import { useAppDispatch } from "@/lib/hooks";
 import { UserRole, User as UserType } from "@/types/TypesAll";
 import { GraduationCap, Laptop } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
 
 interface FormProps {
   authMode: "login" | "signup";
@@ -11,7 +11,7 @@ interface FormProps {
 }
 
 const AuthForm: React.FC<FormProps> = ({ authMode, handleModalToggle }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [role, setRole] = useState<UserRole>("student");
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({

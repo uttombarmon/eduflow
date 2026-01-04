@@ -4,18 +4,18 @@ import {
   setLevel,
   setPrice,
 } from "@/lib/features/courses/FiltersSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import { Check } from "lucide-react";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 const LEVELS = ["All", "Beginner", "Intermediate", "Advanced"];
 const PRICE_RANGES = ["All", "Free", "Paid"];
 
 function FilterSection() {
-  const dispatch = useDispatch();
-  const { categories } = useSelector((state: RootState) => state.categories);
-  const { categorie, level, price,} =
-    useSelector((state: RootState) => state.filters);
+  const dispatch = useAppDispatch();
+  const { categories } = useAppSelector((state: RootState) => state.categories);
+  const { categorie, level, price } = useAppSelector(
+    (state: RootState) => state.filters
+  );
   return (
     <div className="space-y-6">
       <div>

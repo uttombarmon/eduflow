@@ -1,15 +1,14 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { X, GraduationCap, Laptop } from "lucide-react";
-import { UserRole, User as UserType } from "@/types/TypesAll";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { X } from "lucide-react";
 import { RootState } from "@/lib/store";
 import { setAuthModalOpen, setAuthMode } from "@/lib/features/UIslice";
 import AuthForm from "./AuthForm";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 const AuthModal: React.FC = () => {
-  const dispatch = useDispatch();
-  const { isAuthModalOpen, authMode } = useSelector(
+  const dispatch = useAppDispatch();
+  const { isAuthModalOpen, authMode } = useAppSelector(
     (state: RootState) => state.ui
   );
   const handleAuthTrigger = (mode: "login" | "signup") => {

@@ -15,7 +15,7 @@ const page: React.FC<{ onCourseSelect: (id: string) => void }> = ({
   onCourseSelect,
 }) => {
   return (
-    <div className="space-y-8 px-4 py-24">
+    <div className="space-y-8 px-4">
       {/* Header Area */}
       <div className="flex flex-col gap-4">
         <div className=" mx-auto my-auto text-center">

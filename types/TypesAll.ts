@@ -1,4 +1,3 @@
-import { Search } from "lucide-react";
 export type UserRole = "student" | "tutor" | "admin";
 
 export interface User {
@@ -62,4 +61,10 @@ export interface Notification {
   message: string;
   type: "info" | "success" | "warning";
   time: string;
+}
+export interface Post {
+  id: number;
+  userId: number;
+  title: string;
+  body: string;
 }

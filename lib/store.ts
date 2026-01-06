@@ -6,12 +6,14 @@ import { filterSlice } from "./features/courses/FiltersSlice";
 import { coursesSlice } from "./features/courses/CoursesSlice";
 import { coursesApi } from "./features/courses/courseApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
+import { postsApi } from "./features/posts/postsApi";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       // RTK Query: Handles Server State (Data from Backend)
       [coursesApi.reducerPath]: coursesApi.reducer,
+      [postsApi.reducerPath]: postsApi.reducer,
       // Slices: Handles Client State (UI/Interactions)
       ui: uiSlice.reducer,
       auth: authSlice.reducer,
@@ -21,7 +23,9 @@ export const makeStore = () => {
     },
     // Adding the api middleware enables caching, invalidation, and polling
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(coursesApi.middleware),
+      getDefaultMiddleware()
+        .concat(coursesApi.middleware)
+        .concat(postsApi.middleware),
   });
 };
 // Required for RTK Query "refetchOnFocus" and "refetchOnReconnect"

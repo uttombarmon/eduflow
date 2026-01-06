@@ -7,12 +7,18 @@ import {
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import { Check } from "lucide-react";
+export const CATEGORIES = [
+  "All",
+  "Development",
+  "Design",
+  "Artificial Intelligence",
+  "Business",
+];
 const LEVELS = ["All", "Beginner", "Intermediate", "Advanced"];
 const PRICE_RANGES = ["All", "Free", "Paid"];
 
 function FilterSection() {
   const dispatch = useAppDispatch();
-  const { categories } = useAppSelector((state: RootState) => state.categories);
   const { categorie, level, price } = useAppSelector(
     (state: RootState) => state.filters
   );
@@ -23,7 +29,7 @@ function FilterSection() {
           Categories
         </h3>
         <div className="space-y-2">
-          {categories.map((cate) => (
+          {CATEGORIES.map((cate) => (
             <button
               key={cate}
               onClick={() => dispatch(setCategorie(cate))}
@@ -46,7 +52,7 @@ function FilterSection() {
           {LEVELS.map((lvl) => (
             <button
               key={lvl}
-              onClick={() => setLevel(lvl)}
+              onClick={() => dispatch(setLevel(lvl))}
               className={`flex w-full items-center justify-between text-sm py-1 px-2 rounded-md transition-colors ${
                 level === lvl
                   ? "bg-slate-100 text-slate-950 font-medium"
@@ -68,7 +74,7 @@ function FilterSection() {
           {PRICE_RANGES.map((rng) => (
             <button
               key={rng}
-              onClick={() => setPrice(rng)}
+              onClick={() => dispatch(setPrice(rng))}
               className={`flex w-full items-center justify-between text-sm py-1 px-2 rounded-md transition-colors ${
                 price === rng
                   ? "bg-slate-100 text-slate-950 font-medium"

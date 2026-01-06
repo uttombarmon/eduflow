@@ -1,28 +1,52 @@
 import { Course } from "@/types/TypesAll";
 
-export const FilterProduct = (
-  courses: Course[] | undefined,
-  search: string,
-  categorie: string,
-  level: string,
-  price: string,
-  sortBy: string
-): Course[] => {
-  console.log("filter: ", courses);
+interface FilterParams {
+  courses: Course[];
+  search: string;
+  categorie: string;
+  level: string;
+  price: string;
+  sortBy: string;
+}
+
+export const FilterProduct = ({
+  courses,
+  search,
+  categorie,
+  level,
+  price,
+  sortBy,
+}: FilterParams): Course[] => {
   if (!courses) return [];
+
+  // Prepare lowercase versions of the filters
+  const s = search.toLowerCase().trim();
+  const c = categorie.toLowerCase();
+  const l = level.toLowerCase();
+  const p = price.toLowerCase();
+
+  // FILTERING
   const filtered = courses.filter((course) => {
+    // Search Logic
     const matchesSearch =
-      course.title.toLowerCase().includes(search.toLowerCase()) ||
-      course.instructor.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory =
-      categorie === "All" || course.category === categorie;
-    const matchesLevel = level === "All" || course.level === level;
+      s === "" ||
+      course.title.toLowerCase().includes(s) ||
+      course.instructor.toLowerCase().includes(s);
+
+    // Category Logic
+    const matchesCategory = c === "all" || course.category.toLowerCase() === c;
+
+    // Level Logic
+    const matchesLevel = l === "all" || course.level.toLowerCase() === l;
+
+    // Price Logic
     const matchesPrice =
-      price === "All" ||
-      (price === "Free" ? course.price === 0 : course.price > 0);
+      p === "all" || (p === "free" ? course.price === 0 : course.price > 0);
 
     return matchesSearch && matchesCategory && matchesLevel && matchesPrice;
   });
+
+  // SORTING (Exact string match for SortBy is usually safer)
   return [...filtered].sort((a, b) => {
     switch (sortBy) {
       case "Rating":
@@ -31,8 +55,7 @@ export const FilterProduct = (
         return a.price - b.price;
       case "Price: High to Low":
         return b.price - a.price;
-      case "Popularity":
-      default:
+      default: // Popularity
         return b.studentsCount - a.studentsCount;
     }
   });

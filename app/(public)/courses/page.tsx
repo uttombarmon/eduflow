@@ -1,9 +1,9 @@
 import { SlidersHorizontal } from "lucide-react";
-import SearchCourse from "@/components/customs/courses/SearchCourse";
-import SortCourse from "@/components/customs/courses/SortCourse";
-import Filters from "@/components/customs/courses/Filters";
-import CourseExplore from "@/components/customs/courses/CourseExplore";
-import MobileFilter from "@/components/customs/courses/MobileFilter";
+import SearchCourse from "@/components/customs/public/courses/SearchCourse";
+import SortCourse from "@/components/customs/public/courses/SortCourse";
+import Filters from "@/components/customs/public/courses/Filters";
+import CourseExplore from "@/components/customs/public/courses/CourseExplore";
+import MobileFilter from "@/components/customs/public/courses/MobileFilter";
 
 type SortOption =
   | "Popularity"

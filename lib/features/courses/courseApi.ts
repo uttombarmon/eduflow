@@ -26,7 +26,7 @@ export const coursesApi = createApi({
   reducerPath: "coursesApi",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+    baseUrl: "https://mocki.io/v1/",
     prepareHeaders: (headers) => {
       headers.set("Accept", "application/json");
       return headers;
@@ -37,7 +37,7 @@ export const coursesApi = createApi({
   endpoints: (builder) => ({
     // GET ALL COURSES
     getCourses: builder.query<Course[], void>({
-      query: () => "/mockdata/courses.json",
+      query: () => "02e4b3b6-14e6-4c08-ba1b-01e7f098466a",
       // providesTags: (result) =>
       //   result
       //     ? [
@@ -48,26 +48,21 @@ export const coursesApi = createApi({
     }),
 
     // GET SINGLE COURSE DETAILS
-    getCourseById: builder.query<Course, string>({
-      query: (id) => `/courses/${id}`,
-      providesTags: (result, error, id) => [{ type: "Course", id }],
-    }),
+    // getCourseById: builder.query<Course, string>({
+    //   query: (id) => `/courses/${id}`,
+    //   providesTags: (result, error, id) => [{ type: "Course", id }],
+    // }),
 
     // CREATE A NEW COURSE (Mutation)
-    createCourse: builder.mutation<Course, Partial<Course>>({
-      query: (newCourse) => ({
-        url: "/courses",
-        method: "POST",
-        body: newCourse,
-      }),
-      // This tells RTK to instantly re-fetch the course list
-      invalidatesTags: [{ type: "Course", id: "LIST" }],
-    }),
+    // createCourse: builder.mutation<Course, Partial<Course>>({
+    // query: (newCourse) => ({
+    //   url: "/courses",
+    //   method: "POST",
+    //   body: newCourse,
+    // }),
+    // This tells RTK to instantly re-fetch the course list
+    // invalidatesTags: [{ type: "Course", id: "LIST" }],
   }),
 });
 
-export const {
-  useGetCoursesQuery,
-  useGetCourseByIdQuery,
-  useCreateCourseMutation,
-} = coursesApi;
+export const { useGetCoursesQuery } = coursesApi;

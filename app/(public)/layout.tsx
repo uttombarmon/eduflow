@@ -1,5 +1,5 @@
-import AuthModal from "@/components/customs/auth/AuthModal";
-import Navbar from "@/components/customs/home/Navbar";
+import AuthModal from "@/components/features/auth/AuthModal";
+import Navbar from "@/components/layout/Navbar";
 
 export default function PublicLayout({
   children,

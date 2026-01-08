@@ -1,11 +1,11 @@
 "use client";
-import Courses from "@/components/customs/home/Courses";
-import Features from "@/components/customs/home/Features";
-import FinalCTA from "@/components/customs/home/FinalCTA";
-import Hero from "@/components/customs/home/Hero";
-import HowWorks from "@/components/customs/home/HowWorks";
-import States from "@/components/customs/home/States";
-import Testimonials from "@/components/customs/home/Testimonials";
+import Courses from "@/components/features/home/Courses";
+import Features from "@/components/features/home/Features";
+import FinalCTA from "@/components/features/home/FinalCTA";
+import Hero from "@/components/features/home/Hero";
+import HowItWorks from "@/components/features/home/HowItWorks";
+import Stats from "@/components/features/home/Stats";
+import Testimonials from "@/components/features/home/Testimonials";
 import { motion, useScroll, useSpring } from "motion/react"; // Note: standard import is usually "framer-motion"
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeInOut" },
+      transition: { duration: 0.6, ease: "easeInOut" as const },
     },
   };
 
@@ -30,7 +30,7 @@ export default function Home() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInVariant}
         >
-          <States />
+          <Stats />
         </motion.section>
 
         <motion.section
@@ -48,7 +48,7 @@ export default function Home() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInVariant}
         >
-          <HowWorks />
+          <HowItWorks />
         </motion.section>
 
         <motion.section

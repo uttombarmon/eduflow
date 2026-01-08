@@ -1,9 +1,9 @@
-import ContactPage from '@/components/customs/public/contact-us/ContactUsPage'
+import ContactPage from '@/components/features/contact/ContactUsPage'
 import React from 'react'
 
 const page = () => {
   return (
-    <ContactPage/>
+    <ContactPage />
   )
 }
 

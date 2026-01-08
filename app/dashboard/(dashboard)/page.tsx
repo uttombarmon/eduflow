@@ -1,6 +1,6 @@
-import DashboardLayout from "@/components/customs/dashboard/DashboardLayout";
-import StudentOverviews from "@/components/customs/dashboard/student/StudentOverviews";
-import TutorDashboard from "@/components/customs/dashboard/tutor/TutorOverviews";
+import DashboardLayout from "@/components/features/dashboard/DashboardLayout";
+import StudentOverviews from "@/components/features/dashboard/student/StudentOverview";
+import TutorDashboard from "@/components/features/dashboard/tutor/TutorOverview";
 
 export default function page() {
   const userRole = "student";

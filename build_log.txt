@@ -1,0 +1,61 @@
+
+> eduflow@0.1.0 build
+> next build
+
+Γû▓ Next.js 16.1.1 (Turbopack)
+- Environments: .env.local, .env
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 2 errors:
+./components/features/dashboard/student/StudentOverviews.tsx:4:1
+Module not found: Can't resolve '../../constants/MockDatas'
+  2 | import React from "react";
+  3 | import { BookOpen, Clock, Award, Star, ArrowRight, Play } from "lucide-react";
+> 4 | import { MOCK_COURSES } from "../../constants/MockDatas";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { useGetUserProfileQuery } from "@/lib/features/auth/userApi";
+  6 | import Image from "next/image";
+  7 |
+
+
+
+Import trace:
+  Server Component:
+    ./components/features/dashboard/student/StudentOverviews.tsx
+    ./app/dashboard/(dashboard)/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./components/features/home/Courses.tsx:3:1
+Module not found: Can't resolve '../constants/MockDatas'
+  1 | import { ArrowRight, Star } from "lucide-react";
+  2 | import Image from "next/image";
+> 3 | import { MOCK_COURSES } from "../constants/MockDatas";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 | import Link from "next/link";
+  5 |
+  6 | function Courses() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./components/features/home/Courses.tsx [Client Component Browser]
+    ./app/(public)/page.tsx [Client Component Browser]
+    ./app/(public)/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/home/Courses.tsx [Client Component SSR]
+    ./app/(public)/page.tsx [Client Component SSR]
+    ./app/(public)/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (./components/features/dashboard/student/StudentOverviews.tsx:4:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./components/features/home/Courses.tsx:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)

@@ -1,6 +1,6 @@
 import { ArrowRight, Star } from "lucide-react";
 import Image from "next/image";
-import { MOCK_COURSES } from "../constants/MockDatas";
+import { MOCK_COURSES } from "@/constants/mock-data";
 import Link from "next/link";
 
 function Courses() {
@@ -29,7 +29,7 @@ function Courses() {
             <div
               key={course.id}
               className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md cursor-pointer"
-              // onClick={onStart}
+            // onClick={onStart}
             >
               <div className="aspect-video bg-slate-100 relative">
                 <Image

@@ -3,6 +3,7 @@ import { setUser } from "@/lib/features/auth/AuthSlice";
 import { useAppDispatch } from "@/lib/hooks";
 import { UserRole, User as UserType } from "@/types/TypesAll";
 import { GraduationCap, Laptop } from "lucide-react";
+import { redirect } from "next/navigation";
 import React, { useState } from "react";
 
 interface FormProps {
@@ -34,6 +35,7 @@ const AuthForm: React.FC<FormProps> = ({ authMode, handleModalToggle }) => {
       setIsLoading(false);
       dispatch(setUser(newUser));
       // onSuccess(newUser);
+      redirect("/dashboard");
       handleModalToggle();
     }, 1200);
   };

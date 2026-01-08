@@ -1,0 +1,16 @@
+[
+  {
+    "id": "EduFlow",
+    "name": "eduflowofficial",
+    "email": "official@eduflow.com",
+    "role": "tutor",
+    "avatar": ""
+  },
+  {
+    "id": "Student Flow",
+    "name": "studentflow",
+    "email": "student@eduflow.com",
+    "role": "student",
+    "avatar": ""
+  }
+]

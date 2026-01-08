@@ -1,27 +1,6 @@
 import { Course } from "@/types/TypesAll";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-// export interface Lesson {
-//   id: string;
-//   title: string;
-//   duration: string;
-//   videoUrl?: string;
-// }
-
-// export interface Course {
-//   id: string;
-//   title: string;
-//   instructor: string;
-//   thumbnail: string;
-//   category: string;
-//   level: string;
-//   price: number;
-//   rating: number;
-//   studentsCount: number;
-//   lessons: Lesson[];
-// }
-
-// 2. Define the API Slice
 export const coursesApi = createApi({
   reducerPath: "coursesApi",
 

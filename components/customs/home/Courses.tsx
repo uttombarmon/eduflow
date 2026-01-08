@@ -1,6 +1,7 @@
 import { ArrowRight, Star } from "lucide-react";
 import Image from "next/image";
 import { MOCK_COURSES } from "../constants/MockDatas";
+import Link from "next/link";
 
 function Courses() {
   return (
@@ -15,12 +16,12 @@ function Courses() {
               Join 120,000+ students learning on EduFlow.
             </p>
           </div>
-          <button
-            // onClick={onStart}
+          <Link
+            href={"/courses"}
             className="hidden sm:flex items-center text-sm font-semibold hover:underline"
           >
             Browse all <ArrowRight className="ml-1 h-4 w-4" />
-          </button>
+          </Link>
         </div>
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">

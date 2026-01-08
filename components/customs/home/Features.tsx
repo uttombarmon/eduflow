@@ -1,5 +1,4 @@
 import { BrainCircuit, Globe, Sparkles, Trophy, Users } from "lucide-react";
-import React from "react";
 
 function Features() {
   return (

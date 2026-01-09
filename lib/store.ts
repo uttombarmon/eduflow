@@ -8,6 +8,7 @@ import { coursesApi } from "./features/courses/courseApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { postsApi } from "./features/posts/postsApi";
 import { userApi } from "./features/auth/userApi";
+import { dashboardUISlice } from "./features/dashboard/dashboardUISlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -22,6 +23,7 @@ export const makeStore = () => {
       categories: categoriesSlice.reducer,
       filters: filterSlice.reducer,
       course: coursesSlice.reducer,
+      dashboardUI: dashboardUISlice.reducer,
     },
     // Adding the api middleware enables caching, invalidation, and polling
     middleware: (getDefaultMiddleware) =>

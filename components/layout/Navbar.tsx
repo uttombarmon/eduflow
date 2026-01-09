@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Logo from "./Logo";
 
 const Navbar: React.FC = () => {
   const dispatch = useDispatch();
@@ -24,23 +25,14 @@ const Navbar: React.FC = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-60 border-b transition-all duration-300 ${
-        isScrolled
-          ? "bg-white/80 backdrop-blur-md py-3"
-          : "bg-transparent py-5 border-transparent"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-60 border-b transition-all duration-300 ${isScrolled
+        ? "bg-white/80 backdrop-blur-md py-3"
+        : "bg-transparent py-5 border-transparent"
+        }`}
     >
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-6">
-        <Link
-          href={"/"}
-          className="flex items-center gap-2 font-bold text-xl tracking-tight"
-        >
-          <div className="flex h-8 w-8 items-center justify-center rounded bg-slate-900 text-slate-50">
-            <span className="italic text-sm">E</span>
-          </div>
-          <span>EduFlow</span>
-        </Link>
-
+        {/* Logo */}
+        <Logo />
         <nav className="hidden md:flex items-center gap-6">
           {[
             { name: "Features", path: "#features" },

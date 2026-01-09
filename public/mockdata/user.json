@@ -12,5 +12,12 @@
     "email": "student@eduflow.com",
     "role": "student",
     "avatar": ""
+  },
+  {
+    "id": "Admin Flow",
+    "name": "adminflow",
+    "email": "admin@eduflow.com",
+    "role": "admin",
+    "avatar": ""
   }
 ]

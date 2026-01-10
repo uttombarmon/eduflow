@@ -4,7 +4,7 @@ const initialFilterState: Filters = {
   categorie: "all",
   level: "all",
   price: "all",
-  sortBy: "Popularity",
+  sortBy: "popularity",
   search: "",
 };
 export const filterSlice = createSlice({
@@ -23,18 +23,6 @@ export const filterSlice = createSlice({
     setSort: (state, action: PayloadAction<string>) => {
       state.sortBy = action.payload;
     },
-    // setPopularity: (state, action: PayloadAction<string>) => {
-    //   state.categorie = action.payload;
-    // },
-    // setPriceLowToHigh: (state, action: PayloadAction<string>) => {
-    //   state.categorie = action.payload;
-    // },
-    // setPrceHighToLow: (state, action: PayloadAction<string>) => {
-    //   state.categorie = action.payload;
-    // },
-    // setRating: (state, action: PayloadAction<string>) => {
-    //   state.categorie = action.payload;
-    // },
     setSearch: (state, action: PayloadAction<string>) => {
       state.search = action.payload;
     },

@@ -15,8 +15,10 @@ export default function DashboardLayout({
   children: React.ReactNode;
   role?: string;
 }) {
-  const dispatch = useAppDispatch()
-  const { isSideBarOpen } = useAppSelector((state: RootState) => state.dashboardUI)
+  const dispatch = useAppDispatch();
+  const { isSideBarOpen } = useAppSelector(
+    (state: RootState) => state.dashboardUI
+  );
   const pathname = usePathname();
 
   const getPageTitle = (path: string) => {
@@ -25,7 +27,7 @@ export default function DashboardLayout({
     const lastSegment = segments[segments.length - 1];
     return lastSegment
       .split("-")
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   };
 
@@ -45,15 +47,18 @@ export default function DashboardLayout({
       </header>
 
       {/* Sidebar - Desktop & Tablet */}
-      <div className={` w-64 relative ${isSideBarOpen ? " flex" : "hidden md:flex"}`}>
+      <div
+        className={` w-64 relative ${
+          isSideBarOpen ? " flex" : "hidden md:flex"
+        }`}
+      >
         <Asidebar />
       </div>
       {/* Content Area */}
       <main className="flex flex-1 flex-col h-screen ">
-
         {/* Inner Content */}
         <div className="flex-1 overflow-y-auto p-4 md:p-8 bg-slate-50">
-          <div className=" pl-64 max-w-7xl">{children}</div>
+          <div className=" max-w-7xl">{children}</div>
         </div>
       </main>
 

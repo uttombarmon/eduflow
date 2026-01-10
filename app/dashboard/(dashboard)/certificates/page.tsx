@@ -15,7 +15,6 @@ import Link from 'next/link';
 const CertificatesPage = () => {
     const { data: courses, isLoading } = useGetCoursesQuery();
 
-    // Filter for completed courses
     const completedCourses = courses?.filter(course => (course.progress ?? 0) === 100) || [];
 
     if (isLoading) {

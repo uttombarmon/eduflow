@@ -15,7 +15,7 @@ export const userApi = createApi({
 
   endpoints: (builder) => ({
     getUserProfile: builder.query<User, void>({
-      query: () => "febb8918-62c1-4b24-b00f-89b351a23e74",
+      query: () => "80834fcd-ec2c-4350-abf4-8f433c593327",
       providesTags: ["User"],
     }),
   }),

@@ -1,5 +1,9 @@
 "use client";
 import { setUser } from "@/lib/features/auth/AuthSlice";
+import {
+  useLoginMutation,
+  useSignupMutation,
+} from "@/lib/features/auth/userApi";
 import { useAppDispatch } from "@/lib/hooks";
 import { UserRole, User as UserType } from "@/types/TypesAll";
 import { GraduationCap, Laptop } from "lucide-react";
@@ -12,32 +16,36 @@ interface FormProps {
 }
 
 const AuthForm: React.FC<FormProps> = ({ authMode, handleModalToggle }) => {
+  const [signup, { isLoading, error }] = useSignupMutation();
+  const [login, { isLoading: loginLoading, error: loginError }] =
+    useLoginMutation();
   const dispatch = useAppDispatch();
-  const [role, setRole] = useState<UserRole>("student");
-  const [isLoading, setIsLoading] = useState(false);
+  // const [role, setRole] = useState<UserRole>("student");
+  // const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
+    role: "student",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setTimeout(() => {
-      const newUser: UserType = {
-        id: Math.random().toString(36).substr(2, 9),
-        name: formData.name || "User",
-        email: formData.email,
-        role: authMode === "signup" ? role : "student",
-        avatar: `https://avatar.vercel.sh/${formData.email}`,
-      };
-      setIsLoading(false);
-      dispatch(setUser(newUser));
-      // onSuccess(newUser);
+    try {
+      const response =
+        authMode == "signup"
+          ? await signup(formData).unwrap()
+          : await login({
+              email: formData.email,
+              password: formData.password,
+            }).unwrap();
+      console.log(response);
+      dispatch(setUser(response.user));
       redirect("/dashboard");
       handleModalToggle();
-    }, 1200);
+    } catch (err) {
+      console.error("Signup failed", err);
+    }
   };
 
   return (
@@ -87,9 +95,9 @@ const AuthForm: React.FC<FormProps> = ({ authMode, handleModalToggle }) => {
         <div className="grid grid-cols-2 gap-2 mt-4">
           <button
             type="button"
-            onClick={() => setRole("student")}
+            onClick={() => setFormData({ ...formData, role: "student" })}
             className={`flex items-center justify-center gap-2 px-3 py-2 rounded-md text-xs font-medium border transition-colors ${
-              role === "student"
+              formData.role === "student"
                 ? "border-slate-950 bg-slate-50"
                 : "border-slate-200 text-slate-500 hover:bg-slate-50"
             }`}
@@ -98,9 +106,9 @@ const AuthForm: React.FC<FormProps> = ({ authMode, handleModalToggle }) => {
           </button>
           <button
             type="button"
-            onClick={() => setRole("tutor")}
+            onClick={() => setFormData({ ...formData, role: "tutor" })}
             className={`flex items-center justify-center gap-2 px-3 py-2 rounded-md text-xs font-medium border transition-colors ${
-              role === "tutor"
+              formData.role === "tutor"
                 ? "border-slate-950 bg-slate-50"
                 : "border-slate-200 text-slate-500 hover:bg-slate-50"
             }`}

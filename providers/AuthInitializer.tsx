@@ -28,10 +28,5 @@ export const AuthInitializer = ({
     init();
   }, [checkAuth, dispatch]);
 
-  // Prevent UI flicker by showing a loader while checking the cookie
-  // if (isLoading || isCheckingAuth) {
-  //   return <div>Loading session...</div>;
-  // }
-
   return <>{children}</>;
 };

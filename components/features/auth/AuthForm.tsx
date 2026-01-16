@@ -41,8 +41,8 @@ const AuthForm: React.FC<FormProps> = ({ authMode, handleModalToggle }) => {
             }).unwrap();
       console.log(response);
       dispatch(setUser(response.user));
-      redirect("/dashboard");
       handleModalToggle();
+      redirect("/dashboard");
     } catch (err) {
       console.error("Signup failed", err);
     }

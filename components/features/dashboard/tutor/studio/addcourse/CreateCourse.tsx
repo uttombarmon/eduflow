@@ -8,11 +8,22 @@ import { AddLesson } from './AddLesson';
 const CreateCourseForm = () => {
     const [lessons, setLessons] = useState<Partial<Lesson>[]>([]);
     const [courseData, setCourseData] = useState<Partial<Course>>({
+        title: '',
+        description: '',
+        thumbnail: '',
         level: 'Beginner',
         category: 'Development',
-        price: 0
+        price: 0,
     });
 
+    const handleCreateCourse = (e: React.FormEvent) => {
+        e.preventDefault();
+        const course = {
+            ...courseData,
+            lessons,
+        };
+        console.log(course);
+    }
     const addLesson = () => {
         setLessons([...lessons, { id: crypto.randomUUID(), title: '', isCompleted: false }]);
     };
@@ -54,21 +65,40 @@ const CreateCourseForm = () => {
                     </div>
 
                     <div className="space-y-4">
+                        {/* course thumbnail */}
                         <div className="border-2 border-dashed border-gray-200 rounded-xl h-48 flex flex-col items-center justify-center text-gray-400 hover:border-indigo-400 transition cursor-pointer">
                             <ImageIcon size={32} />
                             <span className="text-xs mt-2 font-medium">Upload Thumbnail</span>
                         </div>
+                        {/* course price and level */}
                         <div className="grid grid-cols-2 gap-2">
                             <div>
                                 <label className="block text-xs font-bold text-gray-500 mb-1">Price ($)</label>
                                 <input type="number" className="w-full p-2 border rounded-lg" />
                             </div>
+                            {/* course level */}
                             <div>
                                 <label className="block text-xs font-bold text-gray-500 mb-1">Level</label>
-                                <select className="w-full p-2 border rounded-lg">
-                                    <option>Beginner</option>
-                                    <option>Intermediate</option>
-                                    <option>Advanced</option>
+                                <select onChange={(e) => setCourseData({ ...courseData, level: e.target.value })} className="w-full p-2 border rounded-lg">
+                                    <option value="Beginner">Beginner</option>
+                                    <option value="Intermediate">Intermediate</option>
+                                    <option value="Advanced">Advanced</option>
+                                </select>
+                            </div>
+                            {/* course category */}
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 mb-1">Category</label>
+                                <select onChange={(e) => setCourseData({ ...courseData, category: e.target.value })} className="w-full p-2 border rounded-lg">
+                                    <option value="Development">Development</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Design">Design</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Photography">Photography</option>
+                                    <option value="Music">Music</option>
+                                    <option value="Health & Fitness">Health & Fitness</option>
+                                    <option value="Personal Development">Personal Development</option>
+                                    <option value="Teaching & Academics">Teaching & Academics</option>
+                                    <option value="Other">Other</option>
                                 </select>
                             </div>
                         </div>
@@ -109,7 +139,7 @@ const CreateCourseForm = () => {
                 <button className="px-6 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">
                     Save Draft
                 </button>
-                <button className="px-6 py-2 rounded-lg font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition flex items-center gap-2">
+                <button onClick={handleCreateCourse} className="px-6 py-2 rounded-lg font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition flex items-center gap-2">
                     <Save size={18} /> Publish Course
                 </button>
             </div>

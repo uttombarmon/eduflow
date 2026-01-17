@@ -1,15 +1,16 @@
 "use client";
 import React from "react";
-import { BookOpen, Clock, Award, Star, ArrowRight, Play } from "lucide-react";
+import { BookOpen, Clock, Award, Star, Play } from "lucide-react";
 import { MOCK_COURSES } from "@/constants/mock-data";
-import { useGetUserProfileQuery } from "@/lib/features/auth/userApi";
 import Image from "next/image";
+import { useAppSelector } from "@/lib/hooks";
+import { RootState } from "@/lib/store";
 
 const StudentOverviews: React.FC = () => {
   const activeCourses = MOCK_COURSES.filter((c) => (c.progress ?? 0) > 0);
-  const { data: user, isLoading, error } = useGetUserProfileQuery();
-  if (isLoading) return <p>Loading...</p>;
-  if (!user || user?.role === undefined || error) return <p>Error...</p>;
+  const { user } = useAppSelector((state: RootState) => state.auth);
+  // if (isLoading) return <p>Loading...</p>;
+  if (!user || user?.role === undefined) return <p>Error...</p>;
 
   return (
     <div className="space-y-6">
@@ -80,7 +81,7 @@ const StudentOverviews: React.FC = () => {
               <div
                 key={course.id}
                 className="group relative flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:bg-slate-50 cursor-pointer"
-              // onClick={() => onCourseSelect(course.id)}
+                // onClick={() => onCourseSelect(course.id)}
               >
                 <Image
                   src={course.thumbnail}

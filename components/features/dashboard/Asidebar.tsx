@@ -21,6 +21,7 @@ import { setSideBarOpen } from "@/lib/features/dashboard/dashboardUISlice";
 import { setLogOut } from "@/lib/features/auth/AuthSlice";
 import { useLogoutMutation } from "@/lib/features/auth/userApi";
 import Logo from "@/components/layout/Logo";
+import Loading from "@/components/layout/Loading";
 
 function Asidebar() {
   const dispatch = useAppDispatch();
@@ -35,11 +36,7 @@ function Asidebar() {
   );
 
   if (isCheckingAuth) {
-    return (
-      <div className="h-screen flex items-center justify-center">
-        Loading...
-      </div>
-    );
+    return <Loading />;
   }
   if (!user || user?.role === undefined) return redirect("/");
 
@@ -138,18 +135,16 @@ function Asidebar() {
                       dispatch(setSideBarOpen(false));
                     }
                   }}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all ${
-                    isActive
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all ${isActive
                       ? "bg-slate-200 text-slate-800 shadow-md shadow-blue-900/20"
                       : "text-slate-500 hover:text-slate-800 hover:bg-slate-200"
-                  }`}
+                    }`}
                 >
                   <item.icon
-                    className={`h-4 w-4 ${
-                      isActive
+                    className={`h-4 w-4 ${isActive
                         ? "text-slate-800"
                         : "text-slate-500 group-hover:text-white"
-                    }`}
+                      }`}
                   />
                   {item.label}
                 </Link>

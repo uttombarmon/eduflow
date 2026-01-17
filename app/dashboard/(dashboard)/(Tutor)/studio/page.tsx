@@ -12,53 +12,60 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useGetTutorCoursesQuery } from "@/lib/features/courses/courseApi";
+import Loading from "@/components/layout/Loading";
 
 // Mock Data for Courses
-const MOCK_COURSES = [
-    {
-        id: 1,
-        title: "Fullstack Next.js: The Complete Guide",
-        thumbnail: "bg-blue-600",
-        status: "Published",
-        price: "$89.00",
-        sales: 420,
-        rating: 4.8,
-        lastUpdated: "2 days ago",
-    },
-    {
-        id: 2,
-        title: "Mastering Tailwind CSS",
-        thumbnail: "bg-teal-500",
-        status: "Published",
-        price: "$49.00",
-        sales: 310,
-        rating: 4.9,
-        lastUpdated: "5 days ago",
-    },
-    {
-        id: 3,
-        title: "React Native for Beginners",
-        thumbnail: "bg-violet-600",
-        status: "Draft",
-        price: "$59.00",
-        sales: 0,
-        rating: 0,
-        lastUpdated: "1 week ago",
-    },
-    {
-        id: 4,
-        title: "Advanced TypeScript Patterns",
-        thumbnail: "bg-blue-700",
-        status: "Published",
-        price: "$69.00",
-        sales: 156,
-        rating: 4.7,
-        lastUpdated: "2 weeks ago",
-    },
-];
+// const MOCK_COURSES = [
+//     {
+//         id: 1,
+//         title: "Fullstack Next.js: The Complete Guide",
+//         thumbnail: "bg-blue-600",
+//         status: "Published",
+//         price: "$89.00",
+//         sales: 420,
+//         rating: 4.8,
+//         lastUpdated: "2 days ago",
+//     },
+//     {
+//         id: 2,
+//         title: "Mastering Tailwind CSS",
+//         thumbnail: "bg-teal-500",
+//         status: "Published",
+//         price: "$49.00",
+//         sales: 310,
+//         rating: 4.9,
+//         lastUpdated: "5 days ago",
+//     },
+//     {
+//         id: 3,
+//         title: "React Native for Beginners",
+//         thumbnail: "bg-violet-600",
+//         status: "Draft",
+//         price: "$59.00",
+//         sales: 0,
+//         rating: 0,
+//         lastUpdated: "1 week ago",
+//     },
+//     {
+//         id: 4,
+//         title: "Advanced TypeScript Patterns",
+//         thumbnail: "bg-blue-700",
+//         status: "Published",
+//         price: "$69.00",
+//         sales: 156,
+//         rating: 4.7,
+//         lastUpdated: "2 weeks ago",
+//     },
+// ];
 
 const StudioPage = () => {
     const [searchTerm, setSearchTerm] = useState("");
+    const { data: response, isLoading } = useGetTutorCoursesQuery();
+    const courses = response?.data || [];
+    if (isLoading) {
+        return <Loading />;
+    }
 
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
@@ -119,48 +126,55 @@ const StudioPage = () => {
                 </div>
 
                 <div className="divide-y divide-slate-100">
-                    {MOCK_COURSES.map((course) => (
-                        <div key={course.id} className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-slate-50/50 transition-colors group">
-                            <div className="col-span-6 md:col-span-5 flex items-center gap-4">
-                                <div className={`h-12 w-16 rounded-lg ${course.thumbnail} flex items-center justify-center text-white/50 text-xs font-bold`}>
-                                    img
-                                </div>
-                                <div>
-                                    <h3 className="font-bold text-slate-900 line-clamp-1">{course.title}</h3>
-                                    <div className="flex items-center gap-3 mt-1 text-xs text-slate-500">
-                                        <span className="flex items-center gap-1"><BookOpen size={12} /> 12 Lessons</span>
-                                        <span className="hidden sm:flex items-center gap-1"><Users size={12} /> {course.sales} Students</span>
+                    {courses.length === 0 ? (
+                        <div className="flex items-center justify-center h-32 md:h-72">
+                            <p className="text-slate-500">No courses found</p>
+                        </div>
+                    ) : (
+
+                        courses.map((course: any) => (
+                            <div key={course.id} className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-slate-50/50 transition-colors group">
+                                <div className="col-span-6 md:col-span-5 flex items-center gap-4">
+                                    <div className={`h-12 w-16 rounded-lg ${course.thumbnail} flex items-center justify-center text-white/50 text-xs font-bold`}>
+                                        img
+                                    </div>
+                                    <div>
+                                        <h3 className="font-bold text-slate-900 line-clamp-1">{course.title}</h3>
+                                        <div className="flex items-center gap-3 mt-1 text-xs text-slate-500">
+                                            <span className="flex items-center gap-1"><BookOpen size={12} /> 12 Lessons</span>
+                                            <span className="hidden sm:flex items-center gap-1"><Users size={12} /> {course?.sales} Students</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className="col-span-2 hidden md:flex justify-center">
-                                <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${course.status === 'Published'
-                                    ? 'bg-emerald-100 text-emerald-700'
-                                    : 'bg-amber-100 text-amber-700'
-                                    }`}>
-                                    {course.status}
-                                </span>
-                            </div>
+                                <div className="col-span-2 hidden md:flex justify-center">
+                                    <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${course?.status === 'Published'
+                                        ? 'bg-emerald-100 text-emerald-700'
+                                        : 'bg-amber-100 text-amber-700'
+                                        }`}>
+                                        {course?.status}
+                                    </span>
+                                </div>
 
-                            <div className="col-span-2 hidden md:block text-right text-sm font-bold text-slate-700">
-                                {course.price}
-                            </div>
+                                <div className="col-span-2 hidden md:block text-right text-sm font-bold text-slate-700">
+                                    {course?.price}
+                                </div>
 
-                            <div className="col-span-2 hidden md:block text-right text-sm text-slate-500 font-medium">
-                                {course.sales}
-                            </div>
+                                <div className="col-span-2 hidden md:block text-right text-sm text-slate-500 font-medium">
+                                    {course?.sales}
+                                </div>
 
-                            <div className="col-span-4 md:col-span-1 flex items-center justify-end gap-2">
-                                <Button variant="ghost" size="icon-sm" className="hidden sm:flex text-slate-400 hover:text-blue-600">
-                                    <Edit3 className="h-4 w-4" />
-                                </Button>
-                                <Button variant="ghost" size="icon-sm" className="text-slate-400 hover:text-slate-900">
-                                    <MoreHorizontal className="h-4 w-4" />
-                                </Button>
+                                <div className="col-span-4 md:col-span-1 flex items-center justify-end gap-2">
+                                    <Button variant="ghost" size="icon-sm" className="hidden sm:flex text-slate-400 hover:text-blue-600">
+                                        <Edit3 className="h-4 w-4" />
+                                    </Button>
+                                    <Button variant="ghost" size="icon-sm" className="text-slate-400 hover:text-slate-900">
+                                        <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    )}
                 </div>
 
                 {/* Pagination / Footer */}

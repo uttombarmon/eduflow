@@ -68,3 +68,15 @@ export interface Post {
   title: string;
   body: string;
 }
+
+export interface ApiResponse<T> {
+  success: boolean;
+  message?: string;
+  data: T;
+  pagination?: {
+    totalItems: number;
+    currentPage: number;
+    totalPages: number;
+    hasNextPage: boolean;
+  };
+}

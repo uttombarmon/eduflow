@@ -1,16 +1,16 @@
 "use client";
 import StudentOverviews from "@/components/features/dashboard/student/StudentOverview";
-import TutorDashboard from "@/components/features/dashboard/tutor/TutorOverview";
+import TutorDashboard from "@/components/features/dashboard/tutor/Overview";
 import Loading from "@/components/layout/Loading";
-import { useGetUserProfileQuery } from "@/lib/features/auth/userApi";
+import { useAppSelector } from "@/lib/hooks";
+import { RootState } from "@/lib/store";
 
 export default function Page() {
-  const { data, isLoading } = useGetUserProfileQuery();
-  const userRole = data?.role;
-
+  const { user, isCheckingAuth } = useAppSelector((state: RootState) => state.auth);
+  const userRole = user?.role.toLowerCase();
   return (
     <>
-      {isLoading ? (
+      {isCheckingAuth ? (
         <Loading />
       ) : userRole === "tutor" ? (
         <TutorDashboard />

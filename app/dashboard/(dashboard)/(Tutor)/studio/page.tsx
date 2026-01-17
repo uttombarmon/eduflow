@@ -1,21 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     Plus,
     Search,
     Filter,
     MoreHorizontal,
     Edit3,
-    Trash2,
-    Eye,
-    BarChart2,
     BookOpen,
     Users
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { motion } from "motion/react"
 
 // Mock Data for Courses
 const MOCK_COURSES = [
@@ -80,10 +76,10 @@ const StudioPage = () => {
                     <Button variant="outline" className="hidden sm:flex">
                         Import Content
                     </Button>
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200">
+                    <Link href="/dashboard/studio/add_course" className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200 rounded-xl inline-flex items-center gap-2 w-fit px-4 py-2">
                         <Plus className="mr-2 h-4 w-4" />
                         Create New Course
-                    </Button>
+                    </Link>
                 </div>
             </div>
 
@@ -140,8 +136,8 @@ const StudioPage = () => {
 
                             <div className="col-span-2 hidden md:flex justify-center">
                                 <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${course.status === 'Published'
-                                        ? 'bg-emerald-100 text-emerald-700'
-                                        : 'bg-amber-100 text-amber-700'
+                                    ? 'bg-emerald-100 text-emerald-700'
+                                    : 'bg-amber-100 text-amber-700'
                                     }`}>
                                     {course.status}
                                 </span>

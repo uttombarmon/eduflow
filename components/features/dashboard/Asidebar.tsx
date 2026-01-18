@@ -1,8 +1,7 @@
 "use client";
-import { useGetUserProfileQuery } from "@/lib/features/auth/userApi";
+
 import Image from "next/image";
-import React, { useState } from "react";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import Link from "next/link";
 import {
   LayoutDashboard,
@@ -13,25 +12,33 @@ import {
   PieChart,
   Trophy,
   Settings,
-  Menu,
   X,
   LogOut,
-  Bell,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import { setSideBarOpen } from "@/lib/features/dashboard/dashboardUISlice";
+import { setLogOut } from "@/lib/features/auth/AuthSlice";
+import { useLogoutMutation } from "@/lib/features/auth/userApi";
 import Logo from "@/components/layout/Logo";
+import Loading from "@/components/layout/Loading";
 
 function Asidebar() {
   const dispatch = useAppDispatch();
-  const { data: user, isLoading, error } = useGetUserProfileQuery();
+  const [logout, { isLoading }] = useLogoutMutation();
+  const { user, isCheckingAuth } = useAppSelector(
+    (state: RootState) => state.auth
+  );
   const pathname = usePathname();
+
   const { isSideBarOpen } = useAppSelector(
     (state: RootState) => state.dashboardUI
   );
 
-  if (!user || user?.role === undefined || error) return;
+  if (isCheckingAuth) {
+    return <Loading />;
+  }
+  if (!user || user?.role === undefined) return redirect("/");
 
   const menuItems = [
     {
@@ -88,6 +95,14 @@ function Asidebar() {
     item.roles.includes(user.role)
   );
 
+  const handleLogout = async () => {
+    await logout(undefined).unwrap();
+    dispatch(setLogOut());
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("role");
+    redirect("/");
+  };
   return (
     <aside
       className={`
@@ -120,18 +135,16 @@ function Asidebar() {
                       dispatch(setSideBarOpen(false));
                     }
                   }}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all ${
-                    isActive
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all ${isActive
                       ? "bg-slate-200 text-slate-800 shadow-md shadow-blue-900/20"
                       : "text-slate-500 hover:text-slate-800 hover:bg-slate-200"
-                  }`}
+                    }`}
                 >
                   <item.icon
-                    className={`h-4 w-4 ${
-                      isActive
+                    className={`h-4 w-4 ${isActive
                         ? "text-slate-800"
                         : "text-slate-500 group-hover:text-white"
-                    }`}
+                      }`}
                   />
                   {item.label}
                 </Link>
@@ -165,7 +178,8 @@ function Asidebar() {
             </div>
           </div>
           <button
-            // onClick={onLogout}
+            disabled={isLoading}
+            onClick={() => handleLogout()}
             className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-slate-700/50 bg-slate-800/10 px-3 py-2 text-sm font-medium text-slate-600 transition-all hover:bg-red-900/20 hover:text-red-400 hover:border-red-900/30"
           >
             <LogOut className="h-4 w-4" />

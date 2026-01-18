@@ -2,11 +2,13 @@
 import React from "react";
 import Asidebar from "./Asidebar";
 import { Menu } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import { setSideBarOpen } from "@/lib/features/dashboard/dashboardUISlice";
 import Logo from "@/components/layout/Logo";
+import { setLogOut } from "@/lib/features/auth/AuthSlice";
+import { useLogoutMutation } from "@/lib/features/auth/userApi";
 
 export default function DashboardLayout({
   children,
@@ -48,9 +50,8 @@ export default function DashboardLayout({
 
       {/* Sidebar - Desktop & Tablet */}
       <div
-        className={` w-64 relative ${
-          isSideBarOpen ? " flex" : "hidden md:flex"
-        }`}
+        className={` w-64 relative ${isSideBarOpen ? " flex" : "hidden md:flex"
+          }`}
       >
         <Asidebar />
       </div>

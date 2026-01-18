@@ -5,7 +5,6 @@ import {
   useSignupMutation,
 } from "@/lib/features/auth/userApi";
 import { useAppDispatch } from "@/lib/hooks";
-import { UserRole, User as UserType } from "@/types/TypesAll";
 import { GraduationCap, Laptop } from "lucide-react";
 import { redirect } from "next/navigation";
 import React, { useState } from "react";
@@ -20,8 +19,6 @@ const AuthForm: React.FC<FormProps> = ({ authMode, handleModalToggle }) => {
   const [login, { isLoading: loginLoading, error: loginError }] =
     useLoginMutation();
   const dispatch = useAppDispatch();
-  // const [role, setRole] = useState<UserRole>("student");
-  // const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,13 +33,12 @@ const AuthForm: React.FC<FormProps> = ({ authMode, handleModalToggle }) => {
         authMode == "signup"
           ? await signup(formData).unwrap()
           : await login({
-              email: formData.email,
-              password: formData.password,
-            }).unwrap();
-      console.log(response);
+            email: formData.email,
+            password: formData.password,
+          }).unwrap();
       dispatch(setUser(response.user));
-      redirect("/dashboard");
       handleModalToggle();
+      redirect("/dashboard");
     } catch (err) {
       console.error("Signup failed", err);
     }
@@ -96,22 +92,20 @@ const AuthForm: React.FC<FormProps> = ({ authMode, handleModalToggle }) => {
           <button
             type="button"
             onClick={() => setFormData({ ...formData, role: "student" })}
-            className={`flex items-center justify-center gap-2 px-3 py-2 rounded-md text-xs font-medium border transition-colors ${
-              formData.role === "student"
-                ? "border-slate-950 bg-slate-50"
-                : "border-slate-200 text-slate-500 hover:bg-slate-50"
-            }`}
+            className={`flex items-center justify-center gap-2 px-3 py-2 rounded-md text-xs font-medium border transition-colors ${formData.role === "student"
+              ? "border-slate-950 bg-slate-50"
+              : "border-slate-200 text-slate-500 hover:bg-slate-50"
+              }`}
           >
             <GraduationCap size={16} /> Student
           </button>
           <button
             type="button"
             onClick={() => setFormData({ ...formData, role: "tutor" })}
-            className={`flex items-center justify-center gap-2 px-3 py-2 rounded-md text-xs font-medium border transition-colors ${
-              formData.role === "tutor"
-                ? "border-slate-950 bg-slate-50"
-                : "border-slate-200 text-slate-500 hover:bg-slate-50"
-            }`}
+            className={`flex items-center justify-center gap-2 px-3 py-2 rounded-md text-xs font-medium border transition-colors ${formData.role === "tutor"
+              ? "border-slate-950 bg-slate-50"
+              : "border-slate-200 text-slate-500 hover:bg-slate-50"
+              }`}
           >
             <Laptop size={16} /> Tutor
           </button>
@@ -125,8 +119,8 @@ const AuthForm: React.FC<FormProps> = ({ authMode, handleModalToggle }) => {
         {isLoading
           ? "Please wait..."
           : authMode === "login"
-          ? "Sign In"
-          : "Sign Up"}
+            ? "Sign In"
+            : "Sign Up"}
       </button>
     </form>
   );

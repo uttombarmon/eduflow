@@ -1,15 +1,18 @@
 "use client";
 import React from "react";
-import { BookOpen, Clock, Award, Star, ArrowRight, Play } from "lucide-react";
+import { BookOpen, Clock, Award, Star, Play } from "lucide-react";
 import { MOCK_COURSES } from "@/constants/mock-data";
-import { useGetUserProfileQuery } from "@/lib/features/auth/userApi";
 import Image from "next/image";
+import { useAppSelector } from "@/lib/hooks";
+import { RootState } from "@/lib/store";
+import { redirect } from "next/navigation";
+import Loading from "@/components/layout/Loading";
 
 const StudentOverviews: React.FC = () => {
   const activeCourses = MOCK_COURSES.filter((c) => (c.progress ?? 0) > 0);
-  const { data: user, isLoading, error } = useGetUserProfileQuery();
-  if (isLoading) return <p>Loading...</p>;
-  if (!user || user?.role === undefined || error) return <p>Error...</p>;
+  const { user, isCheckingAuth } = useAppSelector((state: RootState) => state.auth);
+  if (isCheckingAuth) return <Loading />;
+  if (!user || user?.role === undefined) return redirect("/");
 
   return (
     <div className="space-y-6">

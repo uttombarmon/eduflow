@@ -33,10 +33,16 @@ export const userApi = createApi({
         url: "me",
         method: "GET",
       }),
-      invalidatesTags: ["User"]
+      invalidatesTags: ["User"],
     }),
     getUserProfile: builder.query<User, void>({
       query: () => "80834fcd-ec2c-4350-abf4-8f433c593327",
+    }),
+    logout: builder.mutation({
+      query: () => ({
+        url: "logout",
+        method: "POST",
+      }),
     }),
   }),
 });
@@ -45,5 +51,6 @@ export const {
   useSignupMutation,
   useLoginMutation,
   useCheckAuthMutation,
+  useLogoutMutation,
   useGetUserProfileQuery,
 } = userApi;

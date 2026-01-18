@@ -8,7 +8,8 @@ import { useGetCoursesQuery } from "@/lib/features/courses/courseApi";
 import { FilterProduct } from "@/lib/utils/FilterProduct";
 
 const CourseExplore = () => {
-  const { data, isLoading, error } = useGetCoursesQuery();
+  const { data: response, isLoading, error } = useGetCoursesQuery();
+  const data = response?.data || [];
   const { categorie, level, price, search, sortBy } = useAppSelector(
     (state: RootState) => state.filters
   );

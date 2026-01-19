@@ -11,11 +11,12 @@ import {
     ArrowRight
 } from 'lucide-react';
 import Link from 'next/link';
+import { Course } from '@/types/TypesAll';
 
 const CertificatesPage = () => {
     const { data: courses, isLoading } = useGetCoursesQuery();
-
-    const completedCourses = courses?.filter(course => (course.progress ?? 0) === 100) || [];
+    const courseDatas = courses as unknown as Course[] || [];
+    const completedCourses = courseDatas?.filter((course: Course) => (course.progress ?? 0) === 100) || [];
 
     if (isLoading) {
         return <div className="flex h-[50vh] items-center justify-center"><Loading /></div>;

@@ -5,7 +5,7 @@ export const coursesApi = createApi({
   reducerPath: "coursesApi",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/course/`,
+    baseUrl: "/api/v1/course/",
     prepareHeaders: (headers) => {
       headers.set("Accept", "application/json");
       return headers;

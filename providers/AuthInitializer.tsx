@@ -22,7 +22,8 @@ export const AuthInitializer = ({
         const response = await checkAuth({}).unwrap();
         dispatch(setUser(response.user));
       } catch (err) {
-        dispatch(setLogOut());
+        console.log(err);
+        // dispatch(setLogOut());
       }
     };
     init();

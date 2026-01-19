@@ -32,8 +32,9 @@ export const userApi = createApi({
       query: () => ({
         url: "me",
         method: "GET",
+        credentials: "include",
       }),
-      invalidatesTags: ["User"],
+
     }),
     getUserProfile: builder.query<User, void>({
       query: () => "80834fcd-ec2c-4350-abf4-8f433c593327",

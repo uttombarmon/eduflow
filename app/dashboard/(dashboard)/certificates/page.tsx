@@ -41,7 +41,7 @@ const CertificatesPage = () => {
                             className="group relative flex flex-col bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
                         >
                             {/* Decorative top border */}
-                            <div className="h-1.5 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
+                            <div className="h-1.5 w-full bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500" />
 
                             <div className="p-6 flex-1 flex flex-col">
                                 {/* Icon & Status */}

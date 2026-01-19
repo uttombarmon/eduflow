@@ -15,8 +15,8 @@ const MyLearning: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const enrolledCourses = useMemo(() => {
-    if (!list) return [];
-    return list.filter((course) => (course.progress ?? 0) >= 0);
+    if (!list || !list.data) return [];
+    return list.data.filter((course) => (course.progress ?? 0) >= 0);
   }, [list]);
 
   const filteredCourses = useMemo(() => {
@@ -64,7 +64,7 @@ const MyLearning: React.FC = () => {
         </p>
         <button
           // onClick={() => onCourseSelect(course.id)}
-          onClick={() => {}}
+          onClick={() => { }}
           className="mt-8 inline-flex h-11 items-center justify-center rounded-md bg-slate-900 px-8 text-sm font-semibold text-slate-50 hover:bg-slate-900/90 transition-all shadow-lg shadow-slate-200"
         >
           Browse Catalog

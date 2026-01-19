@@ -5,7 +5,7 @@ export const coursesApi = createApi({
   reducerPath: "coursesApi",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/course/",
+    baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/course/`,
     prepareHeaders: (headers) => {
       headers.set("Accept", "application/json");
       return headers;
@@ -43,7 +43,16 @@ export const coursesApi = createApi({
         body: newCourse,
       })
     })
+    ,
+    // ADD LESSON
+    addLesson: builder.mutation<ApiResponse<Course>, Partial<Course>>({
+      query: (newCourse) => ({
+        url: `/${newCourse.id}/lesson`,
+        method: "POST",
+        body: newCourse,
+      })
+    })
   })
 });
 
-export const { useGetCoursesQuery, useGetPopularCoursesQuery, useGetCourseByIdQuery, useCreateCourseMutation, useGetTutorCoursesQuery } = coursesApi;
+export const { useGetCoursesQuery, useGetPopularCoursesQuery, useGetCourseByIdQuery, useCreateCourseMutation, useGetTutorCoursesQuery, useAddLessonMutation } = coursesApi;

@@ -3,9 +3,12 @@ import React, { useState } from 'react';
 import { Plus, Save, Image as ImageIcon } from 'lucide-react';
 import { Course, Lesson } from '@/types/TypesAll';
 import { AddLesson } from './AddLesson';
+import ImageUpload from './ImageUpload';
+import { useAddLessonMutation, useCreateCourseMutation } from '@/lib/features/courses/courseApi';
 
 
 const CreateCourseForm = () => {
+    const [createCourse] = useCreateCourseMutation()
     const [lessons, setLessons] = useState<Partial<Lesson>[]>([]);
     const [courseData, setCourseData] = useState<Partial<Course>>({
         title: '',
@@ -16,13 +19,19 @@ const CreateCourseForm = () => {
         price: 0,
     });
 
-    const handleCreateCourse = (e: React.FormEvent) => {
+    const handleCreateCourse = async (e: React.FormEvent) => {
         e.preventDefault();
-        const course = {
-            ...courseData,
-            lessons,
-        };
-        console.log(course);
+        console.log(courseData)
+        const res = await createCourse(courseData);
+        console.log(res)
+        if (res) {
+            return console.log("Course created successfully");
+            // await useAddLessonMutation({
+            //     id: res?.data?.id,
+            //     lessons
+            // })
+        }
+        return console.log("Course created unsuccessfully");
     }
     const addLesson = () => {
         setLessons([...lessons, { id: crypto.randomUUID(), title: '', isCompleted: false }]);
@@ -49,6 +58,7 @@ const CreateCourseForm = () => {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Course Title</label>
                             <input
+                                onChange={(e) => setCourseData({ ...courseData, title: e.target.value })}
                                 type="text"
                                 className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                                 placeholder="Enter a catchy title..."
@@ -57,6 +67,7 @@ const CreateCourseForm = () => {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                             <textarea
+                                onChange={(e) => setCourseData({ ...courseData, description: e.target.value })}
                                 rows={4}
                                 className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                                 placeholder="What will students learn?"
@@ -66,15 +77,14 @@ const CreateCourseForm = () => {
 
                     <div className="space-y-4">
                         {/* course thumbnail */}
-                        <div className="border-2 border-dashed border-gray-200 rounded-xl h-48 flex flex-col items-center justify-center text-gray-400 hover:border-indigo-400 transition cursor-pointer">
-                            <ImageIcon size={32} />
-                            <span className="text-xs mt-2 font-medium">Upload Thumbnail</span>
+                        <div className="border-2 border-dashed border-gray-200 rounded-xl h-48 flex flex-col items-center justify-center text-gray-400 hover:border-indigo-400 transition cursor-pointer relative">
+                            <ImageUpload courseData={courseData} setCourseData={setCourseData} />
                         </div>
                         {/* course price and level */}
                         <div className="grid grid-cols-2 gap-2">
                             <div>
                                 <label className="block text-xs font-bold text-gray-500 mb-1">Price ($)</label>
-                                <input type="number" className="w-full p-2 border rounded-lg" />
+                                <input onChange={(e) => setCourseData({ ...courseData, price: Number(e.target.value) })} type="number" className="w-full p-2 border rounded-lg" />
                             </div>
                             {/* course level */}
                             <div>

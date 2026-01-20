@@ -63,6 +63,7 @@ const StudioPage = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const { data: response, isLoading } = useGetTutorCoursesQuery();
     const courses = response?.data || [];
+    console.log(courses)
     if (isLoading) {
         return <Loading />;
     }

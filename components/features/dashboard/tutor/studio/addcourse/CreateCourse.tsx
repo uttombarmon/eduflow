@@ -5,10 +5,12 @@ import { Course, Lesson } from '@/types/TypesAll';
 import { AddLesson } from './AddLesson';
 import ImageUpload from './ImageUpload';
 import { useAddLessonMutation, useCreateCourseMutation } from '@/lib/features/courses/courseApi';
+import CourseCategories from './CourseCategories';
 
 
 const CreateCourseForm = () => {
-    const [createCourse] = useCreateCourseMutation()
+    const [createCourse] = useCreateCourseMutation();
+    const [addLessonMutation] = useAddLessonMutation();
     const [lessons, setLessons] = useState<Partial<Lesson>[]>([]);
     const [courseData, setCourseData] = useState<Partial<Course>>({
         title: '',
@@ -17,21 +19,32 @@ const CreateCourseForm = () => {
         level: 'Beginner',
         category: 'Development',
         price: 0,
+        status: 'Draft'
     });
 
     const handleCreateCourse = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(courseData)
-        const res = await createCourse(courseData);
-        console.log(res)
-        if (res) {
-            return console.log("Course created successfully");
-            // await useAddLessonMutation({
-            //     id: res?.data?.id,
-            //     lessons
-            // })
+        try {
+            const res = await createCourse(courseData).unwrap();
+            console.log(res);
+
+            if (res && res.success && res.data?.id) {
+                const courseId = res.data.id;
+                console.log("Course created successfully");
+
+                // Add all lessons
+                await Promise.all(lessons.map(lesson =>
+                    addLessonMutation({
+                        id: courseId,
+                        lesson: lesson as Lesson
+                    }).unwrap()
+                ));
+            } else {
+                console.log("Course created unsuccessfully");
+            }
+        } catch (error) {
+            console.error("Failed to create course", error);
         }
-        return console.log("Course created unsuccessfully");
     }
     const addLesson = () => {
         setLessons([...lessons, { id: crypto.randomUUID(), title: '', isCompleted: false }]);
@@ -98,17 +111,15 @@ const CreateCourseForm = () => {
                             {/* course category */}
                             <div>
                                 <label className="block text-xs font-bold text-gray-500 mb-1">Category</label>
-                                <select onChange={(e) => setCourseData({ ...courseData, category: e.target.value })} className="w-full p-2 border rounded-lg">
-                                    <option value="Development">Development</option>
-                                    <option value="Business">Business</option>
-                                    <option value="Design">Design</option>
-                                    <option value="Marketing">Marketing</option>
-                                    <option value="Photography">Photography</option>
-                                    <option value="Music">Music</option>
-                                    <option value="Health & Fitness">Health & Fitness</option>
-                                    <option value="Personal Development">Personal Development</option>
-                                    <option value="Teaching & Academics">Teaching & Academics</option>
-                                    <option value="Other">Other</option>
+                                <CourseCategories courseData={courseData} setCourseData={setCourseData} />
+                            </div>
+                            {/* course status */}
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 mb-1">Status</label>
+                                <select onChange={(e) => setCourseData({ ...courseData, status: e.target.value })} className="w-full p-2 border rounded-lg">
+                                    <option value="Draft">Draft</option>
+                                    <option value="Published">Published</option>
+                                    <option value="Archived">Archived</option>
                                 </select>
                             </div>
                         </div>

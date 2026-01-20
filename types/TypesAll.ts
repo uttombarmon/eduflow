@@ -32,6 +32,7 @@ export interface Course {
   studentsCount: number;
   lessons: Lesson[];
   progress?: number;
+  status: string; 
 }
 export interface CourseCategories {
   categories: string[];

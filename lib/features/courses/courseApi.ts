@@ -1,4 +1,4 @@
-import { Course, ApiResponse } from "@/types/TypesAll";
+import { Course, ApiResponse, Lesson } from "@/types/TypesAll";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const coursesApi = createApi({
@@ -45,11 +45,11 @@ export const coursesApi = createApi({
     })
     ,
     // ADD LESSON
-    addLesson: builder.mutation<ApiResponse<Course>, Partial<Course>>({
-      query: (newCourse) => ({
-        url: `/${newCourse.id}/lesson`,
+    addLesson: builder.mutation<ApiResponse<Lesson>, { id: string, lesson: Lesson }>({
+      query: ({ id, lesson }) => ({
+        url: `/${id}/lesson`,
         method: "POST",
-        body: newCourse,
+        body: lesson,
       })
     })
   })

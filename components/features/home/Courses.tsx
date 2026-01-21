@@ -1,9 +1,13 @@
+"use client"
 import { ArrowRight, Star } from "lucide-react";
 import Image from "next/image";
 import { MOCK_COURSES } from "@/constants/mock-data";
 import Link from "next/link";
+import { useGetPopularCoursesQuery } from "@/lib/features/courses/courseApi";
 
 function Courses() {
+  const { data, isLoading, isError } = useGetPopularCoursesQuery()
+  console.log(data)
   return (
     <section className="py-24">
       <div className="mx-auto max-w-7xl px-6">
@@ -25,16 +29,16 @@ function Courses() {
         </div>
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {MOCK_COURSES.map((course) => (
+          {data && data.data.map((course) => (
             <div
-              key={course.id}
+              key={course?.id}
               className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md cursor-pointer"
             // onClick={onStart}
             >
               <div className="aspect-video bg-slate-100 relative">
                 <Image
-                  src={course.thumbnail}
-                  alt={course.title}
+                  src={course?.thumbnail}
+                  alt={course?.title}
                   className="w-full h-full object-cover"
                   height={700}
                   width={700}
@@ -42,18 +46,18 @@ function Courses() {
               </div>
               <div className="p-6">
                 <h3 className="font-bold text-lg mb-2 truncate">
-                  {course.title}
+                  {course?.title}
                 </h3>
                 <div className="flex items-center gap-1.5 mb-4">
                   <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
-                  <span className="text-sm font-bold">{course.rating}</span>
+                  <span className="text-sm font-bold">{course?.rating}</span>
                   <span className="text-slate-300 mx-1">•</span>
                   <span className="text-sm text-slate-500">
-                    {course.instructor}
+                    {course?.instructor?.name}
                   </span>
                 </div>
                 <button className="w-full inline-flex h-10 items-center justify-center rounded-md border border-slate-900 text-sm font-medium transition-colors hover:bg-slate-900 hover:text-white">
-                  Enroll for ${course.price}
+                  Enroll for ${course?.price}
                 </button>
               </div>
             </div>

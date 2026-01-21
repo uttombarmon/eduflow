@@ -3,6 +3,7 @@ import DashboardLayout from "@/components/features/dashboard/DashboardLayout";
 import Loading from "@/components/layout/Loading";
 import { useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
+import { redirect } from "next/navigation";
 import React from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -11,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         return <div className=" flex items-center justify-center h-screen"><Loading /></div>;
     }
     if (!user) {
-        return <div>Unauthorized</div>;
+        return redirect('/');
     }
     return <DashboardLayout>{children}</DashboardLayout>;
 }

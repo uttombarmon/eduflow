@@ -5,13 +5,12 @@ export interface CourseDetail extends PopularCourse {
     level: string;
     totalDuration: string;
     updatedAt: string;
+    createdAt?: string;
+    instructorId?: string;
+    status?: string;
+    studentsCount?: number;
     _count: {
         lessons: number;
-        students: number;
-    };
-    instructor: {
-        name: string;
-        avatar: string | null;
-        bio?: string;
+        enrollments: number;
     };
 }

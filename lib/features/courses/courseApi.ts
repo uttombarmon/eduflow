@@ -37,8 +37,9 @@ export const coursesApi = createApi({
       providesTags: (result, error, id) => [{ type: "Course", id }],
     }),
     // GET SINGLE COURSE DETAILS
-    getCourseDetailById: builder.query<ApiResponse<CourseDetail>, string>({
+    getCourseDetailById: builder.query<CourseDetail, string>({
       query: (id) => `public/${id}`,
+
     }),
 
     // CREATE A NEW COURSE (Mutation)

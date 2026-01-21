@@ -24,9 +24,9 @@ export function CourseContent({ course }: { course: CourseDetail }) {
                     </div>
                     <div>
                         <h3 className="text-lg font-bold">{course?.instructor?.name}</h3>
-                        <p className="text-slate-500 text-sm mt-1">
-                            {course?.instructor?.bio || "Expert instructor specializing in this field."}
-                        </p>
+                        {/* <p className="text-slate-500 text-sm mt-1">
+                            {course?.instructor? || "Expert instructor specializing in this field."}
+                        </p> */}
                     </div>
                 </div>
             </section>

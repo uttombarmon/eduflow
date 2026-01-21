@@ -1,13 +1,12 @@
 "use client"
 import { ArrowRight, Star } from "lucide-react";
 import Image from "next/image";
-import { MOCK_COURSES } from "@/constants/mock-data";
 import Link from "next/link";
 import { useGetPopularCoursesQuery } from "@/lib/features/courses/courseApi";
+import { PopularCourse } from "@/types/PopularCourseTypes";
 
 function Courses() {
   const { data, isLoading, isError } = useGetPopularCoursesQuery()
-  console.log(data)
   return (
     <section className="py-24">
       <div className="mx-auto max-w-7xl px-6">
@@ -29,7 +28,7 @@ function Courses() {
         </div>
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {data && data.data.map((course) => (
+          {data && typeof data.data === "object" && data.data.map((course: PopularCourse) => (
             <div
               key={course?.id}
               className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md cursor-pointer"

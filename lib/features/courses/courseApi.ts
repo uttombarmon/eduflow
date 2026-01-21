@@ -1,3 +1,4 @@
+import { PopularCourse } from "@/types/PopularCourseTypes";
 import { Course, ApiResponse, Lesson } from "@/types/TypesAll";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -25,7 +26,7 @@ export const coursesApi = createApi({
       query: () => "/tutor/courses",
     }),
     // GET POPULAR COURSES
-    getPopularCourses: builder.query<ApiResponse<Course[]>, void>({
+    getPopularCourses: builder.query<ApiResponse<PopularCourse[]>, void>({
       query: () => "/popular?limit=8",
     }),
 

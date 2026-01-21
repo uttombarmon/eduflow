@@ -35,13 +35,15 @@ function Courses() {
             // onClick={onStart}
             >
               <div className="aspect-video bg-slate-100 relative">
-                <Image
-                  src={course?.thumbnail}
-                  alt={course?.title}
-                  className="w-full h-full object-cover"
-                  height={700}
-                  width={700}
-                />
+                <Link className=" h-full w-full" href={`/courses/${course?.id}`}>
+                  <Image
+                    src={course?.thumbnail}
+                    alt={course?.title}
+                    className="w-full h-full object-cover"
+                    height={700}
+                    width={700}
+                  />
+                </Link>
               </div>
               <div className="p-6">
                 <h3 className="font-bold text-lg mb-2 truncate">

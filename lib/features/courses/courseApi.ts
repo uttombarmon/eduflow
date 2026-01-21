@@ -1,3 +1,4 @@
+import { CourseDetail } from "@/types/CoursesTypes";
 import { PopularCourse } from "@/types/PopularCourseTypes";
 import { Course, ApiResponse, Lesson } from "@/types/TypesAll";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -35,6 +36,10 @@ export const coursesApi = createApi({
       query: (id) => `${id}`,
       providesTags: (result, error, id) => [{ type: "Course", id }],
     }),
+    // GET SINGLE COURSE DETAILS
+    getCourseDetailById: builder.query<ApiResponse<CourseDetail>, string>({
+      query: (id) => `public/${id}`,
+    }),
 
     // CREATE A NEW COURSE (Mutation)
     createCourse: builder.mutation<ApiResponse<Course>, Partial<Course>>({
@@ -56,4 +61,4 @@ export const coursesApi = createApi({
   })
 });
 
-export const { useGetCoursesQuery, useGetPopularCoursesQuery, useGetCourseByIdQuery, useCreateCourseMutation, useGetTutorCoursesQuery, useAddLessonMutation } = coursesApi;
+export const { useGetCoursesQuery, useGetPopularCoursesQuery, useGetCourseByIdQuery, useCreateCourseMutation, useGetTutorCoursesQuery, useAddLessonMutation, useGetCourseDetailByIdQuery } = coursesApi;

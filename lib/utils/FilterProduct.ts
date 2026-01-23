@@ -1,7 +1,8 @@
+import { CourseDetail } from "@/types/CoursesTypes";
 import { Course } from "@/types/TypesAll";
 
 interface FilterParams {
-  courses: Course[];
+  courses: CourseDetail[];
   search: string;
   categorie: string;
   level: string;
@@ -16,7 +17,7 @@ export const FilterProduct = ({
   level,
   price,
   sortBy,
-}: FilterParams): Course[] => {
+}: FilterParams): CourseDetail[] => {
   if (!courses) return [];
 
   // Prepare lowercase versions of the filters
@@ -58,7 +59,7 @@ export const FilterProduct = ({
       case "Price: High to Low":
         return b.price - a.price;
       default: // Popularity
-        return b.studentsCount - a.studentsCount;
+        return b.studentsCount! - a.studentsCount!;
     }
   });
 };

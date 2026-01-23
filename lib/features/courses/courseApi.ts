@@ -18,7 +18,7 @@ export const coursesApi = createApi({
 
   endpoints: (builder) => ({
     // GET ALL COURSES by pagination
-    getCourses: builder.query<ApiResponse<Course[]>, void>({
+    getCourses: builder.query<ApiResponse<CourseDetail[]>, void>({
       query: () => "/getcourses?page=1&limit=12",
     }),
 

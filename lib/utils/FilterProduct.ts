@@ -27,11 +27,13 @@ export const FilterProduct = ({
 
   // FILTERING
   const filtered = courses.filter((course) => {
+    // console.log(course.instructor.name)
+    if (!course) return [];
     // Search Logic
     const matchesSearch =
       s === "" ||
       course.title.toLowerCase().includes(s) ||
-      course.instructor.toLowerCase().includes(s);
+      course.instructor.name.toLowerCase().includes(s);
 
     // Category Logic
     const matchesCategory = c === "all" || course.category.toLowerCase() === c;

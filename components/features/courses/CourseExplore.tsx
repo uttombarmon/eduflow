@@ -39,10 +39,10 @@ const CourseExplore = () => {
   return (
     <div className="flex-1">
       <div className="mb-4 text-sm text-slate-500 font-medium">
-        Showing {filteredCourses.length} courses
+        Showing {filteredCourses && filteredCourses.length} courses
       </div>
 
-      {filteredCourses.length > 0 ? (
+      {filteredCourses && filteredCourses.length > 0 ? (
         <Courses courses={filteredCourses} />
       ) : (
         <NotFoundCourse />

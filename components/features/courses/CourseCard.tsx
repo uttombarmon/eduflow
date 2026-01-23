@@ -29,30 +29,30 @@ function CourseCard({ course }: { course: Course }) {
           <div className="flex items-center text-amber-500">
             <Star size={12} fill="currentColor" />
             <span className="ml-1 text-xs font-bold text-slate-700">
-              {course.rating}
+              {course?.rating}
             </span>
           </div>
           <span className="text-slate-300 text-xs">•</span>
           <span className="text-[10px] font-medium text-slate-500 uppercase">
-            {course.category}
+            {course?.category}
           </span>
         </div>
 
         <h3 className="text-base font-bold leading-tight mb-2 group-hover:text-indigo-600 transition-colors line-clamp-2">
-          {course.title}
+          {course?.title}
         </h3>
         <p className="text-xs text-slate-500 mb-4 truncate">
-          by {course.instructor}
+          by {course?.instructor?.name}
         </p>
 
         <div className="flex items-center gap-4 mt-auto mb-4">
           <div className="flex items-center text-[11px] text-slate-500">
             <Clock size={12} className="mr-1" />
-            {course.totalDuration}
+            {course?.totalDuration}
           </div>
           <div className="flex items-center text-[11px] text-slate-500">
             <BookOpen size={12} className="mr-1" />
-            {course.lessons.length} Lessons
+            {course?.lessons?.length} Lessons
           </div>
         </div>
 
@@ -62,7 +62,7 @@ function CourseCard({ course }: { course: Course }) {
               Price
             </span>
             <span className="text-lg font-bold text-slate-900">
-              {course.price === 0 ? "Free" : `$${course.price}`}
+              {course?.price === 0 ? "Free" : `$${course.price}`}
             </span>
           </div>
           <button className="inline-flex h-9 items-center justify-center rounded-md bg-slate-900 px-4 text-xs font-semibold text-slate-50 hover:bg-slate-900/90 transition-colors">

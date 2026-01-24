@@ -16,16 +16,16 @@ const MyLearning: React.FC = () => {
 
   const enrolledCourses = useMemo(() => {
     if (!list || !list.data) return [];
-    return list.data.filter((course) => (course.progress ?? 0) >= 0);
+    return list.data.filter((course) => (course?.progress ?? 0) >= 0);
   }, [list]);
 
   const filteredCourses = useMemo(() => {
     if (!enrolledCourses) return [];
     return enrolledCourses.filter((course) => {
-      const matchesSearch = course.title
-        .toLowerCase()
+      const matchesSearch = course?.title
+        ?.toLowerCase()
         .includes(searchQuery.toLowerCase());
-      const progress = course.progress ?? 0;
+      const progress = course?.progress ?? 0;
 
       if (filter === "completed") return matchesSearch && progress === 100;
       if (filter === "in-progress")
@@ -37,10 +37,10 @@ const MyLearning: React.FC = () => {
   const stats = useMemo(() => {
     const total = enrolledCourses.length;
     const completed = enrolledCourses.filter(
-      (c) => (c.progress ?? 0) === 100
+      (c) => (c?.progress ?? 0) === 100
     ).length;
     const inProgress = enrolledCourses.filter(
-      (c) => (c.progress ?? 0) > 0 && (c.progress ?? 0) < 100
+      (c) => (c?.progress ?? 0) > 0 && (c?.progress ?? 0) < 100
     ).length;
 
     return { total, completed, inProgress };

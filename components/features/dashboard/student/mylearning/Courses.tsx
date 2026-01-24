@@ -6,20 +6,20 @@ const Courses = ({ courses }: { courses: Course[] }) => {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {courses.map((course) => {
-        const progress = course.progress ?? 0;
+        const progress = course?.progress ?? 0;
         const isCompleted = progress === 100;
 
         return (
           <div
-            key={course.id}
+            key={course?.id}
             className="group flex flex-col bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden cursor-pointer"
             // onClick={() => onCourseSelect(course.id)}
             onClick={() => {}}
           >
             <div className="aspect-video relative overflow-hidden bg-slate-100">
               <Image
-                src={course.thumbnail}
-                alt={course.title}
+                src={course?.thumbnail}
+                alt={course?.title}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 width={100}
                 height={100}
@@ -44,7 +44,7 @@ const Courses = ({ courses }: { courses: Course[] }) => {
             <div className="p-5 flex-1 flex flex-col">
               <div className="flex justify-between items-start mb-2">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                  {course.category}
+                  {course?.category}
                 </span>
                 <span className="text-[10px] font-bold text-slate-500">
                   {progress}% Complete
@@ -52,18 +52,18 @@ const Courses = ({ courses }: { courses: Course[] }) => {
               </div>
 
               <h3 className="text-base font-bold text-slate-900 mb-4 line-clamp-2 leading-tight group-hover:text-indigo-600 transition-colors">
-                {course.title}
+                {course?.title}
               </h3>
 
               <div className="mt-auto space-y-4">
                 <div className="flex items-center gap-3">
                   <img
-                    src={`https://avatar.vercel.sh/${course.instructor}`}
+                    src={`https://avatar.vercel.sh/${course?.instructor}`}
                     className="h-6 w-6 rounded-full grayscale"
-                    alt={course.instructor}
+                    alt={course?.instructor}
                   />
                   <span className="text-xs text-slate-500">
-                    by {course.instructor}
+                    by {course?.instructor}
                   </span>
                 </div>
 
@@ -71,7 +71,7 @@ const Courses = ({ courses }: { courses: Course[] }) => {
                   <div className="flex items-center gap-2 text-slate-400">
                     <Clock size={14} />
                     <span className="text-[11px] font-medium">
-                      {course.totalDuration}
+                      {course?.totalDuration}
                     </span>
                   </div>
 

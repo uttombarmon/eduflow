@@ -42,7 +42,6 @@ export const coursesApi = createApi({
     // GET SINGLE COURSE DETAILS
     getCourseDetailById: builder.query<CourseDetail, string>({
       query: (id) => `public/${id}`,
-
     }),
 
     // CREATE A NEW COURSE (Mutation)
@@ -51,18 +50,39 @@ export const coursesApi = createApi({
         url: "/tutor/makecourse",
         method: "POST",
         body: newCourse,
-      })
-    })
-    ,
+      }),
+    }),
     // ADD LESSON
-    addLesson: builder.mutation<ApiResponse<Lesson>, { id: string, lesson: Lesson }>({
+    addLesson: builder.mutation<
+      ApiResponse<Lesson>,
+      { id: string; lesson: Lesson }
+    >({
       query: ({ id, lesson }) => ({
         url: `/${id}/lesson`,
         method: "POST",
         body: lesson,
-      })
-    })
-  })
+      }),
+    }),
+    deleteCourse: builder.mutation<
+      { success: boolean; message: string },
+      string
+    >({
+      query: (id) => ({
+        url: `/tutor/course/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Course"], // This forces the UI to refetch the course list
+    }),
+  }),
 });
 
-export const { useGetCoursesQuery, useGetPopularCoursesQuery, useGetCourseByIdQuery, useCreateCourseMutation, useGetTutorCoursesQuery, useAddLessonMutation, useGetCourseDetailByIdQuery } = coursesApi;
+export const {
+  useGetCoursesQuery,
+  useGetPopularCoursesQuery,
+  useGetCourseByIdQuery,
+  useCreateCourseMutation,
+  useGetTutorCoursesQuery,
+  useAddLessonMutation,
+  useGetCourseDetailByIdQuery,
+  useDeleteCourseMutation,
+} = coursesApi;

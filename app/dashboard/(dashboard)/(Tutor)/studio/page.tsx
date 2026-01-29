@@ -1,26 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Plus,
   Search,
   Filter,
-  MoreHorizontal,
   Edit3,
   BookOpen,
   Users,
+  Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useGetTutorCoursesQuery } from "@/lib/features/courses/courseApi";
+import {
+  useDeleteCourseMutation,
+  useGetTutorCoursesQuery,
+} from "@/lib/features/courses/courseApi";
 import Loading from "@/components/layout/Loading";
 import Image from "next/image";
 
 const StudioPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [courses, setCourses] = useState([]);
   const { data: response, isLoading } = useGetTutorCoursesQuery();
-  const courses = response?.data || [];
-  console.log(courses);
+  const [deleteCourse] = useDeleteCourseMutation();
+  useEffect(() => {
+    if (response?.data) {
+      setCourses(response.data);
+    }
+  }, [response]);
+  //   console.log(courses);
   if (isLoading) {
     return (
       <div className=" w-full h-full flex justify-center items-center">
@@ -28,6 +37,23 @@ const StudioPage = () => {
       </div>
     );
   }
+  const handleDeleteCourse = async (id: string) => {
+    try {
+      const res = await deleteCourse(id);
+      //   console.log(res);
+      if (res.data.success) {
+        const filteredCourse = courses.filter(
+          (course) => (course.id as string) != id,
+        );
+        setCourses(filteredCourse);
+        // console.log(filteredCourse);
+      } else {
+        console.log("Something worng!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -160,8 +186,9 @@ const StudioPage = () => {
                     variant="ghost"
                     size="icon-sm"
                     className="text-slate-400 hover:text-slate-900"
+                    onClick={() => handleDeleteCourse(course.id)}
                   >
-                    <MoreHorizontal className="h-4 w-4" />
+                    <Trash2 className="h-4 w-4 text-red-300" />
                   </Button>
                 </div>
               </div>

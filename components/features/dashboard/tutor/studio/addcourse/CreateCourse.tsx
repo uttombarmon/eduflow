@@ -9,7 +9,7 @@ import {
   useCreateCourseMutation,
 } from "@/lib/features/courses/courseApi";
 import CourseCategories from "./CourseCategories";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const CreateCourseForm = () => {
   const router = useRouter();

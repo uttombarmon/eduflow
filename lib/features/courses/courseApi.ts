@@ -21,6 +21,9 @@ export const coursesApi = createApi({
     getCourses: builder.query<ApiResponse<CourseDetail[]>, void>({
       query: () => "/getcourses?page=1&limit=12",
     }),
+    getCourseByEnrolled: builder.query<ApiResponse<CourseDetail[]>, void>({
+      query: () => "enrolled/courses?limit=12&page=1",
+    }),
 
     // GET tutor COURSES
     getTutorCourses: builder.query<ApiResponse<Course[]>, void>({

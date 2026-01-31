@@ -1,4 +1,4 @@
-import { CourseDetail } from "@/types/CoursesTypes";
+import { CourseDetail, TutorCourse } from "@/types/CoursesTypes";
 import { PopularCourse } from "@/types/PopularCourseTypes";
 import { Course, ApiResponse, Lesson } from "@/types/TypesAll";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -26,7 +26,7 @@ export const coursesApi = createApi({
     }),
 
     // GET tutor COURSES
-    getTutorCourses: builder.query<ApiResponse<Course[]>, void>({
+    getTutorCourses: builder.query<ApiResponse<TutorCourse[]>, void>({
       query: () => "/tutor/courses",
     }),
     // GET POPULAR COURSES

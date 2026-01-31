@@ -18,18 +18,19 @@ import {
 } from "@/lib/features/courses/courseApi";
 import Loading from "@/components/layout/Loading";
 import Image from "next/image";
+import { TutorCourse } from "@/types/CoursesTypes";
 
 const StudioPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState<TutorCourse[] | []>([]);
   const { data: response, isLoading } = useGetTutorCoursesQuery();
   const [deleteCourse] = useDeleteCourseMutation();
   useEffect(() => {
-    if (response?.data) {
-      setCourses(response.data);
+    if (!!response && response?.data?.length > 0) {
+      console.log(response.data);
+      setCourses(response?.data as TutorCourse[]);
     }
   }, [response]);
-  //   console.log(courses);
   if (isLoading) {
     return (
       <div className=" w-full h-full flex justify-center items-center">
@@ -41,7 +42,7 @@ const StudioPage = () => {
     try {
       const res = await deleteCourse(id);
       //   console.log(res);
-      if (res.data.success) {
+      if (res?.data?.success) {
         const filteredCourse = courses.filter(
           (course) => (course.id as string) != id,
         );

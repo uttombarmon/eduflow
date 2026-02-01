@@ -1,6 +1,5 @@
 import { ApiResponse } from "@/types/ApiResponse";
 import { Course, Lesson } from "@/types/Course";
-import { CourseDetail, TutorCourse } from "@/types/CoursesTypes";
 import { PopularCourse } from "@/types/PopularCourseTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -26,11 +25,11 @@ export const coursesApi = createApi({
     getCourses: builder.query<ApiResponse<Course[]>, void>({
       query: () => "/getcourses?page=1&limit=12",
     }),
-    getCourseByEnrolled: builder.query<ApiResponse<CourseDetail[]>, void>({
+    getCourseByEnrolled: builder.query<ApiResponse<Course[]>, void>({
       query: () => "enrolled/courses?limit=12&page=1",
     }),
 
-    getTutorCourses: builder.query<ApiResponse<TutorCourse[]>, void>({
+    getTutorCourses: builder.query<ApiResponse<Course[]>, void>({
       query: () => "/tutor/courses",
       providesTags: (result) =>
         result?.data
@@ -50,7 +49,7 @@ export const coursesApi = createApi({
       providesTags: (result, error, id) => [{ type: "Course", id }],
     }),
     // GET SINGLE COURSE DETAILS
-    getCourseDetailById: builder.query<CourseDetail, string>({
+    getCourseDetailById: builder.query<Course, string>({
       query: (id) => `public/${id}`,
     }),
 

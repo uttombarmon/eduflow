@@ -1,5 +1,5 @@
 import { ApiResponse } from "@/types/ApiResponse";
-import { Course, Lesson } from "@/types/Course";
+import { Course, CourseDetail, Lesson } from "@/types/Course";
 import { PopularCourse } from "@/types/PopularCourseTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -14,7 +14,7 @@ export const coursesApi = createApi({
     },
     credentials: "include",
   }),
-  tagTypes: ["Course", "TutorCourse"],
+  tagTypes: ["Course", "Courses", "TutorCourse"],
 
   endpoints: (builder) => ({
     // GET POPULAR COURSES
@@ -44,13 +44,16 @@ export const coursesApi = createApi({
     }),
 
     // GET SINGLE COURSE DETAILS
-    getCourseById: builder.query<ApiResponse<Course>, string>({
+    getCourseById: builder.query<CourseDetail, string>({
       query: (id) => `${id}`,
+      transformResponse: (response: CourseDetail) => {
+        return response as CourseDetail;
+      },
       providesTags: (result, error, id) => [{ type: "Course", id }],
     }),
     // GET SINGLE COURSE DETAILS
     getCourseDetailById: builder.query<Course, string>({
-      query: (id) => `public/${id}`,
+      query: (id) => `/${id}`,
     }),
 
     // CREATE A NEW COURSE (Mutation)
@@ -81,8 +84,8 @@ export const coursesApi = createApi({
         method: "DELETE",
       }),
       invalidatesTags: (result, error, id) => [
-        { type: "Course", id },
-        { type: "Course", id: "LIST" },
+        { type: "Courses", id },
+        { type: "Courses", id: "LIST" },
       ],
     }),
   }),

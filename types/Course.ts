@@ -30,3 +30,12 @@ export interface Lesson {
   quizzes?: Quiz[];
   lessonProgress?: LessonProgress[];
 }
+export interface CourseDetail extends Course {
+  instructor: {
+    id: string;
+    avatar: string | null;
+    name: string;
+    role: string;
+  };
+  lessons: Lesson[];
+}

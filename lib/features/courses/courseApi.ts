@@ -1,6 +1,7 @@
+import { ApiResponse } from "@/types/ApiResponse";
+import { Course, Lesson } from "@/types/Course";
 import { CourseDetail, TutorCourse } from "@/types/CoursesTypes";
 import { PopularCourse } from "@/types/PopularCourseTypes";
-import { Course, ApiResponse, Lesson } from "@/types/TypesAll";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const coursesApi = createApi({
@@ -14,24 +15,33 @@ export const coursesApi = createApi({
     },
     credentials: "include",
   }),
-  tagTypes: ["Course"],
+  tagTypes: ["Course", "TutorCourse"],
 
   endpoints: (builder) => ({
+    // GET POPULAR COURSES
+    getPopularCourses: builder.query<ApiResponse<PopularCourse[]>, void>({
+      query: () => "/popular?limit=6",
+    }),
     // GET ALL COURSES by pagination
-    getCourses: builder.query<ApiResponse<CourseDetail[]>, void>({
+    getCourses: builder.query<ApiResponse<Course[]>, void>({
       query: () => "/getcourses?page=1&limit=12",
     }),
     getCourseByEnrolled: builder.query<ApiResponse<CourseDetail[]>, void>({
       query: () => "enrolled/courses?limit=12&page=1",
     }),
 
-    // GET tutor COURSES
     getTutorCourses: builder.query<ApiResponse<TutorCourse[]>, void>({
       query: () => "/tutor/courses",
-    }),
-    // GET POPULAR COURSES
-    getPopularCourses: builder.query<ApiResponse<PopularCourse[]>, void>({
-      query: () => "/popular?limit=8",
+      providesTags: (result) =>
+        result?.data
+          ? [
+              ...result.data.map(({ id }) => ({
+                type: "TutorCourse" as const,
+                id,
+              })),
+              { type: "TutorCourse", id: "List" },
+            ]
+          : [{ type: "TutorCourse", id: "List" }],
     }),
 
     // GET SINGLE COURSE DETAILS
@@ -71,7 +81,10 @@ export const coursesApi = createApi({
         url: `/tutor/course/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Course"], // This forces the UI to refetch the course list
+      invalidatesTags: (result, error, id) => [
+        { type: "Course", id },
+        { type: "Course", id: "LIST" },
+      ],
     }),
   }),
 });

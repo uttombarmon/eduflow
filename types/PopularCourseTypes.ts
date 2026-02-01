@@ -1,15 +1,7 @@
-export interface Instructor {
-    name: string;
-    avatar: string | null;
-}
+import { Course } from "./Course";
+import { User } from "./User";
 
-export interface PopularCourse {
-    id: string;
-    title: string;
-    thumbnail: string;
-    instructor: Instructor;
-    rating: number;
-    price: number;
-    category: string;
+export interface PopularCourse extends Course {
+  instructor: Partial<User>;
+  _count: number;
 }
-

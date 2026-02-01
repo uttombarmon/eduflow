@@ -41,13 +41,11 @@ const StudioPage = () => {
   const handleDeleteCourse = async (id: string) => {
     try {
       const res = await deleteCourse(id);
-      //   console.log(res);
       if (res?.data?.success) {
         const filteredCourse = courses.filter(
           (course) => (course.id as string) != id,
         );
         setCourses(filteredCourse);
-        // console.log(filteredCourse);
       } else {
         console.log("Something worng!");
       }

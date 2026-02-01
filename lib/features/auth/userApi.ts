@@ -14,9 +14,9 @@ export const userApi = createApi({
   }),
   tagTypes: ["User"],
   endpoints: (builder) => ({
-    signup: builder.mutation({
+    signup: builder.mutation<any, Partial<User>>({
       query: (userData) => ({
-        url: "signup",
+        url: "/signup",
         method: "POST",
         body: userData,
       }),
@@ -27,23 +27,21 @@ export const userApi = createApi({
         method: "POST",
         body: userData,
       }),
+      invalidatesTags: ["User"],
     }),
-    checkAuth: builder.mutation({
-      query: () => ({
-        url: "me",
-        method: "GET",
-        credentials: "include",
-      }),
-
+    loadUser: builder.query<{ success: boolean; user: User }, void>({
+      query: () => "/me",
+      providesTags: ["User"],
     }),
     getUserProfile: builder.query<User, void>({
       query: () => "80834fcd-ec2c-4350-abf4-8f433c593327",
     }),
-    logout: builder.mutation({
+    logout: builder.mutation<void, void>({
       query: () => ({
-        url: "logout",
+        url: "/logout",
         method: "POST",
       }),
+      invalidatesTags: ["User"],
     }),
   }),
 });
@@ -51,7 +49,7 @@ export const userApi = createApi({
 export const {
   useSignupMutation,
   useLoginMutation,
-  useCheckAuthMutation,
+  useLoadUserQuery,
   useLogoutMutation,
   useGetUserProfileQuery,
 } = userApi;

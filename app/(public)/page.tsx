@@ -6,7 +6,7 @@ import Hero from "@/components/features/home/Hero";
 import HowItWorks from "@/components/features/home/HowItWorks";
 import Stats from "@/components/features/home/Stats";
 import Testimonials from "@/components/features/home/Testimonials";
-import { motion, useScroll, useSpring } from "motion/react"; // Note: standard import is usually "framer-motion"
+import { motion } from "motion/react"; // Note: standard import is usually "framer-motion"
 
 export default function Home() {
   const fadeInVariant = {

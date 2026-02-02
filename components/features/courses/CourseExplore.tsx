@@ -6,12 +6,13 @@ import Courses from "./Courses";
 import NotFoundCourse from "./NotFoundCourse";
 import { useGetCoursesQuery } from "@/lib/features/courses/courseApi";
 import { FilterProduct } from "@/lib/utils/FilterProduct";
+import { CourseDetail } from "@/types/Course";
 
 const CourseExplore = () => {
   const { data: response, isLoading, error } = useGetCoursesQuery();
-  const data = response?.data || [];
+  const data = response?.data as CourseDetail[];
   const { categorie, level, price, search, sortBy } = useAppSelector(
-    (state: RootState) => state.filters
+    (state: RootState) => state.filters,
   );
 
   const filteredCourses = useMemo(() => {

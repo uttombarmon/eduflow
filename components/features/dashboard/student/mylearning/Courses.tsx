@@ -1,4 +1,4 @@
-import { Course } from "@/types/TypesAll";
+import { Course } from "@/types/Course";
 import { CheckCircle, Clock, Play, Trophy } from "lucide-react";
 import Image from "next/image";
 
@@ -6,7 +6,7 @@ const Courses = ({ courses }: { courses: Course[] }) => {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {courses.map((course) => {
-        const progress = course?.progress ?? 0;
+        const progress = course?.lessons?.length ?? 0;
         const isCompleted = progress === 100;
 
         return (
@@ -57,13 +57,13 @@ const Courses = ({ courses }: { courses: Course[] }) => {
 
               <div className="mt-auto space-y-4">
                 <div className="flex items-center gap-3">
-                  <img
-                    src={`https://avatar.vercel.sh/${course?.instructor}`}
+                  <Image
+                    src={`https://avatar.vercel.sh/${course?.thumbnail}`}
                     className="h-6 w-6 rounded-full grayscale"
-                    alt={course?.instructor}
+                    alt={course?.thumbnail}
                   />
                   <span className="text-xs text-slate-500">
-                    by {course?.instructor}
+                    by {course?.instructorId}
                   </span>
                 </div>
 

@@ -88,6 +88,7 @@ export const coursesApi = createApi({
         body: lesson,
       }),
     }),
+    // Delete course by tutor
     deleteCourse: builder.mutation<
       { success: boolean; message: string },
       string

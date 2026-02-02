@@ -16,7 +16,7 @@ const MyLearning: React.FC = () => {
 
   const enrolledCourses = useMemo(() => {
     if (!list || !list.data) return [];
-    return list.data.filter((course) => (course?.progress ?? 0) >= 0);
+    return list.data.filter((course) => (course?.lessons?.length ?? 0) >= 0);
   }, [list]);
 
   const filteredCourses = useMemo(() => {
@@ -25,7 +25,7 @@ const MyLearning: React.FC = () => {
       const matchesSearch = course?.title
         ?.toLowerCase()
         .includes(searchQuery.toLowerCase());
-      const progress = course?.progress ?? 0;
+      const progress = course?.lessons?.length ?? 0;
 
       if (filter === "completed") return matchesSearch && progress === 100;
       if (filter === "in-progress")
@@ -37,10 +37,10 @@ const MyLearning: React.FC = () => {
   const stats = useMemo(() => {
     const total = enrolledCourses.length;
     const completed = enrolledCourses.filter(
-      (c) => (c?.progress ?? 0) === 100
+      (c) => (c?.lessons?.length ?? 0) === 100,
     ).length;
     const inProgress = enrolledCourses.filter(
-      (c) => (c?.progress ?? 0) > 0 && (c?.progress ?? 0) < 100
+      (c) => (c?.lessons?.length ?? 0) > 0 && (c?.lessons?.length ?? 0) < 100,
     ).length;
 
     return { total, completed, inProgress };
@@ -64,7 +64,7 @@ const MyLearning: React.FC = () => {
         </p>
         <button
           // onClick={() => onCourseSelect(course.id)}
-          onClick={() => { }}
+          onClick={() => {}}
           className="mt-8 inline-flex h-11 items-center justify-center rounded-md bg-slate-900 px-8 text-sm font-semibold text-slate-50 hover:bg-slate-900/90 transition-all shadow-lg shadow-slate-200"
         >
           Browse Catalog

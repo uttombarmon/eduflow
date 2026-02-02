@@ -1,4 +1,4 @@
-import { User as UserType } from "@/types/TypesAll";
+import { User as UserType } from "@/types/User";
 import { Camera, Mail, Save, User } from "lucide-react";
 import Image from "next/image";
 import React from "react";
@@ -23,14 +23,14 @@ const ProfileTab = ({ user }: { user: UserType }) => {
               {user?.avatar && user.avatar.length > 0 ? (
                 <Image
                   src={user.avatar}
-                  alt={user.name}
+                  alt={user.name as string}
                   className="h-full w-full rounded-full bg-slate-700 object-cover ring-2 ring-slate-700"
                   width={100}
                   height={100}
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center rounded-full bg-blue-900/50 text-blue-200 text-xs font-bold ring-2 ring-blue-900">
-                  {user?.name.charAt(0).toUpperCase()}
+                  {(user?.name as string).charAt(0).toUpperCase()}
                 </div>
               )}
             </div>
@@ -63,7 +63,7 @@ const ProfileTab = ({ user }: { user: UserType }) => {
               />
               <input
                 type="text"
-                defaultValue={user?.name}
+                defaultValue={user?.name as string}
                 // onChange={(e) => setName(e.target.value)}
                 className="w-full px-8 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-sm font-medium"
               />

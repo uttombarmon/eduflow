@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Plus, Save, Image as ImageIcon } from "lucide-react";
-import { Course, Lesson } from "@/types/TypesAll";
+import { Course, CourseStatus, Lesson } from "@/types/Course";
 import { AddLesson } from "./AddLesson";
 import ImageUpload from "./ImageUpload";
 import {
@@ -23,7 +23,7 @@ const CreateCourseForm = () => {
     level: "Beginner",
     category: "Development",
     price: 0,
-    status: "Draft",
+    status: "draft" as CourseStatus,
   });
 
   const handleCreateCourse = async (e: React.FormEvent) => {
@@ -55,10 +55,7 @@ const CreateCourseForm = () => {
     }
   };
   const addLesson = () => {
-    setLessons([
-      ...lessons,
-      { id: crypto.randomUUID(), title: "", isCompleted: false },
-    ]);
+    setLessons([...lessons, { id: crypto.randomUUID(), title: "" }]);
   };
 
   const updateLesson = (index: number, data: Partial<Lesson>) => {
@@ -167,7 +164,10 @@ const CreateCourseForm = () => {
                 </label>
                 <select
                   onChange={(e) =>
-                    setCourseData({ ...courseData, status: e.target.value })
+                    setCourseData({
+                      ...courseData,
+                      status: e.target.value as CourseStatus,
+                    })
                   }
                   className="w-full p-2 border rounded-lg"
                 >

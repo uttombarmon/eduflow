@@ -1,5 +1,4 @@
-import { CourseDetail } from "@/types/CoursesTypes";
-import { Course } from "@/types/TypesAll";
+import { CourseDetail } from "@/types/Course";
 
 interface FilterParams {
   courses: CourseDetail[];

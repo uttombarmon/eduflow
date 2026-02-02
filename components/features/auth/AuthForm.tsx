@@ -5,6 +5,7 @@ import {
   useSignupMutation,
 } from "@/lib/features/auth/userApi";
 import { useAppDispatch } from "@/lib/hooks";
+import { UserRole } from "@/types/User";
 import { GraduationCap, Laptop } from "lucide-react";
 import { redirect } from "next/navigation";
 import React, { useState } from "react";
@@ -23,7 +24,7 @@ const AuthForm: React.FC<FormProps> = ({ authMode, handleModalToggle }) => {
     name: "",
     email: "",
     password: "",
-    role: "student",
+    role: "student" as UserRole,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {

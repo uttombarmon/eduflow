@@ -46,3 +46,13 @@ export interface Pagination {
   totalPages: number;
   hasNextPage: boolean;
 }
+export interface CourseCategories {
+  categories: string[];
+}
+export interface Filters {
+  categorie: string;
+  level: string;
+  price: string;
+  sortBy: string;
+  search: string;
+}

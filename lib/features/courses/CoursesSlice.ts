@@ -1,4 +1,4 @@
-import { Course } from "@/types/TypesAll";
+import { Course } from "@/types/Course";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface InitialCourses {
   courses: Course[];

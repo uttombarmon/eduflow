@@ -1,4 +1,4 @@
-import { Filters } from "@/types/TypesAll";
+import { Filters } from "@/types/Course";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialFilterState: Filters = {
   categorie: "all",

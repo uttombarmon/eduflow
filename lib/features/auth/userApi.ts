@@ -1,4 +1,4 @@
-import { User } from "@/types/TypesAll"; // Ensure Course is imported too
+import { User } from "@/types/User"; // Ensure Course is imported too
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const userApi = createApi({

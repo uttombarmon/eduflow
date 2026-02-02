@@ -1,4 +1,4 @@
-import { CourseCategories } from "@/types/TypesAll";
+import { CourseCategories } from "@/types/Course";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialCoursesState: CourseCategories = {
   categories: [],

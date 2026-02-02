@@ -16,9 +16,9 @@ import { Course } from "@/types/Course";
 const CertificatesPage = () => {
   const { data: courses, isLoading } = useGetCoursesQuery();
   const courseDatas = (courses as unknown as Course[]) || [];
-  const completedCourses =
-    courseDatas?.filter((course: Course) => (course?.progress ?? 0) === 100) ||
-    [];
+  const completedCourses = courseDatas;
+  //   const completedCourses =
+  //     courseDatas?.filter((course: Course) => 0 === 100) || [];
 
   if (isLoading) {
     return (
@@ -74,7 +74,7 @@ const CertificatesPage = () => {
                   <p className="text-sm text-slate-500">
                     Instructor:{" "}
                     <span className="text-slate-700 font-medium">
-                      {course?.instructor}
+                      {course?.instructorId}
                     </span>
                   </p>
                 </div>

@@ -33,9 +33,9 @@ const SettingsPage = () => {
   });
 
   React.useEffect(() => {
-    if (user) {
-      setName(user.name);
-      setEmail(user.email);
+    if (user && user.name && user.email) {
+      setName(user?.name);
+      setEmail(user?.email);
     }
   }, [user]);
 

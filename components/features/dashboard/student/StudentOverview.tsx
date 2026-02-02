@@ -19,8 +19,8 @@ const StudentOverviews: React.FC = () => {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
         <p className="text-slate-500">
-          Welcome back, {user.name.split(" ")[0]}. Here is what&apos;s happening
-          today.
+          Welcome back, {(user?.name as string).split(" ")[0]}. Here is
+          what&apos;s happening today.
         </p>
       </div>
 

@@ -157,23 +157,23 @@ function Asidebar() {
           <div className="flex items-center gap-3 rounded-lg bg-slate-800/10 p-3 ring-1 ring-slate-800/50">
             {user.avatar && user.avatar.length > 0 ? (
               <Image
-                src={user.avatar}
-                alt={user.name}
+                src={user?.avatar}
+                alt={user?.name as string}
                 className="h-9 w-9 rounded-full bg-slate-700 object-cover ring-2 ring-slate-700"
                 width={100}
                 height={100}
               />
             ) : (
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-900/50 text-blue-200 text-xs font-bold ring-2 ring-blue-900">
-                {user.name.charAt(0).toUpperCase()}
+                {(user.name as string).charAt(0).toUpperCase()}
               </div>
             )}
             <div className="flex flex-col overflow-hidden">
               <span className="text-sm font-semibold truncate leading-none mb-1 text-slate-500">
-                {user.name}
+                {user?.name}
               </span>
               <span className="text-xs text-slate-400 capitalize">
-                {user.role}
+                {user?.role}
               </span>
             </div>
           </div>

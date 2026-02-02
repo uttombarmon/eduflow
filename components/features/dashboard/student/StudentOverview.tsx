@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { BookOpen, Clock, Award, Star, Play } from "lucide-react";
-import { MOCK_COURSES } from "@/constants/mock-data";
 import Image from "next/image";
 import { useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
@@ -9,8 +8,9 @@ import { redirect } from "next/navigation";
 import Loading from "@/components/layout/Loading";
 
 const StudentOverviews: React.FC = () => {
-  const activeCourses = MOCK_COURSES.filter((c) => (c.progress ?? 0) > 0);
-  const { user, isCheckingAuth } = useAppSelector((state: RootState) => state.auth);
+  const { user, isCheckingAuth } = useAppSelector(
+    (state: RootState) => state.auth,
+  );
   if (isCheckingAuth) return <Loading />;
   if (!user || user?.role === undefined) return redirect("/");
 
@@ -71,7 +71,7 @@ const StudentOverviews: React.FC = () => {
         ))}
       </div>
 
-      <div className="grid gap-6 md:grid-cols-7">
+      {/* <div className="grid gap-6 md:grid-cols-7">
         <div className="md:col-span-4 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold tracking-tight">
@@ -159,7 +159,7 @@ const StudentOverviews: React.FC = () => {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

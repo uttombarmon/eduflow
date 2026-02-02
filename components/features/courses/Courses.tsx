@@ -1,7 +1,6 @@
-import { Course } from "@/types/TypesAll";
 import CourseCard from "./CourseCard";
 import React from "react";
-import { CourseDetail } from "@/types/CoursesTypes";
+import { CourseDetail } from "@/types/Course";
 interface CoursesProps {
   courses: CourseDetail[];
 }

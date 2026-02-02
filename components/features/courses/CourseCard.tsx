@@ -1,5 +1,4 @@
-import { CourseDetail } from "@/types/CoursesTypes";
-import { Course } from "@/types/TypesAll";
+import { CourseDetail } from "@/types/Course";
 import { BookOpen, Clock, Star } from "lucide-react";
 import Image from "next/image";
 import React from "react";
@@ -53,7 +52,7 @@ function CourseCard({ course }: { course: CourseDetail }) {
           </div>
           <div className="flex items-center text-[11px] text-slate-500">
             <BookOpen size={12} className="mr-1" />
-            {course?._count?.lessons} Lessons
+            {course?.lessons?.length} Lessons
           </div>
         </div>
 

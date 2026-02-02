@@ -2,7 +2,8 @@ import MyLearning from "@/components/features/dashboard/student/mylearning/MyLea
 import React from "react";
 
 const Page = () => {
-  return <MyLearning />;
+  // return <MyLearning />;
+  return <div>My Learning</div>;
 };
 
 export default Page;

@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import ProfileTab from "@/components/features/dashboard/settings/ProfileTab";
-import { User as UserType } from "@/types/TypesAll";
+import { User as UserType } from "@/types/User";
 import NotificationsTab from "@/components/features/dashboard/settings/NotificationsTab";
 
 const SettingsPage = () => {
@@ -87,7 +87,10 @@ const SettingsPage = () => {
 
           {/* NOTIFICATIONS TAB */}
           {activeTab === "notifications" && (
-            <NotificationsTab notifications={notifications} setNotifications={setNotifications}/>
+            <NotificationsTab
+              notifications={notifications}
+              setNotifications={setNotifications}
+            />
           )}
 
           {/* SECURITY TAB */}

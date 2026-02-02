@@ -29,8 +29,14 @@ export const coursesApi = createApi({
       query: () => "enrolled/courses?limit=12&page=1",
     }),
 
-    getTutorCourses: builder.query<ApiResponse<Course[]>, void>({
-      query: () => "/tutor/courses",
+    getTutorCourses: builder.query<
+      ApiResponse<Course[]>,
+      { page: number; limit: number } | void
+    >({
+      query: (params) => ({
+        url: "/tutor/courses",
+        params: params || { page: 1, limit: 10 },
+      }),
       providesTags: (result) =>
         result?.data
           ? [
@@ -63,6 +69,13 @@ export const coursesApi = createApi({
         method: "POST",
         body: newCourse,
       }),
+      invalidatesTags: (result) =>
+        result
+          ? [
+              { type: "TutorCourse", id: "List" },
+              { type: "TutorCourse", id: result.data?.id },
+            ]
+          : [{ type: "TutorCourse", id: "List" }],
     }),
     // ADD LESSON
     addLesson: builder.mutation<
@@ -84,8 +97,8 @@ export const coursesApi = createApi({
         method: "DELETE",
       }),
       invalidatesTags: (result, error, id) => [
-        { type: "Courses", id },
-        { type: "Courses", id: "LIST" },
+        { type: "TutorCourse", id },
+        { type: "TutorCourse", id: "LIST" },
       ],
     }),
   }),

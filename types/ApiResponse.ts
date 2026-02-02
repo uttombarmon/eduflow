@@ -1,6 +1,9 @@
+import { Pagination } from "./Course";
+
 export interface ApiResponse<T> {
-  success: boolean;
+  success?: boolean;
   message?: string;
   token?: string;
   data?: T;
+  pagination?: Pagination;
 }

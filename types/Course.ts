@@ -39,3 +39,10 @@ export interface CourseDetail extends Course {
   };
   lessons: Lesson[];
 }
+
+export interface Pagination {
+  totalItems: number;
+  currentPage: number;
+  totalPages: number;
+  hasNextPage: boolean;
+}

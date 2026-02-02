@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Plus,
   Search,
@@ -18,19 +18,18 @@ import {
 } from "@/lib/features/courses/courseApi";
 import Loading from "@/components/layout/Loading";
 import Image from "next/image";
-import { TutorCourse } from "@/types/CoursesTypes";
+import { Course, Pagination } from "@/types/Course";
 
 const StudioPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [courses, setCourses] = useState<TutorCourse[] | []>([]);
-  const { data: response, isLoading } = useGetTutorCoursesQuery();
+  const [page, setPage] = useState(1);
+  const { data: response, isLoading } = useGetTutorCoursesQuery({
+    page,
+    limit: 10,
+  });
   const [deleteCourse] = useDeleteCourseMutation();
-  useEffect(() => {
-    if (!!response && response?.data?.length > 0) {
-      console.log(response.data);
-      setCourses(response?.data as TutorCourse[]);
-    }
-  }, [response]);
+  const courses = response?.data ?? [];
+  const pagination = response?.pagination as Pagination;
   if (isLoading) {
     return (
       <div className=" w-full h-full flex justify-center items-center">
@@ -40,15 +39,7 @@ const StudioPage = () => {
   }
   const handleDeleteCourse = async (id: string) => {
     try {
-      const res = await deleteCourse(id);
-      if (res?.data?.success) {
-        const filteredCourse = courses.filter(
-          (course) => (course.id as string) != id,
-        );
-        setCourses(filteredCourse);
-      } else {
-        console.log("Something worng!");
-      }
+      await deleteCourse(id);
     } catch (error) {
       console.log(error);
     }
@@ -121,7 +112,7 @@ const StudioPage = () => {
               <p className="text-slate-500">No courses found</p>
             </div>
           ) : (
-            courses.map((course: any) => (
+            courses.map((course: Course) => (
               <div
                 key={course.id}
                 className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-slate-50/50 transition-colors group"
@@ -156,7 +147,7 @@ const StudioPage = () => {
                 <div className="col-span-2 hidden md:flex justify-center">
                   <span
                     className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                      course?.status === "Published"
+                      course?.status === "publish"
                         ? "bg-emerald-100 text-emerald-700"
                         : "bg-amber-100 text-amber-700"
                     }`}
@@ -170,7 +161,7 @@ const StudioPage = () => {
                 </div>
 
                 <div className="col-span-2 hidden md:block text-right text-sm text-slate-500 font-medium">
-                  {course?.sales}
+                  {course.studentsCount}
                 </div>
 
                 <div className="col-span-4 md:col-span-1 flex items-center justify-end gap-2">
@@ -197,12 +188,25 @@ const StudioPage = () => {
 
         {/* Pagination / Footer */}
         <div className="p-4 border-t border-slate-100 bg-slate-50/30 flex justify-between items-center text-xs text-slate-500">
-          <span>Showing 4 of 12 courses</span>
+          <span>
+            Showing {courses.length > 8 ? page * 8 : courses.length} of{" "}
+            {courses.length} courses
+          </span>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={page === 1}
+              onClick={() => setPage((p) => p - 1)}
+            >
               Previous
             </Button>
-            <Button variant="outline" size="sm">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={!pagination.hasNextPage}
+              onClick={() => setPage((p) => p + 1)}
+            >
               Next
             </Button>
           </div>

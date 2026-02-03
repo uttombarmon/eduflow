@@ -26,10 +26,10 @@ const CourseCategories = ({
         setCourseData({ ...courseData, category: e.target.value })
       }
       className="w-full p-2 border rounded-lg bg-white"
-      defaultValue=""
     >
+      <option defaultChecked>Select a Category</option>
       {categories.sort().map((cat) => (
-        <option key={cat} value={cat}>
+        <option key={cat?.toLowerCase()} value={cat}>
           {cat}
         </option>
       ))}

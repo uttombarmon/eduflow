@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -15,9 +15,9 @@ const StudioHeader = () => {
         </p>
       </div>
       <div className="flex items-center gap-3">
-        <Button variant="outline" className="hidden sm:flex">
+        {/* <Button variant="outline" className="hidden sm:flex">
           Import Content
-        </Button>
+        </Button> */}
         <Link
           href="/dashboard/studio/add_course"
           className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200 rounded-xl inline-flex items-center gap-2 w-fit px-4 py-2"

@@ -8,9 +8,9 @@ import {
 import Loading from "@/components/layout/Loading";
 import { Course, Pagination } from "@/types/Course";
 import FooterPagination from "@/components/features/dashboard/tutor/studio/FooterPagination";
-import StudioHeader from "./StudioHeader";
+import StudioHeader from "../../../../../components/features/dashboard/tutor/studio/StudioHeader";
 import CourseCard from "./CourseCard";
-import StudioFilter from "./StudioFilter";
+import StudioFilter from "../../../../../components/features/dashboard/tutor/studio/StudioFilter";
 import { useDebounce } from "@/lib/Debounce";
 
 const StudioPage = () => {
@@ -27,7 +27,6 @@ const StudioPage = () => {
   });
   const [deleteCourse] = useDeleteCourseMutation();
   const courses = response?.data ?? [];
-  console.log(courses);
   const pagination = response?.pagination as Pagination;
   if (isLoading) {
     return (

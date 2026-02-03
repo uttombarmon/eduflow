@@ -1,15 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import { Plus, Save, Image as ImageIcon } from "lucide-react";
+import { Plus, Save } from "lucide-react";
 import { Course, CourseStatus, Lesson } from "@/types/Course";
 import { AddLesson } from "./AddLesson";
-import ImageUpload from "./ImageUpload";
 import {
   useAddLessonMutation,
   useCreateCourseMutation,
 } from "@/lib/features/courses/courseApi";
-import CourseCategories from "./CourseCategories";
 import { useRouter } from "next/navigation";
+import Utilities from "./Utilities";
 
 const CreateCourseForm = () => {
   const router = useRouter();
@@ -105,79 +104,8 @@ const CreateCourseForm = () => {
               />
             </div>
           </div>
-
-          <div className="space-y-4">
-            {/* course thumbnail */}
-            <div className="border-2 border-dashed border-gray-200 rounded-xl h-48 flex flex-col items-center justify-center text-gray-400 hover:border-indigo-400 transition cursor-pointer relative">
-              <ImageUpload
-                courseData={courseData}
-                setCourseData={setCourseData}
-              />
-            </div>
-            {/* course price and level */}
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">
-                  Price ($)
-                </label>
-                <input
-                  onChange={(e) =>
-                    setCourseData({
-                      ...courseData,
-                      price: Number(e.target.value),
-                    })
-                  }
-                  type="number"
-                  className="w-full p-2 border rounded-lg"
-                />
-              </div>
-              {/* course level */}
-              <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">
-                  Level
-                </label>
-                <select
-                  onChange={(e) =>
-                    setCourseData({ ...courseData, level: e.target.value })
-                  }
-                  className="w-full p-2 border rounded-lg"
-                >
-                  <option value="Beginner">Beginner</option>
-                  <option value="Intermediate">Intermediate</option>
-                  <option value="Advanced">Advanced</option>
-                </select>
-              </div>
-              {/* course category */}
-              <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">
-                  Category
-                </label>
-                <CourseCategories
-                  courseData={courseData}
-                  setCourseData={setCourseData}
-                />
-              </div>
-              {/* course status */}
-              <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">
-                  Status
-                </label>
-                <select
-                  onChange={(e) =>
-                    setCourseData({
-                      ...courseData,
-                      status: e.target.value as CourseStatus,
-                    })
-                  }
-                  className="w-full p-2 border rounded-lg"
-                >
-                  <option value="Draft">Draft</option>
-                  <option value="Published">Published</option>
-                  <option value="Archived">Archived</option>
-                </select>
-              </div>
-            </div>
-          </div>
+          {/* course price, category, status, level */}
+          <Utilities courseData={courseData} setCourseData={setCourseData} />
         </div>
       </section>
 
@@ -196,8 +124,8 @@ const CreateCourseForm = () => {
         {lessons.length === 0 ? (
           <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
             <p className="text-gray-500">
-              No lessons added yet. Click "Add Lesson" to start building your
-              curriculum.
+              No lessons added yet. Click &quot;Add Lesson&quot; to start
+              building your curriculum.
             </p>
           </div>
         ) : (
@@ -214,14 +142,11 @@ const CreateCourseForm = () => {
       </section>
 
       <div className="pt-6 border-t flex justify-end gap-4">
-        <button className="px-6 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">
-          Save Draft
-        </button>
         <button
           onClick={handleCreateCourse}
           className="px-6 py-2 rounded-lg font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition flex items-center gap-2"
         >
-          <Save size={18} /> Publish Course
+          <Save size={18} /> Save Course
         </button>
       </div>
     </div>

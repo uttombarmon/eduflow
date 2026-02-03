@@ -26,6 +26,7 @@ const StudioFilter = ({
         <select
           onChange={(e) => setStatus(e.target.value)}
           className="px-4 py-2 bg-slate-50 rounded-xl text-sm font-medium border-none outline-none cursor-pointer hover:bg-slate-100 transition-colors"
+          defaultValue={""}
         >
           <option defaultChecked value={""}>
             All Status

@@ -31,7 +31,7 @@ export const coursesApi = createApi({
 
     getTutorCourses: builder.query<
       ApiResponse<Course[]>,
-      { page: number; limit: number } | void
+      { search?: string; status?: string; page?: number; limit?: number } | void
     >({
       query: (params) => ({
         url: "/tutor/courses",

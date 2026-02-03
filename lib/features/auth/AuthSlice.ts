@@ -24,6 +24,9 @@ export const authSlice = createSlice({
       state.isAuthenticated = false;
       state.isCheckingAuth = false;
     },
+    setAuthChecked: (state) => {
+      state.isCheckingAuth = false;
+    },
   },
 });
-export const { setUser, setLogOut } = authSlice.actions;
+export const { setUser, setLogOut, setAuthChecked } = authSlice.actions;

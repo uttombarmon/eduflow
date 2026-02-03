@@ -1,8 +1,11 @@
 "use client";
 import { useEffect } from "react";
-import { RootState } from "@/lib/store";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { setLogOut, setUser } from "@/lib/features/auth/AuthSlice";
+import { useAppDispatch } from "@/lib/hooks";
+import {
+  setAuthChecked,
+  setLogOut,
+  setUser,
+} from "@/lib/features/auth/AuthSlice";
 import { useLoadUserQuery } from "@/lib/features/auth/userApi";
 import Loading from "@/components/layout/Loading";
 
@@ -12,20 +15,27 @@ export const AuthInitializer = ({
   children: React.ReactNode;
 }) => {
   const dispatch = useAppDispatch();
-  const { data, isSuccess, isLoading } = useLoadUserQuery();
+  const { data, isSuccess, isError, isLoading } = useLoadUserQuery();
 
   useEffect(() => {
-    if (isSuccess && data?.user) {
-      // Once API verifies the cookie, sync it to Redux state
-      dispatch(setUser(data.user));
-    } else {
-      dispatch(setLogOut());
+    if (!isLoading) {
+      if (isSuccess && data?.user) {
+        dispatch(setUser(data.user));
+      } else if (isError) {
+        dispatch(setLogOut());
+        dispatch(setAuthChecked());
+      } else {
+        dispatch(setAuthChecked());
+      }
     }
-  }, [isSuccess, data, dispatch]);
+  }, [isSuccess, isError, data, dispatch, isLoading]);
+
   if (isLoading) {
-    <div>
-      <Loading />
-    </div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loading />
+      </div>
+    );
   }
 
   return <>{children}</>;

@@ -27,6 +27,18 @@ export const AddLesson = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <label className="text-xs font-semibold uppercase text-gray-500">
+            Lesson Order No.
+          </label>
+          <input
+            type="number"
+            placeholder="e.g. Introduction to Hooks"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-500 outline-none"
+            value={lesson.order || index}
+            onChange={(e) => onUpdate(index, { order: Number(e.target.value) })}
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-xs font-semibold uppercase text-gray-500">
             Lesson Title
           </label>
           <input
@@ -35,6 +47,18 @@ export const AddLesson = ({
             className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-500 outline-none"
             value={lesson.title || ""}
             onChange={(e) => onUpdate(index, { title: e.target.value })}
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-xs font-semibold uppercase text-gray-500">
+            Lesson Content
+          </label>
+          <input
+            type="text"
+            placeholder="e.g. Introduction to Hooks"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-500 outline-none"
+            value={lesson.content || ""}
+            onChange={(e) => onUpdate(index, { content: e.target.value })}
           />
         </div>
         <div className="space-y-2">

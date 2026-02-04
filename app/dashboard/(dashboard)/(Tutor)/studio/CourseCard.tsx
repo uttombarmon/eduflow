@@ -31,7 +31,11 @@ const CourseCard = ({
           </h3>
           <div className="flex items-center gap-3 mt-1 text-xs text-slate-500">
             <span className="flex items-center gap-1">
-              <BookOpen size={12} /> 12 Lessons
+              <BookOpen size={12} />{" "}
+              {Number(course?.lessons?.length) > 0
+                ? course?.lessons?.length
+                : 0}{" "}
+              Lessons
             </span>
             <span className="hidden sm:flex items-center gap-1">
               <Users size={12} /> {course?.studentsCount} Students

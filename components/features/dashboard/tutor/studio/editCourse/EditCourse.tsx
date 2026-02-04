@@ -2,18 +2,14 @@
 import React, { useState } from "react";
 import { Plus, Save } from "lucide-react";
 import { Course, CourseStatus, Lesson } from "@/types/Course";
-import { AddLesson } from "./AddLesson";
 import {
   useAddLessonMutation,
   useCreateCourseMutation,
 } from "@/lib/features/courses/courseApi";
-import { useRouter, useSearchParams } from "next/navigation";
-import Utilities from "./Utilities";
+import { useRouter } from "next/navigation";
 
-const CreateCourseForm = () => {
+const EditCourse = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const c_id = searchParams.get("c_id");
   const [createCourse] = useCreateCourseMutation();
   const [addLessonMutation] = useAddLessonMutation();
   const [lessons, setLessons] = useState<Partial<Lesson>[]>([]);
@@ -21,24 +17,14 @@ const CreateCourseForm = () => {
     title: "",
     description: "",
     thumbnail: "",
-    level: "",
-    category: "",
+    level: "Beginner",
+    category: "Development",
     price: 0,
-    status: "" as CourseStatus,
+    status: "draft" as CourseStatus,
   });
-  // console.log(courseData.category?.length);
+
   const handleCreateCourse = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      (courseData && !courseData?.description) ||
-      courseData?.category?.length == 0 ||
-      courseData?.level?.length == 0 ||
-      courseData?.status?.length == 0 ||
-      courseData?.title?.length == 0
-    ) {
-      console.log("Please Fill the all fileds");
-      return;
-    }
     try {
       const res = await createCourse(courseData).unwrap();
       console.log(res);
@@ -165,4 +151,4 @@ const CreateCourseForm = () => {
   );
 };
 
-export default CreateCourseForm;
+export default EditCourse;

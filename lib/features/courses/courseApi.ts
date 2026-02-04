@@ -80,7 +80,7 @@ export const coursesApi = createApi({
     // ADD LESSON
     addLesson: builder.mutation<
       ApiResponse<Lesson>,
-      { id: string; lesson: Lesson }
+      { id: string; lesson: Partial<Lesson> }
     >({
       query: ({ id, lesson }) => ({
         url: `/${id}/lesson`,

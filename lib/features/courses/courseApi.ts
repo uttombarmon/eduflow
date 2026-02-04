@@ -87,6 +87,7 @@ export const coursesApi = createApi({
         method: "POST",
         body: lesson,
       }),
+      invalidatesTags: ["Course"],
     }),
     // Delete course by tutor
     deleteCourse: builder.mutation<

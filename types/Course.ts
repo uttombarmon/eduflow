@@ -31,13 +31,17 @@ export interface Lesson {
   lessonProgress?: LessonProgress[];
 }
 export interface CourseDetail extends Course {
-  instructor: {
+  instructor?: {
     id: string;
     avatar: string | null;
     name: string;
     role: string;
   };
-  lessons: Lesson[];
+  lessons?: Lesson[];
+  _count?: CountLesson;
+}
+interface CountLesson {
+  lessons: number;
 }
 
 export interface Pagination {

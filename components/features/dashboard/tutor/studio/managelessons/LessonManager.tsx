@@ -1,6 +1,15 @@
 "use client";
 import React, { useState } from "react";
-import { BookOpen, Video, Clock, Plus, ChevronDown } from "lucide-react";
+import {
+  BookOpen,
+  Video,
+  Clock,
+  Plus,
+  ChevronDown,
+  Trash2,
+  Edit2,
+  Edit,
+} from "lucide-react";
 import { redirect, useParams } from "next/navigation";
 import { useGetCourseByIdQuery } from "@/lib/features/courses/courseApi";
 import Loading from "@/components/layout/Loading";
@@ -27,7 +36,7 @@ const LessonsManager = () => {
   if (isError) redirect("/dashboard/studio");
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
-      {/* 1. COURSE DETAILS SECTION */}
+      {/* COURSE DETAILS SECTION */}
       <section className="bg-white p-6 rounded-2xl border shadow-sm">
         <div className="flex justify-between items-start">
           <div>
@@ -46,7 +55,7 @@ const LessonsManager = () => {
         </div>
       </section>
 
-      {/* 2. ADDED LESSONS LIST */}
+      {/* ADDED LESSONS LIST */}
       <section>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold flex items-center gap-2">
@@ -83,6 +92,14 @@ const LessonsManager = () => {
                       </span>
                     </div>
                   </div>
+                  <Edit
+                    size={18}
+                    className=" text-blue-300 hover:text-blue-400 m-2 hover:bg-accent hover:cursor-pointer"
+                  ></Edit>
+                  <Trash2
+                    size={18}
+                    className=" text-red-400 hover:text-red-500 m-2 hover:bg-accent hover:cursor-pointer"
+                  />
                   <ChevronDown size={18} className="text-slate-300" />
                 </div>
               ),
@@ -97,7 +114,7 @@ const LessonsManager = () => {
         </div>
       </section>
 
-      {/* 3. ADD LESSON FORM (Conditional) */}
+      {/* ADD LESSON FORM (Conditional) */}
       <section className="pt-4">
         {!showForm ? (
           <button
@@ -111,7 +128,11 @@ const LessonsManager = () => {
             <LessonFormHeader onCancel={() => setShowForm(false)} />
             {/* Your AddLessonForm component goes here */}
             <div className="mt-4 p-8 border-2 border-dotted border-slate-200 rounded-xl text-center">
-              <AddLessonForm courseId={courseId as string} />
+              <AddLessonForm
+                showForm={showForm}
+                setShowForm={setShowForm}
+                courseId={courseId as string}
+              />
             </div>
           </div>
         )}

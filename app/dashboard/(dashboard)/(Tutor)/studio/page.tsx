@@ -6,7 +6,7 @@ import {
   useGetTutorCoursesQuery,
 } from "@/lib/features/courses/courseApi";
 import Loading from "@/components/layout/Loading";
-import { Course, Pagination } from "@/types/Course";
+import { CourseDetail, Pagination } from "@/types/Course";
 import FooterPagination from "@/components/features/dashboard/tutor/studio/FooterPagination";
 import StudioHeader from "../../../../../components/features/dashboard/tutor/studio/StudioHeader";
 import CourseCard from "./CourseCard";
@@ -58,11 +58,12 @@ const StudioPage = () => {
       {/* Course List */}
       <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="grid grid-cols-12 gap-4 p-4 border-b border-slate-100 bg-slate-50/50 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-          <div className="col-span-6 md:col-span-5">Course</div>
+          <div className="col-span-4 md:col-span-4">Course</div>
           <div className="col-span-2 hidden md:block text-center">Status</div>
           <div className="col-span-2 hidden md:block text-right">Price</div>
-          <div className="col-span-2 hidden md:block text-right">Sales</div>
-          <div className="col-span-4 md:col-span-1 text-right">Actions</div>
+          <div className="col-span-2 hidden md:block text-center">Lesson</div>
+          <div className="col-span-1 hidden md:block text-right">Sales</div>
+          <div className="col-span-5 md:col-span-1 text-center">Actions</div>
         </div>
 
         <div className="divide-y divide-slate-100">
@@ -71,7 +72,7 @@ const StudioPage = () => {
               <p className="text-slate-500">No courses found</p>
             </div>
           ) : (
-            courses.map((course: Course) => (
+            courses.map((course: CourseDetail) => (
               <CourseCard
                 key={course.id}
                 course={course}

@@ -80,13 +80,14 @@ export const coursesApi = createApi({
     // ADD LESSON
     addLesson: builder.mutation<
       ApiResponse<Lesson>,
-      { id: string; lesson: Lesson }
+      { id: string; lesson: Partial<Lesson> }
     >({
       query: ({ id, lesson }) => ({
         url: `/${id}/lesson`,
         method: "POST",
         body: lesson,
       }),
+      invalidatesTags: ["Course"],
     }),
     // Delete course by tutor
     deleteCourse: builder.mutation<

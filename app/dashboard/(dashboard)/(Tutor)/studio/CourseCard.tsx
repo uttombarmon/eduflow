@@ -1,19 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { Course } from "@/types/Course";
+import { CourseDetail } from "@/types/Course";
 import { BookOpen, Edit3, Trash2, Users } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
 
 const CourseCard = ({
   course,
   handleDeleteCourse,
 }: {
-  course: Course;
+  course: CourseDetail;
   handleDeleteCourse: (id: string) => void;
 }) => {
   return (
     <div className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-slate-50/50 transition-colors group">
-      <div className="col-span-6 md:col-span-5 flex items-center gap-4">
+      <div className="col-span-4 md:col-span-4 flex items-center gap-4">
         <div
           className={`h-12 w-16 rounded-lg ${course.thumbnail} flex items-center justify-center text-white/50 text-xs font-bold`}
         >
@@ -27,11 +27,12 @@ const CourseCard = ({
         </div>
         <div>
           <h3 className="font-bold text-slate-900 line-clamp-1">
-            {course.title}
+            {course?.title}
           </h3>
           <div className="flex items-center gap-3 mt-1 text-xs text-slate-500">
             <span className="flex items-center gap-1">
-              <BookOpen size={12} /> 12 Lessons
+              <BookOpen size={12} />
+              {course?._count?.lessons} Lessons
             </span>
             <span className="hidden sm:flex items-center gap-1">
               <Users size={12} /> {course?.studentsCount} Students
@@ -55,12 +56,20 @@ const CourseCard = ({
       <div className="col-span-2 hidden md:block text-right text-sm font-bold text-slate-700">
         {course?.price}
       </div>
+      <Link
+        href={`/dashboard/studio/managelessons/${course?.id}`}
+        className="col-span-2 hidden md:block text-right text-sm font-bold text-slate-700"
+      >
+        <Button className=" hover:cursor-pointer bg-slate-900/70">
+          Add Lesson
+        </Button>
+      </Link>
 
-      <div className="col-span-2 hidden md:block text-right text-sm text-slate-500 font-medium">
-        {course.studentsCount}
+      <div className="col-span-1 hidden md:block text-right text-sm text-slate-500 font-medium">
+        {course?.studentsCount}
       </div>
 
-      <div className="col-span-4 md:col-span-1 flex items-center justify-end gap-2">
+      <div className="col-span-5 md:col-span-1 flex items-center justify-end gap-2">
         <Button
           variant="ghost"
           size="icon-sm"

@@ -7,7 +7,6 @@ import {
   Plus,
   ChevronDown,
   Trash2,
-  Edit2,
   Edit,
 } from "lucide-react";
 import { redirect, useParams } from "next/navigation";

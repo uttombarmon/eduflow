@@ -14,6 +14,7 @@ export const userApi = createApi({
   }),
   tagTypes: ["User"],
   endpoints: (builder) => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     signup: builder.mutation<any, Partial<User>>({
       query: (userData) => ({
         url: "/signup",
@@ -33,9 +34,6 @@ export const userApi = createApi({
       query: () => "/me",
       providesTags: ["User"],
     }),
-    getUserProfile: builder.query<User, void>({
-      query: () => "80834fcd-ec2c-4350-abf4-8f433c593327",
-    }),
     logout: builder.mutation<void, void>({
       query: () => ({
         url: "/logout",
@@ -51,5 +49,4 @@ export const {
   useLoginMutation,
   useLoadUserQuery,
   useLogoutMutation,
-  useGetUserProfileQuery,
 } = userApi;

@@ -30,7 +30,7 @@ const ProfileTab = ({ user }: { user: UserType }) => {
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center rounded-full bg-blue-900/50 text-blue-200 text-xs font-bold ring-2 ring-blue-900">
-                  {(user?.name as string).charAt(0).toUpperCase()}
+                  {(user?.name as string)?.charAt(0).toUpperCase()}
                 </div>
               )}
             </div>

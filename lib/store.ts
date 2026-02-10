@@ -9,6 +9,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { postsApi } from "./features/posts/postsApi";
 import { userApi } from "./features/auth/userApi";
 import { dashboardUISlice } from "./features/dashboard/dashboardUISlice";
+import { profileApi } from "./features/dashboard/settings/profileApi";
 
 export const makeStore = () => {
   return configureStore({
@@ -17,6 +18,7 @@ export const makeStore = () => {
       [coursesApi.reducerPath]: coursesApi.reducer,
       [postsApi.reducerPath]: postsApi.reducer,
       [userApi.reducerPath]: userApi.reducer,
+      [profileApi.reducerPath]: profileApi.reducer,
       // Slices: Handles Client State (UI/Interactions)
       ui: uiSlice.reducer,
       auth: authSlice.reducer,
@@ -30,7 +32,8 @@ export const makeStore = () => {
       getDefaultMiddleware()
         .concat(coursesApi.middleware)
         .concat(postsApi.middleware)
-        .concat(userApi.middleware),
+        .concat(userApi.middleware)
+        .concat(profileApi.middleware),
   });
 };
 // Required for RTK Query "refetchOnFocus" and "refetchOnReconnect"

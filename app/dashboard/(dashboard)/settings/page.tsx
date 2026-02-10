@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { useGetUserProfileQuery } from "@/lib/features/auth/userApi";
 import Loading from "@/components/layout/Loading";
 import {
   User,
@@ -17,9 +16,15 @@ import Image from "next/image";
 import ProfileTab from "@/components/features/dashboard/settings/ProfileTab";
 import { User as UserType } from "@/types/User";
 import NotificationsTab from "@/components/features/dashboard/settings/NotificationsTab";
+import { useAppSelector } from "@/lib/hooks";
+import { RootState } from "@/lib/store";
+import { useGetUserProfileQuery } from "@/lib/features/dashboard/settings/profileApi";
 
 const SettingsPage = () => {
-  const { data: user, isLoading } = useGetUserProfileQuery();
+  const { user } = useAppSelector((state: RootState) => state.auth);
+  const { data: profile, isLoading } = useGetUserProfileQuery(
+    user?.id as string,
+  );
   const [activeTab, setActiveTab] = useState<
     "profile" | "notifications" | "security"
   >("profile");
@@ -162,7 +167,7 @@ const SettingsPage = () => {
                   </button>
                 </div>
               </div>
-
+              {/* Delete account  */}
               <div className="pt-8 border-t border-slate-100 space-y-4">
                 <h3 className="text-sm font-bold text-red-600">Danger Zone</h3>
                 <div className="flex items-center justify-between p-4 bg-red-50 border border-red-100 rounded-xl">

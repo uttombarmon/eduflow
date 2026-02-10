@@ -25,17 +25,18 @@ const Navbar: React.FC = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-60 border-b transition-all duration-300 ${isScrolled
-        ? "bg-white/80 backdrop-blur-md py-3"
-        : "bg-transparent py-5 border-transparent"
-        }`}
+      className={`fixed top-0 left-0 right-0 z-60 border-b transition-all duration-300 ${
+        isScrolled
+          ? "bg-white/80 backdrop-blur-md py-3"
+          : "bg-transparent py-5 border-transparent"
+      }`}
     >
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
         <Logo />
         <nav className="hidden md:flex items-center gap-6">
           {[
-            { name: "Features", path: "#features" },
+            { name: "Features", path: "/#features" },
             { name: "Courses", path: "/courses" },
             { name: "Blog", path: "/blogs" },
             { name: "Contact Us", path: "/contact-us" },

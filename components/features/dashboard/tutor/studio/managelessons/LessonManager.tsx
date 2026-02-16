@@ -9,14 +9,21 @@ import {
   Trash2,
   Edit,
 } from "lucide-react";
-import { redirect, useParams } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import { useGetCourseByIdQuery } from "@/lib/features/courses/courseApi";
 import Loading from "@/components/layout/Loading";
-import { CourseDetail, Lesson } from "@/types/Course";
+import { Course, Lesson } from "@/types/Course";
 import AddLessonForm from "./AddLessonForm";
+import {
+  useGetLessonsQuery,
+  useDeleteLessonMutation,
+} from "@/lib/features/courses/lessons/lessonApi";
+import Image from "next/image";
 
 const LessonsManager = () => {
   const [showForm, setShowForm] = useState(false);
+  const router = useRouter();
+  const searchParams = new URLSearchParams(window.location.search);
   const params = useParams();
   const courseId = params.id;
   // console.log("course id: ", courseId);
@@ -25,18 +32,58 @@ const LessonsManager = () => {
     isLoading,
     isError,
   } = useGetCourseByIdQuery(courseId as string);
-  const course = res as CourseDetail;
-  if (isLoading)
+  const course = res as Course;
+  const {
+    data: response,
+    isLoading: lessonLoading,
+    isError: lessonError,
+  } = useGetLessonsQuery(courseId as string);
+  const lessons = response?.data as Lesson[];
+  const [deleteLesson] = useDeleteLessonMutation();
+
+  // Handle showing form when isUpdate param is present
+  React.useEffect(() => {
+    const isUpdate = searchParams.get("isUpdate");
+    if (isUpdate) {
+      setShowForm(true);
+    }
+  }, [searchParams]);
+
+  if (isLoading || lessonLoading)
     return (
       <div className=" w-screen h-screen flex justify-center items-center">
         <Loading />
       </div>
     );
-  if (isError) redirect("/dashboard/studio");
+  if (isError || lessonError) redirect("/dashboard/studio");
+
+  const handleDeleteLesson = async (id: string) => {
+    try {
+      await deleteLesson(id).unwrap();
+    } catch (err) {
+      console.error("Failed to delete lesson:", err);
+    }
+  };
+  const handleUpdateLessonInit = (id: string) => {
+    setShowForm(true);
+    // Update URL with lessonId query parameter
+    searchParams.set("lessonId", id);
+    searchParams.set("isUpdate", "true");
+    router.push(`${window.location.pathname}?${searchParams.toString()}`);
+  };
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       {/* COURSE DETAILS SECTION */}
       <section className="bg-white p-6 rounded-2xl border shadow-sm">
+        <div>
+          <Image
+            src={course.thumbnail}
+            alt={course.title}
+            width={400}
+            height={400}
+            className="w-full h-48 object-fill rounded-lg mb-4"
+          />
+        </div>
         <div className="flex justify-between items-start">
           <div>
             <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold uppercase">
@@ -62,47 +109,47 @@ const LessonsManager = () => {
             Course Curriculum
           </h2>
           <span className="text-sm text-slate-500">
-            {course.lessons?.length || 0} Lessons
+            {lessons?.length || 0} Lessons
           </span>
         </div>
 
         <div className="space-y-3">
-          {(course?.lessons as Lesson[])?.length > 0 ? (
-            (course?.lessons as Lesson[]).map(
-              (lesson: Lesson, index: number) => (
-                <div
-                  key={lesson.id}
-                  className="group bg-white p-4 rounded-xl border flex items-center gap-4 hover:border-blue-300 transition-all"
-                >
-                  <div className="h-10 w-10 bg-slate-100 rounded-lg flex items-center justify-center font-bold text-slate-500 group-hover:bg-blue-50 group-hover:text-blue-600">
-                    {index + 1}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-slate-800">
-                      {lesson.title}
-                    </h3>
-                    <div className="flex gap-4 text-xs text-slate-400 mt-1">
-                      <span className="flex items-center gap-1">
-                        <Clock size={12} /> {lesson.duration}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Video size={12} />{" "}
-                        {lesson.videoUrl ? "Video included" : "No video"}
-                      </span>
-                    </div>
-                  </div>
-                  <Edit
-                    size={18}
-                    className=" text-blue-300 hover:text-blue-400 m-2 hover:bg-accent hover:cursor-pointer"
-                  ></Edit>
-                  <Trash2
-                    size={18}
-                    className=" text-red-400 hover:text-red-500 m-2 hover:bg-accent hover:cursor-pointer"
-                  />
-                  <ChevronDown size={18} className="text-slate-300" />
+          {lessons?.length > 0 ? (
+            lessons?.map((lesson: Lesson, index: number) => (
+              <div
+                key={lesson.id}
+                className="group bg-white p-4 rounded-xl border flex items-center gap-4 hover:border-blue-300 transition-all"
+              >
+                <div className="h-10 w-10 bg-slate-100 rounded-lg flex items-center justify-center font-bold text-slate-500 group-hover:bg-blue-50 group-hover:text-blue-600">
+                  {index + 1}
                 </div>
-              ),
-            )
+                <div className="flex-1">
+                  <h3 className="font-semibold text-slate-800">
+                    {lesson.title}
+                  </h3>
+                  <div className="flex gap-4 text-xs text-slate-400 mt-1">
+                    <span className="flex items-center gap-1">
+                      <Clock size={12} /> {lesson.duration}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Video size={12} />{" "}
+                      {lesson.videoUrl ? "Video included" : "No video"}
+                    </span>
+                  </div>
+                </div>
+                <Edit
+                  size={18}
+                  onClick={() => handleUpdateLessonInit(lesson.id)}
+                  className=" text-blue-300 hover:text-blue-400 m-2 hover:bg-accent hover:cursor-pointer"
+                ></Edit>
+                <Trash2
+                  size={18}
+                  onClick={() => handleDeleteLesson(lesson.id)}
+                  className=" text-red-400 hover:text-red-500 m-2 hover:bg-accent hover:cursor-pointer"
+                />
+                <ChevronDown size={18} className="text-slate-300" />
+              </div>
+            ))
           ) : (
             <div className="text-center py-10 border-2 border-dashed rounded-2xl bg-slate-50">
               <p className="text-slate-400">
@@ -124,12 +171,22 @@ const LessonsManager = () => {
           </button>
         ) : (
           <div className="bg-white p-6 rounded-2xl border-2 border-blue-100 shadow-lg animate-in slide-in-from-bottom-4 duration-300">
-            <LessonFormHeader onCancel={() => setShowForm(false)} />
+            <LessonFormHeader
+              onCancel={() => {
+                setShowForm(false);
+                searchParams.delete("lessonId");
+                searchParams.delete("isUpdate");
+                router.push(
+                  `${window.location.pathname}?${searchParams.toString()}`,
+                );
+              }}
+            />
             {/* Your AddLessonForm component goes here */}
             <div className="mt-4 p-8 border-2 border-dotted border-slate-200 rounded-xl text-center">
               <AddLessonForm
                 showForm={showForm}
                 setShowForm={setShowForm}
+                lessons={lessons}
                 courseId={courseId as string}
               />
             </div>

@@ -1,18 +1,27 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Loader2, Save } from "lucide-react";
-import { useAddLessonMutation } from "@/lib/features/courses/courseApi";
+import {
+  useAddLessonMutation,
+  useUpdateLessonMutation,
+} from "@/lib/features/courses/lessons/lessonApi";
+import { Lesson } from "@/types/Course";
 
 export default function AddLessonForm({
   setShowForm,
   courseId,
+  lessons,
 }: {
   showForm: boolean;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
   courseId: string;
+  lessons: Lesson[];
 }) {
   const [addLesson] = useAddLessonMutation();
   const [isLoading, setLoading] = useState(false);
+  const [updateLesson] = useUpdateLessonMutation();
+  const searchParams = new URLSearchParams(window.location.search);
+  const lessonId = searchParams.get("lessonId");
 
   const [formData, setFormData] = useState({
     title: "",
@@ -21,11 +30,27 @@ export default function AddLessonForm({
     videoUrl: "",
   });
 
+  // Update form when URL params indicate an update operation
+  useEffect(() => {
+    const isUpdate = searchParams.get("isUpdate");
+    if (isUpdate) {
+      setShowForm(true);
+      const lesson = lessons.find((lesson) => lesson.id === lessonId);
+      setFormData({
+        title: lesson?.title || "",
+        duration: lesson?.duration || "",
+        content: lesson?.content || "",
+        videoUrl: lesson?.videoUrl || "",
+      });
+    }
+  }, [lessons, setShowForm]);
+
   const handleSave = async () => {
     setLoading(true);
     try {
-      const res = await addLesson({ id: courseId, lesson: formData }).unwrap();
-      if (res.success) {
+      const res = await addLesson({ id: lessonId!, lesson: formData }).unwrap();
+      // console.log(res);
+      if (res?.status === "success") {
         setLoading(false);
       }
       setFormData({
@@ -39,6 +64,13 @@ export default function AddLessonForm({
       setLoading(false);
     }
   };
+  const handleUpdateLesson = async () => {
+    try {
+      await updateLesson({ id: lessonId!, lesson: formData }).unwrap();
+    } catch (err) {
+      console.error("Failed to update lesson:", err);
+    }
+  };
 
   return (
     <div className="mt-6 border-t pt-6">
@@ -46,7 +78,7 @@ export default function AddLessonForm({
         <input
           placeholder="Lesson Title"
           className="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-          value={formData.title}
+          defaultValue={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
         />
 
@@ -54,7 +86,7 @@ export default function AddLessonForm({
           <input
             placeholder="Duration (e.g. 15m)"
             className="flex-1 p-2.5 border rounded-lg outline-none"
-            value={formData.duration}
+            defaultValue={formData.duration}
             onChange={(e) =>
               setFormData({ ...formData, duration: e.target.value })
             }
@@ -62,7 +94,7 @@ export default function AddLessonForm({
           <input
             placeholder="Video URL"
             className="flex-[2] p-2.5 border rounded-lg outline-none"
-            value={formData.videoUrl}
+            defaultValue={formData.videoUrl}
             onChange={(e) =>
               setFormData({ ...formData, videoUrl: e.target.value })
             }
@@ -72,7 +104,7 @@ export default function AddLessonForm({
         <textarea
           placeholder="Brief description of the lesson content..."
           className="w-full p-2.5 border rounded-lg h-24 outline-none"
-          value={formData.content}
+          defaultValue={formData.content}
           onChange={(e) =>
             setFormData({ ...formData, content: e.target.value })
           }
@@ -95,7 +127,7 @@ export default function AddLessonForm({
             ) : (
               <Save size={18} />
             )}
-            Save Lesson
+            {lessonId ? "Update Lesson" : "Save Lesson"}
           </button>
         </div>
       </div>

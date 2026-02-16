@@ -50,16 +50,16 @@ export const coursesApi = createApi({
     }),
 
     // GET SINGLE COURSE DETAILS
-    getCourseById: builder.query<CourseDetail, string>({
+    getCourseById: builder.query<Course, string>({
       query: (id) => `${id}`,
-      transformResponse: (response: CourseDetail) => {
-        return response as CourseDetail;
+      transformResponse: (response: Course) => {
+        return response as Course;
       },
       providesTags: (result, error, id) => [{ type: "Course", id }],
     }),
     // GET SINGLE COURSE DETAILS
-    getCourseDetailById: builder.query<Course, string>({
-      query: (id) => `/${id}`,
+    getCourseDetailById: builder.query<CourseDetail, string>({
+      query: (id) => `/${id}/details`,
     }),
 
     // CREATE A NEW COURSE (Mutation)
@@ -76,18 +76,6 @@ export const coursesApi = createApi({
               { type: "TutorCourse", id: result.data?.id },
             ]
           : [{ type: "TutorCourse", id: "List" }],
-    }),
-    // ADD LESSON
-    addLesson: builder.mutation<
-      ApiResponse<Lesson>,
-      { id: string; lesson: Partial<Lesson> }
-    >({
-      query: ({ id, lesson }) => ({
-        url: `/${id}/lesson`,
-        method: "POST",
-        body: lesson,
-      }),
-      invalidatesTags: ["Course"],
     }),
     // Delete course by tutor
     deleteCourse: builder.mutation<
@@ -112,7 +100,6 @@ export const {
   useGetCourseByIdQuery,
   useCreateCourseMutation,
   useGetTutorCoursesQuery,
-  useAddLessonMutation,
   useGetCourseDetailByIdQuery,
   useDeleteCourseMutation,
 } = coursesApi;

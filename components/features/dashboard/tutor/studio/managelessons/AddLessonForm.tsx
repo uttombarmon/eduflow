@@ -25,7 +25,8 @@ export default function AddLessonForm({
     setLoading(true);
     try {
       const res = await addLesson({ id: courseId, lesson: formData }).unwrap();
-      if (res.success) {
+      // console.log(res);
+      if (res?.status === "success") {
         setLoading(false);
       }
       setFormData({

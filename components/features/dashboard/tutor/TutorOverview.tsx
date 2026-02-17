@@ -9,12 +9,12 @@ import {
   MoreHorizontal,
   Plus,
 } from "lucide-react";
-import { useGetUserProfileQuery } from "@/lib/features/auth/userApi";
+import { useLoadUserQuery } from "@/lib/features/auth/userApi";
 import TutorStatCard from "./TutorStatCard";
 import TopCourseItem from "./TopCourseItem";
 
 const TutorDashboardd = () => {
-  const { data: user } = useGetUserProfileQuery();
+  const { data } = useLoadUserQuery();
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
@@ -25,8 +25,8 @@ const TutorDashboardd = () => {
             Instructor Overview
           </h1>
           <p className="text-slate-500 mt-1">
-            Welcome back, {user?.name || "Tutor"}. Here's what's happening with
-            your courses.
+            Welcome back, {data?.user?.name || "Tutor"}. Here&apos;s what&apos;s
+            happening with your courses.
           </p>
         </div>
         <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-200 active:scale-95">
@@ -114,6 +114,5 @@ const TutorDashboardd = () => {
     </div>
   );
 };
-
 
 export default TutorDashboardd;

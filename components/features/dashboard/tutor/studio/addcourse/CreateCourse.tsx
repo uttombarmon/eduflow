@@ -3,10 +3,8 @@ import React, { useState } from "react";
 import { Plus, Save } from "lucide-react";
 import { Course, CourseStatus, Lesson } from "@/types/Course";
 import { AddLesson } from "./AddLesson";
-import {
-  useAddLessonMutation,
-  useCreateCourseMutation,
-} from "@/lib/features/courses/courseApi";
+import { useCreateCourseMutation } from "@/lib/features/courses/courseApi";
+import { useAddLessonMutation } from "@/lib/features/courses/lessons/lessonApi";
 import { useRouter, useSearchParams } from "next/navigation";
 import Utilities from "./Utilities";
 

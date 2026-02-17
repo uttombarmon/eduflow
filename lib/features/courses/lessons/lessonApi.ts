@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const lessonApi = createApi({
+    reducerPath: "lessonApi",
     baseQuery: fetchBaseQuery({
         baseUrl: "http://localhost:4000/api/v1",
         prepareHeaders: (headers) => {
@@ -32,7 +33,7 @@ export const lessonApi = createApi({
         updateLesson: builder.mutation({
             query: ({ id, lesson }) => ({
                 url: `/lessons/${id}`,
-                method: "PUT",
+                method: "PATCH",
                 body: lesson,
             }),
             invalidatesTags: ["Lesson"],

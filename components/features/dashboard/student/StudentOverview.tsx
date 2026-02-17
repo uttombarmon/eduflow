@@ -12,7 +12,10 @@ const StudentOverviews: React.FC = () => {
     (state: RootState) => state.auth,
   );
   if (isCheckingAuth) return <Loading />;
-  if (!user || user?.role === undefined) return redirect("/");
+  if (!user || user?.role === undefined) {
+    redirect("/");
+    return null;
+  }
 
   return (
     <div className="space-y-6">

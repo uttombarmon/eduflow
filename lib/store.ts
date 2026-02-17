@@ -11,6 +11,7 @@ import { userApi } from "./features/auth/userApi";
 import { dashboardUISlice } from "./features/dashboard/dashboardUISlice";
 import { profileApi } from "./features/dashboard/settings/profileApi";
 import { lessonApi } from "./features/courses/lessons/lessonApi";
+import { tutorApi } from "./features/dashboard/tutor/tutorApi";
 export const makeStore = () => {
   return configureStore({
     reducer: {
@@ -20,6 +21,7 @@ export const makeStore = () => {
       [userApi.reducerPath]: userApi.reducer,
       [profileApi.reducerPath]: profileApi.reducer,
       [lessonApi.reducerPath]: lessonApi.reducer,
+      [tutorApi.reducerPath]: tutorApi.reducer,
       // Slices: Handles Client State (UI/Interactions)
       ui: uiSlice.reducer,
       auth: authSlice.reducer,
@@ -35,7 +37,8 @@ export const makeStore = () => {
         .concat(postsApi.middleware)
         .concat(userApi.middleware)
         .concat(profileApi.middleware)
-        .concat(lessonApi.middleware),
+        .concat(lessonApi.middleware)
+        .concat(tutorApi.middleware),
   });
 };
 // Required for RTK Query "refetchOnFocus" and "refetchOnReconnect"

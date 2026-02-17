@@ -2,11 +2,11 @@
 import React, { useState } from "react";
 import { Plus, Save } from "lucide-react";
 import { Course, CourseStatus, Lesson } from "@/types/Course";
-import {
-  useAddLessonMutation,
-  useCreateCourseMutation,
-} from "@/lib/features/courses/courseApi";
+import { useCreateCourseMutation } from "@/lib/features/courses/courseApi";
+import { useAddLessonMutation } from "@/lib/features/courses/lessons/lessonApi";
 import { useRouter } from "next/navigation";
+import Utilities from "../addcourse/Utilities";
+import { AddLesson } from "../addcourse/AddLesson";
 
 const EditCourse = () => {
   const router = useRouter();

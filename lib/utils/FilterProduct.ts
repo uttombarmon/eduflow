@@ -33,7 +33,7 @@ export const FilterProduct = ({
     const matchesSearch =
       s === "" ||
       course.title.toLowerCase().includes(s) ||
-      course.instructor.name.toLowerCase().includes(s);
+      (course.instructor?.name.toLowerCase().includes(s) ?? false);
 
     // Category Logic
     const matchesCategory = c === "all" || course.category.toLowerCase() === c;

@@ -1,11 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Loader2, Save } from "lucide-react";
 import {
   useAddLessonMutation,
   useUpdateLessonMutation,
 } from "@/lib/features/courses/lessons/lessonApi";
 import { Lesson } from "@/types/Course";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function AddLessonForm({
   setShowForm,
@@ -20,8 +21,10 @@ export default function AddLessonForm({
   const [addLesson] = useAddLessonMutation();
   const [isLoading, setLoading] = useState(false);
   const [updateLesson] = useUpdateLessonMutation();
-  const searchParams = new URLSearchParams(window.location.search);
+  const searchParams = useSearchParams();
   const lessonId = searchParams.get("lessonId");
+  const isUpdate = searchParams.get("isUpdate");
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     title: "",
@@ -29,21 +32,22 @@ export default function AddLessonForm({
     content: "",
     videoUrl: "",
   });
+  const [prevLessonId, setPrevLessonId] = useState<string | null>(null);
 
   // Update form when URL params indicate an update operation
-  useEffect(() => {
-    const isUpdate = searchParams.get("isUpdate");
-    if (isUpdate) {
+  if (isUpdate && lessonId !== prevLessonId) {
+    setPrevLessonId(lessonId);
+    const lesson = lessons.find((l) => l.id === lessonId);
+    if (lesson) {
       setShowForm(true);
-      const lesson = lessons.find((lesson) => lesson.id === lessonId);
       setFormData({
-        title: lesson?.title || "",
-        duration: lesson?.duration || "",
-        content: lesson?.content || "",
-        videoUrl: lesson?.videoUrl || "",
+        title: lesson.title || "",
+        duration: lesson.duration || "",
+        content: lesson.content || "",
+        videoUrl: lesson.videoUrl || "",
       });
     }
-  }, [lessons, setShowForm]);
+  }
 
   const handleSave = async () => {
     setLoading(true);
@@ -112,13 +116,19 @@ export default function AddLessonForm({
 
         <div className="flex justify-end gap-3 mt-2">
           <button
-            onClick={() => setShowForm(false)}
+            onClick={() => {
+              setShowForm(false);
+              const params = new URLSearchParams(searchParams.toString());
+              params.delete("lessonId");
+              params.delete("isUpdate");
+              router.push(`${window.location.pathname}?${params.toString()}`);
+            }}
             className="px-4 py-2 text-slate-600 hover:bg-slate-200 rounded-lg transition"
           >
             Cancel
           </button>
           <button
-            onClick={handleSave}
+            onClick={() => (isUpdate ? handleUpdateLesson() : handleSave())}
             disabled={isLoading || !formData.title}
             className="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition"
           >

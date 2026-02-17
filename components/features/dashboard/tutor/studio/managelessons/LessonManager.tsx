@@ -19,11 +19,16 @@ import {
   useDeleteLessonMutation,
 } from "@/lib/features/courses/lessons/lessonApi";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
 const LessonsManager = () => {
   const [showForm, setShowForm] = useState(false);
   const router = useRouter();
-  const searchParams = new URLSearchParams(window.location.search);
+  const readonlySearchParams = useSearchParams();
+  const searchParams = React.useMemo(
+    () => new URLSearchParams(readonlySearchParams.toString()),
+    [readonlySearchParams],
+  );
   const params = useParams();
   const courseId = params.id;
   // console.log("course id: ", courseId);

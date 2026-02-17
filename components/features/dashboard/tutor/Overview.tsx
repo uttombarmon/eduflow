@@ -88,7 +88,7 @@ const TutorDashboard = () => {
               <PlayCircle className="text-blue-500 w-5 h-5" />
               <div>
                 <p className="text-sm text-gray-800">
-                  <b>Sarah M.</b> started "Module 3"
+                  <b>Sarah M.</b> started &quot;Module 3&quot;
                 </p>
                 <p className="text-xs text-gray-400">2 minutes ago</p>
               </div>

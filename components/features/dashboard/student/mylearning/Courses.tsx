@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const Courses = ({ courses }: { courses: Course[] }) => {
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 grid-cols-1">
       {courses.map((course) => {
         const progress = course?.lessons?.length ?? 0;
         const isCompleted = progress === 100;
@@ -16,11 +16,11 @@ const Courses = ({ courses }: { courses: Course[] }) => {
             // onClick={() => onCourseSelect(course.id)}
             onClick={() => {}}
           >
-            <div className="aspect-video relative overflow-hidden bg-slate-100">
+            <div className="relative overflow-hidden bg-slate-100">
               <Image
                 src={course?.thumbnail}
                 alt={course?.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="w-64 h-64 object-cover transition-transform duration-500 group-hover:scale-105"
                 width={100}
                 height={100}
               />
@@ -58,9 +58,11 @@ const Courses = ({ courses }: { courses: Course[] }) => {
               <div className="mt-auto space-y-4">
                 <div className="flex items-center gap-3">
                   <Image
-                    src={`https://avatar.vercel.sh/${course?.thumbnail}`}
+                    src={`${course?.thumbnail}`}
                     className="h-6 w-6 rounded-full grayscale"
                     alt={course?.thumbnail}
+                    width={24}
+                    height={24}
                   />
                   <span className="text-xs text-slate-500">
                     by {course?.instructorId}

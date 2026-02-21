@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const Courses = ({ courses }: { courses: Course[] }) => {
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 grid-cols-1">
       {courses.map((course) => {
         const progress = course?.lessons?.length ?? 0;
         const isCompleted = progress === 100;
@@ -12,33 +12,18 @@ const Courses = ({ courses }: { courses: Course[] }) => {
         return (
           <div
             key={course?.id}
-            className="group flex flex-col bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden cursor-pointer"
+            className="group relative flex flex-row bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden cursor-pointer"
             // onClick={() => onCourseSelect(course.id)}
             onClick={() => {}}
           >
-            <div className="aspect-video relative overflow-hidden bg-slate-100">
+            <div className="relative overflow-hidden bg-slate-100">
               <Image
                 src={course?.thumbnail}
                 alt={course?.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                width={100}
-                height={100}
+                className="w-64 h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+                width={200}
+                height={200}
               />
-              {isCompleted && (
-                <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] flex items-center justify-center">
-                  <div className="bg-emerald-500 text-white p-2 rounded-full shadow-lg">
-                    <CheckCircle size={24} />
-                  </div>
-                </div>
-              )}
-              <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-slate-200">
-                <div
-                  className={`h-full transition-all duration-500 ${
-                    isCompleted ? "bg-emerald-500" : "bg-indigo-600"
-                  }`}
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
             </div>
 
             <div className="p-5 flex-1 flex flex-col">
@@ -58,9 +43,11 @@ const Courses = ({ courses }: { courses: Course[] }) => {
               <div className="mt-auto space-y-4">
                 <div className="flex items-center gap-3">
                   <Image
-                    src={`https://avatar.vercel.sh/${course?.thumbnail}`}
+                    src={`${course?.thumbnail}`}
                     className="h-6 w-6 rounded-full grayscale"
                     alt={course?.thumbnail}
+                    width={24}
+                    height={24}
                   />
                   <span className="text-xs text-slate-500">
                     by {course?.instructorId}
@@ -88,6 +75,21 @@ const Courses = ({ courses }: { courses: Course[] }) => {
                   )}
                 </div>
               </div>
+            </div>
+            {isCompleted && (
+              <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] flex items-center justify-center">
+                <div className="bg-emerald-500 text-white p-2 rounded-full shadow-lg">
+                  <CheckCircle size={24} />
+                </div>
+              </div>
+            )}
+            <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-slate-200">
+              <div
+                className={`h-full transition-all duration-500 ${
+                  isCompleted ? "bg-emerald-500" : "bg-indigo-600"
+                }`}
+                style={{ width: `${progress}%` }}
+              />
             </div>
           </div>
         );

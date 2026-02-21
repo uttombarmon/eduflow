@@ -8,8 +8,25 @@ import {
 } from "lucide-react";
 import { MetricCard } from "./MetricCard";
 import Link from "next/link";
+import { useGetTutorDashboardQuery } from "@/lib/features/dashboard/tutor/tutorApi";
+import { getErrorMessage } from "@/lib/utils/ErrorParse";
+import Loading from "@/components/layout/Loading";
+import { redirect } from "next/navigation";
 
 const TutorDashboard = () => {
+  const { data, isLoading, error } = useGetTutorDashboardQuery();
+  console.log(data);
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loading />
+      </div>
+    );
+  }
+  if (error) {
+    console.log("Error: ", getErrorMessage(error));
+    redirect("/");
+  }
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       <header className="flex justify-between items-center mb-8">
@@ -33,29 +50,29 @@ const TutorDashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <MetricCard
           title="Total Earnings"
-          value="$4,250"
-          trend="+12.5%"
+          value={data?.data?.totalEarnings || 0}
+          trend={data?.data?.totalEarningsChange || "0%"}
           Icon={DollarSign}
           color="bg-emerald-500"
         />
         <MetricCard
           title="Active Students"
-          value="1,284"
-          trend="+3.2%"
+          value={data?.data?.totalStudents || 0}
+          trend={data?.data?.totalStudentsChange || "0%"}
           Icon={Users}
           color="bg-blue-500"
         />
         <MetricCard
           title="Course Rating"
-          value="4.9"
+          value={data?.data?.averageRating || 0}
           trend="Static"
           Icon={Star}
           color="bg-amber-500"
         />
         <MetricCard
           title="Hours Taught"
-          value="156h"
-          trend="+8%"
+          value={data?.data?.totalHours || 0}
+          trend={data?.data?.totalHoursChange || "0%"}
           Icon={Clock}
           color="bg-purple-500"
         />

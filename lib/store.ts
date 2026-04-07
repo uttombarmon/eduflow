@@ -1,17 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
 import { uiSlice } from "./features/UIslice";
 import { authSlice } from "./features/auth/AuthSlice";
-import { categoriesSlice } from "./features/courses/CategoriesSlice";
-import { filterSlice } from "./features/courses/FiltersSlice";
-import { coursesSlice } from "./features/courses/CoursesSlice";
-import { coursesApi } from "./features/courses/courseApi";
-import { setupListeners } from "@reduxjs/toolkit/query";
-import { postsApi } from "./features/posts/postsApi";
 import { userApi } from "./features/auth/userApi";
+import { categoriesSlice } from "./features/courses/CategoriesSlice";
+import { coursesSlice } from "./features/courses/CoursesSlice";
+import { filterSlice } from "./features/courses/FiltersSlice";
+import { coursesApi } from "./features/courses/courseApi";
+import { lessonApi } from "./features/courses/lessons/lessonApi";
 import { dashboardUISlice } from "./features/dashboard/dashboardUISlice";
 import { profileApi } from "./features/dashboard/settings/profileApi";
-import { lessonApi } from "./features/courses/lessons/lessonApi";
+import { studentApi } from "./features/dashboard/student/studentApi";
 import { tutorApi } from "./features/dashboard/tutor/tutorApi";
+import { postsApi } from "./features/posts/postsApi";
 export const makeStore = () => {
   return configureStore({
     reducer: {
@@ -22,6 +23,7 @@ export const makeStore = () => {
       [profileApi.reducerPath]: profileApi.reducer,
       [lessonApi.reducerPath]: lessonApi.reducer,
       [tutorApi.reducerPath]: tutorApi.reducer,
+      [studentApi.reducerPath]: studentApi.reducer,
       // Slices: Handles Client State (UI/Interactions)
       ui: uiSlice.reducer,
       auth: authSlice.reducer,
@@ -38,7 +40,8 @@ export const makeStore = () => {
         .concat(userApi.middleware)
         .concat(profileApi.middleware)
         .concat(lessonApi.middleware)
-        .concat(tutorApi.middleware),
+        .concat(tutorApi.middleware)
+        .concat(studentApi.middleware),
   });
 };
 // Required for RTK Query "refetchOnFocus" and "refetchOnReconnect"

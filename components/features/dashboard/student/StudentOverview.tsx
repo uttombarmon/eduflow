@@ -74,7 +74,7 @@ const StudentOverviews: React.FC = () => {
         ))}
       </div>
 
-      {/* <div className="grid gap-6 md:grid-cols-7">
+      <div className="grid gap-6 md:grid-cols-7">
         <div className="md:col-span-4 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold tracking-tight">
@@ -86,7 +86,7 @@ const StudentOverviews: React.FC = () => {
               <div
                 key={course.id}
                 className="group relative flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:bg-slate-50 cursor-pointer"
-              // onClick={() => onCourseSelect(course.id)}
+                // onClick={() => onCourseSelect(course.id)}
               >
                 <Image
                   src={course.thumbnail}
@@ -162,7 +162,7 @@ const StudentOverviews: React.FC = () => {
             </button>
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

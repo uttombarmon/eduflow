@@ -1,7 +1,6 @@
 import { CourseDetail } from "@/types/Course";
 import { BookOpen, Clock, Star } from "lucide-react";
 import Image from "next/image";
-import React from "react";
 
 function CourseCard({ course }: { course: CourseDetail }) {
   return (
@@ -16,6 +15,7 @@ function CourseCard({ course }: { course: CourseDetail }) {
           width={200}
           height={200}
           alt={course.title}
+          loading="eager"
         />
         <div className="absolute top-3 left-3 flex gap-2">
           <span className="bg-white/90 backdrop-blur border border-slate-200 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter">

@@ -1,12 +1,12 @@
 "use client";
-import React, { useState } from "react";
-import { Loader2, Save } from "lucide-react";
 import {
   useAddLessonMutation,
   useUpdateLessonMutation,
 } from "@/lib/features/courses/lessons/lessonApi";
 import { Lesson } from "@/types/Course";
-import { useSearchParams, useRouter } from "next/navigation";
+import { Loader2, Save } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useState } from "react";
 
 export default function AddLessonForm({
   setShowForm,
@@ -32,47 +32,60 @@ export default function AddLessonForm({
     content: "",
     videoUrl: "",
   });
-  const [prevLessonId, setPrevLessonId] = useState<string | null>(null);
+
+  const closeForm = () => {
+    setShowForm(false);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("lessonId");
+    params.delete("isUpdate");
+    router.push(`${window.location.pathname}?${params.toString()}`);
+  };
 
   // Update form when URL params indicate an update operation
-  if (isUpdate && lessonId !== prevLessonId) {
-    setPrevLessonId(lessonId);
-    const lesson = lessons.find((l) => l.id === lessonId);
-    if (lesson) {
-      setShowForm(true);
-      setFormData({
-        title: lesson.title || "",
-        duration: lesson.duration || "",
-        content: lesson.content || "",
-        videoUrl: lesson.videoUrl || "",
-      });
+  React.useEffect(() => {
+    if (isUpdate && lessonId && lessons) {
+      const lesson = lessons.find((l) => l.id === lessonId);
+      if (lesson) {
+        setFormData({
+          title: lesson.title || "",
+          duration: lesson.duration || "",
+          content: lesson.content || "",
+          videoUrl: lesson.videoUrl || "",
+        });
+        setShowForm(true);
+      }
     }
-  }
+  }, [isUpdate, lessonId, lessons, setShowForm]);
 
   const handleSave = async () => {
     setLoading(true);
     try {
-      const res = await addLesson({ id: lessonId!, lesson: formData }).unwrap();
-      // console.log(res);
+      const res = await addLesson({ id: courseId, lesson: formData }).unwrap();
       if (res?.status === "success") {
         setLoading(false);
+        setFormData({
+          title: "",
+          duration: "",
+          content: "",
+          videoUrl: "",
+        });
+        closeForm();
       }
-      setFormData({
-        title: "",
-        duration: "",
-        content: "",
-        videoUrl: "",
-      });
     } catch (err) {
       console.error("Failed to save lesson:", err);
       setLoading(false);
     }
   };
   const handleUpdateLesson = async () => {
+    if (!lessonId) return;
     try {
-      await updateLesson({ id: lessonId!, lesson: formData }).unwrap();
+      setLoading(true);
+      await updateLesson({ id: lessonId, lesson: formData }).unwrap();
+      setLoading(false);
+      closeForm();
     } catch (err) {
       console.error("Failed to update lesson:", err);
+      setLoading(false);
     }
   };
 
@@ -82,7 +95,7 @@ export default function AddLessonForm({
         <input
           placeholder="Lesson Title"
           className="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-          defaultValue={formData.title}
+          value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
         />
 
@@ -90,7 +103,7 @@ export default function AddLessonForm({
           <input
             placeholder="Duration (e.g. 15m)"
             className="flex-1 p-2.5 border rounded-lg outline-none"
-            defaultValue={formData.duration}
+            value={formData.duration}
             onChange={(e) =>
               setFormData({ ...formData, duration: e.target.value })
             }
@@ -98,7 +111,7 @@ export default function AddLessonForm({
           <input
             placeholder="Video URL"
             className="flex-[2] p-2.5 border rounded-lg outline-none"
-            defaultValue={formData.videoUrl}
+            value={formData.videoUrl}
             onChange={(e) =>
               setFormData({ ...formData, videoUrl: e.target.value })
             }
@@ -108,7 +121,7 @@ export default function AddLessonForm({
         <textarea
           placeholder="Brief description of the lesson content..."
           className="w-full p-2.5 border rounded-lg h-24 outline-none"
-          defaultValue={formData.content}
+          value={formData.content}
           onChange={(e) =>
             setFormData({ ...formData, content: e.target.value })
           }
@@ -116,13 +129,7 @@ export default function AddLessonForm({
 
         <div className="flex justify-end gap-3 mt-2">
           <button
-            onClick={() => {
-              setShowForm(false);
-              const params = new URLSearchParams(searchParams.toString());
-              params.delete("lessonId");
-              params.delete("isUpdate");
-              router.push(`${window.location.pathname}?${params.toString()}`);
-            }}
+            onClick={closeForm}
             className="px-4 py-2 text-slate-600 hover:bg-slate-200 rounded-lg transition"
           >
             Cancel

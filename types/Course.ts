@@ -16,9 +16,14 @@ export interface Course {
   createdAt: string;
   updatedAt: string;
   instructorId: string;
-  lessons?: Lesson[];
+  modules?: CourseModule[];
 }
 
+export interface CourseModule {
+  id: string;
+  title: string;
+  lessons: Partial<Lesson>[];
+}
 export interface Lesson {
   id: string;
   title: string;

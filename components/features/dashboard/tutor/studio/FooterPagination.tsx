@@ -16,8 +16,8 @@ const FooterPagination = ({
   return (
     <div className="p-4 border-t border-slate-100 bg-slate-50/30 flex justify-between items-center text-xs text-slate-500">
       <span>
-        Showing {courses.length > 8 ? page * 8 : courses.length} of{" "}
-        {courses.length} courses
+        Showing {courses?.length > 8 ? page * 8 : courses?.length} of{" "}
+        {courses?.length} courses
       </span>
       <div className="flex gap-2">
         <Button
@@ -31,7 +31,7 @@ const FooterPagination = ({
         <Button
           variant="outline"
           size="sm"
-          disabled={!pagination.hasNextPage}
+          disabled={!pagination?.hasNextPage}
           onClick={() => setPage((p) => p + 1)}
         >
           Next

@@ -1,4 +1,5 @@
 import { X } from "lucide-react";
+import Link from "next/link";
 
 const WizardHeader = () => (
   <div className="flex justify-between items-start mb-8">
@@ -11,9 +12,12 @@ const WizardHeader = () => (
         assistant to optimize your content for maximum student engagement.
       </p>
     </div>
-    <button className="flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors">
-      <X size={16} /> Exit Wizard
-    </button>
+    <Link
+      href={"/dashboard/studio"}
+      className="flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+    >
+      <X size={16} /> Cancel
+    </Link>
   </div>
 );
 export default WizardHeader;

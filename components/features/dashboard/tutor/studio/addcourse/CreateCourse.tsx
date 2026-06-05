@@ -169,8 +169,13 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCreateCourseMutation } from "@/lib/features/courses/courseApi";
-import { useAddLessonMutation } from "@/lib/features/courses/lessons/lessonApi";
-import { Course, CourseModule, CourseStatus, Lesson } from "@/types/Course";
+// import { useAddLessonMutation } from "@/lib/features/courses/lessons/lessonApi";
+import {
+  Course,
+  CourseLevel,
+  CourseModule,
+  CourseStatus,
+} from "@/types/Course";
 
 // Import our sub-components (defined below)
 import WizardHeader from "./WizardHeader";
@@ -186,42 +191,59 @@ const CreateCourseWizard = () => {
 
   // API Hooks
   const [createCourse] = useCreateCourseMutation();
-  const [addLessonMutation] = useAddLessonMutation();
+  // const [addLessonMutation] = useAddLessonMutation();
 
   // State
   const [modules, setModules] = useState<CourseModule[]>([]);
-  const [lessons, setLessons] = useState<Partial<Lesson>[]>([]);
   const [courseData, setCourseData] = useState<Partial<Course>>({
     title: "",
     description: "",
     thumbnail: "",
-    level: "Intermediate", // Default based on image
+    level: "beginner" as CourseLevel, // Default based on image
     category: "",
     price: 0,
-    status: "DRAFT" as CourseStatus,
+    status: "draft" as CourseStatus,
   });
 
   const handleNextStep = () => setCurrentStep((prev) => Math.min(prev + 1, 4));
   const handlePrevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
 
   // Your existing save logic (adapted for the final step)
+  // const handleSaveCourse = async () => {
+  //   // Validation logic...
+  //   try {
+  //     const res = await createCourse(courseData).unwrap();
+  //     if (res?.success && res.data?.id) {
+  //       await Promise.all(
+  //         lessons.map((lesson) =>
+  //           addLessonMutation({
+  //             id: res?.data?.id,
+  //             lesson: lesson as Lesson,
+  //           }).unwrap(),
+  //         ),
+  //       );
+  //       router.push("/dashboard/studio");
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to create course", error);
+  //   }
+  // };
+  // If your backend endpoint supports parsing nested payloads:
   const handleSaveCourse = async () => {
-    // Validation logic...
+    setCourseData({ ...courseData, status: "publish" });
     try {
-      const res = await createCourse(courseData).unwrap();
-      if (res?.success && res.data?.id) {
-        await Promise.all(
-          lessons.map((lesson) =>
-            addLessonMutation({
-              id: res?.data?.id,
-              lesson: lesson as Lesson,
-            }).unwrap(),
-          ),
-        );
+      const completePayload = {
+        ...courseData,
+        modules: modules, // Send the entire nested modules & lessons array at once
+      };
+      console.log(completePayload);
+
+      const res = await createCourse(completePayload).unwrap();
+      if (res?.success) {
         router.push("/dashboard/studio");
       }
     } catch (error) {
-      console.error("Failed to create course", error);
+      console.error("Failed to complete atomic course creation:", error);
     }
   };
 

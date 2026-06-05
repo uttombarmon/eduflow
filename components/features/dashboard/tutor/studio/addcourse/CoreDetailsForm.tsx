@@ -60,7 +60,8 @@ const CoreDetailsForm = ({ courseData, setCourseData }: any) => {
                   key={level}
                   onClick={() => setCourseData({ ...courseData, level })}
                   className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${
-                    courseData.level === level
+                    courseData.level.toLocaleUpperCase() ===
+                    level.toLocaleUpperCase()
                       ? "bg-blue-400 text-white shadow-sm"
                       : "text-slate-500 hover:text-slate-700"
                   }`}

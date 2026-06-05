@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import CoreDetailsForm from "./CoreDetailsForm";
 import CourseMediaPanel from "./CourseMediaPanel";
 import OptimizationTips from "./OptimizationTips";
+import Link from "next/link";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const StepGeneralInfo = ({ courseData, setCourseData, onNext }: any) => {
@@ -17,9 +18,12 @@ const StepGeneralInfo = ({ courseData, setCourseData, onNext }: any) => {
 
           {/* Action Buttons */}
           <div className="flex justify-between items-center mt-6">
-            <button className="px-6 py-3 rounded-xl font-semibold bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors">
+            <Link
+              href={"/dashboard/studio"}
+              className="px-6 py-3 rounded-xl font-semibold bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors"
+            >
               Discard Draft
-            </button>
+            </Link>
             <button
               onClick={onNext}
               className="px-6 py-3 rounded-xl font-semibold bg-[#0A1128] text-white hover:bg-slate-800 transition-colors flex items-center gap-2"
@@ -31,7 +35,10 @@ const StepGeneralInfo = ({ courseData, setCourseData, onNext }: any) => {
 
         {/* Right Column: Sidebar */}
         <div className="space-y-6">
-          <CourseMediaPanel courseData={courseData} setCourseData={setCourseData} />
+          <CourseMediaPanel
+            courseData={courseData}
+            setCourseData={setCourseData}
+          />
           <OptimizationTips />
         </div>
       </div>

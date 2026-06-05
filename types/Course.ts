@@ -1,6 +1,7 @@
 import { LessonProgress, Quiz } from "./Progress";
 
 export type CourseStatus = "publish" | "draft" | "archive";
+export type CourseLevel = "beginner" | "intermediate" | "advanced";
 export interface Course {
   id: string;
   title: string;

@@ -7,7 +7,6 @@ import {
   LayoutList,
   AlignLeft,
   DollarSign,
-  Image as ImageIcon,
   CheckCircle2,
 } from "lucide-react";
 import { Course } from "@/types/Course";
@@ -146,7 +145,7 @@ const StepReview = ({
               <h3 className="font-bold text-lg">Pricing Model</h3>
             </div>
 
-            <div className="bg-slate-50 p-6 rounded-2xl inline-block min-w-[200px]">
+            <div className="bg-slate-50 p-6 rounded-2xl inline-block min-w-50">
               <span className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
                 Enrollment Fee
               </span>

@@ -54,29 +54,33 @@ const CourseCard = ({
       </div>
 
       <div className="col-span-2 hidden md:block text-right text-sm font-bold text-slate-700">
-        {course?.price}
+        ${course?.price}
       </div>
-      <Link
+      {/* <Link
         href={`/dashboard/studio/managelessons/${course?.id}`}
         className="col-span-2 hidden md:block text-right text-sm font-bold text-slate-700"
       >
         <Button className=" hover:cursor-pointer bg-slate-900/70">
           Add Lesson
         </Button>
-      </Link>
+      </Link> */}
 
       <div className="col-span-1 hidden md:block text-right text-sm text-slate-500 font-medium">
         {course?.studentsCount}
       </div>
 
-      <div className="col-span-5 md:col-span-1 flex items-center justify-end gap-2">
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          className="hidden sm:flex text-slate-400 hover:text-blue-600"
+      <div className="col-span-2 md:col-span-3 flex items-center justify-center gap-2">
+        <Link
+          href={`/dashboard/studio/edit_course?courseId=${course?.id}&isEdit=true`}
         >
-          <Edit3 className="h-4 w-4" />
-        </Button>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="hidden sm:flex text-slate-400 hover:text-blue-600"
+          >
+            <Edit3 className="h-4 w-4" />
+          </Button>
+        </Link>
         <Button
           variant="ghost"
           size="icon-sm"

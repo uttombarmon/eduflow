@@ -49,7 +49,7 @@ export const coursesApi = createApi({
           : [{ type: "TutorCourse", id: "List" }],
     }),
 
-    // GET SINGLE COURSE DETAILS
+    // GET SINGLE Tutor COURSE DETAILS
     getCourseById: builder.query<Course, string>({
       query: (id) => `${id}`,
       transformResponse: (response: Course) => {

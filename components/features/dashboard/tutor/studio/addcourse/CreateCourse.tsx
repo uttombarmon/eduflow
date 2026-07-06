@@ -1,11 +1,12 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   useCreateCourseMutation,
+  useUpdateCourseMutation,
   useGetCourseByIdQuery,
 } from "@/lib/features/courses/courseApi";
-// import { useAddLessonMutation } from "@/lib/features/courses/lessons/lessonApi";
 import {
   Course,
   CourseLevel,
@@ -23,24 +24,30 @@ import Loading from "@/components/layout/Loading";
 
 const CreateCourseWizard = () => {
   const router = useRouter();
-  const [currentStep, setCurrentStep] = useState(1);
   const searchParams = useSearchParams();
+
+  // URL States
   const courseId = searchParams.get("courseId");
-  const isEditMode = searchParams.get("isEdit");
+  const isEditMode = searchParams.get("isEdit") === "true";
+
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // API Hooks
   const [createCourse] = useCreateCourseMutation();
-  const { data: existingCourseData, isLoading } = useGetCourseByIdQuery(
-    courseId!,
-  );
+  const [updateCourse] = useUpdateCourseMutation();
 
-  // State
+  // Skip query execution if we are not in edit mode or don't have an ID
+  const { data: existingCourseData, isLoading: isFetchLoading } =
+    useGetCourseByIdQuery(courseId!, { skip: !isEditMode || !courseId });
+
+  // Form States
   const [modules, setModules] = useState<CourseModule[]>([]);
   const [courseData, setCourseData] = useState<Partial<Course>>({
     title: "",
     description: "",
     thumbnail: "",
-    level: "beginner" as CourseLevel, // Default based on image
+    level: "beginner" as CourseLevel,
     category: "",
     price: 0,
     status: "draft" as CourseStatus,
@@ -48,23 +55,24 @@ const CreateCourseWizard = () => {
 
   const isInitialized = React.useRef(false);
 
+  // Sync existing data to state when editing
   useEffect(() => {
     if (
-      !isLoading &&
       isEditMode &&
       existingCourseData &&
+      !isFetchLoading &&
       !isInitialized.current
     ) {
       const course = existingCourseData;
 
       setCourseData({
-        title: course.title,
-        description: course.description,
-        thumbnail: course.thumbnail,
-        level: course.level,
-        category: course.category,
-        price: course.price,
-        status: course.status,
+        title: course.title || "",
+        description: course.description || "",
+        thumbnail: course.thumbnail || "",
+        level: course.level || ("beginner" as CourseLevel),
+        category: course.category || "",
+        price: course.price || 0,
+        status: course.status || ("draft" as CourseStatus),
       });
 
       if (course.modules) {
@@ -73,54 +81,57 @@ const CreateCourseWizard = () => {
 
       isInitialized.current = true;
     }
-  }, [existingCourseData, isEditMode, isLoading]);
+  }, [existingCourseData, isEditMode, isFetchLoading]);
 
-  if (isLoading) {
+  // Loading state for fetching data in edit mode
+  if (isEditMode && isFetchLoading) {
     return (
-      <div>
+      <div className="min-h-screen flex items-center justify-center bg-[#F8F9FA]">
         <Loading />
       </div>
     );
   }
+
   const handleNextStep = () => setCurrentStep((prev) => Math.min(prev + 1, 4));
   const handlePrevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
 
-  // Your existing save logic (adapted for the final step)
-  // const handleSaveCourse = async () => {
-  //   // Validation logic...
-  //   try {
-  //     const res = await createCourse(courseData).unwrap();
-  //     if (res?.success && res.data?.id) {
-  //       await Promise.all(
-  //         lessons.map((lesson) =>
-  //           addLessonMutation({
-  //             id: res?.data?.id,
-  //             lesson: lesson as Lesson,
-  //           }).unwrap(),
-  //         ),
-  //       );
-  //       router.push("/dashboard/studio");
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to create course", error);
-  //   }
-  // };
-  // If your backend endpoint supports parsing nested payloads:
+  // Unified Save handler (handles both POST and PUT/PATCH)
   const handleSaveCourse = async () => {
-    setCourseData({ ...courseData, status: "publish" });
-    try {
-      const completePayload = {
-        ...courseData,
-        modules: modules, // Send the entire nested modules & lessons array at once
-      };
-      console.log(completePayload);
+    setIsSubmitting(true);
 
-      const res = await createCourse(completePayload).unwrap();
-      if (res?.success) {
-        router.push("/dashboard/studio");
+    // Fallback status assignment safely keeping other state intact
+    const finalStatus: CourseStatus = "publish";
+
+    const completePayload = {
+      ...courseData,
+      status: finalStatus,
+      modules: modules,
+    };
+
+    try {
+      if (isEditMode && courseId) {
+        // Redux Update Mutation
+        const res = await updateCourse({
+          id: courseId,
+          ...completePayload,
+        }).unwrap();
+        if (res?.success) {
+          router.push("/dashboard/studio");
+        }
+      } else {
+        // Redux Create Mutation
+        const res = await createCourse(completePayload).unwrap();
+        if (res?.success) {
+          router.push("/dashboard/studio");
+        }
       }
     } catch (error) {
-      console.error("Failed to complete atomic course creation:", error);
+      console.error(
+        `Failed to ${isEditMode ? "update" : "create"} atomic course:`,
+        error,
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -129,6 +140,7 @@ const CreateCourseWizard = () => {
       <div className="max-w-6xl mx-auto">
         <WizardHeader />
         <WizardStepper currentStep={currentStep} />
+
         <div className="mt-8">
           {currentStep === 1 && (
             <StepGeneralInfo

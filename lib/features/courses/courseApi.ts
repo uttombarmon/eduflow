@@ -77,6 +77,23 @@ export const coursesApi = createApi({
             ]
           : [{ type: "TutorCourse", id: "List" }],
     }),
+
+    // Update Existing Course
+    updateCourse: builder.mutation<
+      { success: boolean; data?: Course },
+      Partial<Course> & { id: string }
+    >({
+      query: ({ id, ...body }) => ({
+        url: `/update/${id}`,
+        method: "PUT", // Or "PATCH" depending on backend
+        body,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Course", id },
+        { type: "Course", id: "LIST" },
+      ],
+    }),
+
     // Delete course by tutor
     deleteCourse: builder.mutation<
       { success: boolean; message: string },
@@ -99,6 +116,7 @@ export const {
   useGetPopularCoursesQuery,
   useGetCourseByIdQuery,
   useCreateCourseMutation,
+  useUpdateCourseMutation,
   useGetTutorCoursesQuery,
   useGetCourseDetailByIdQuery,
   useDeleteCourseMutation,

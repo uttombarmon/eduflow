@@ -7,12 +7,8 @@ import {
   useUpdateCourseMutation,
   useGetCourseByIdQuery,
 } from "@/lib/features/courses/courseApi";
-import {
-  Course,
-  CourseLevel,
-  CourseModule,
-  CourseStatus,
-} from "@/types/Course";
+import { Course, CourseLevel, CourseStatus } from "@/types/Course";
+import type { CourseModule as CurriculumCourseModule } from "./StepCurriculum";
 
 import WizardHeader from "./WizardHeader";
 import WizardStepper from "./WizardStepper";
@@ -37,18 +33,17 @@ const CreateCourseWizard = () => {
   const [createCourse] = useCreateCourseMutation();
   const [updateCourse] = useUpdateCourseMutation();
 
-  // Skip query execution if we are not in edit mode or don't have an ID
   const { data: existingCourseData, isLoading: isFetchLoading } =
     useGetCourseByIdQuery(courseId!, { skip: !isEditMode || !courseId });
 
   // Form States
-  const [modules, setModules] = useState<CourseModule[]>([]);
+  const [modules, setModules] = useState<CurriculumCourseModule[]>([]);
   const [courseData, setCourseData] = useState<Partial<Course>>({
     title: "",
     description: "",
     thumbnail: "",
     level: "beginner" as CourseLevel,
-    category: "",
+    categoryId: "",
     price: 0,
     status: "draft" as CourseStatus,
   });
@@ -63,22 +58,26 @@ const CreateCourseWizard = () => {
       !isFetchLoading &&
       !isInitialized.current
     ) {
-      const course = existingCourseData;
+      const course = existingCourseData?.data;
 
+      console.log("Raw Course Data from API:", course);
       setCourseData({
         title: course.title || "",
         description: course.description || "",
         thumbnail: course.thumbnail || "",
-        level: course.level || ("beginner" as CourseLevel),
-        category: course.category || "",
-        price: course.price || 0,
-        status: course.status || ("draft" as CourseStatus),
+        level: (course.level?.toLowerCase() || "beginner") as CourseLevel,
+        categoryId: course.categoryId || course.category?.id || "",
+        price: course.price !== undefined ? course.price : 0,
+        status: (course.status || "draft") as CourseStatus,
       });
 
       if (course.modules) {
-        setModules(course.modules);
+        setModules(
+          course.modules
+            .filter((module) => typeof module.id === "string")
+            .map((module) => ({ ...module }) as CurriculumCourseModule),
+        );
       }
-
       isInitialized.current = true;
     }
   }, [existingCourseData, isEditMode, isFetchLoading]);
@@ -95,31 +94,26 @@ const CreateCourseWizard = () => {
   const handleNextStep = () => setCurrentStep((prev) => Math.min(prev + 1, 4));
   const handlePrevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
 
-  // Unified Save handler (handles both POST and PUT/PATCH)
   const handleSaveCourse = async () => {
     setIsSubmitting(true);
-
-    // Fallback status assignment safely keeping other state intact
     const finalStatus: CourseStatus = "publish";
 
     const completePayload = {
       ...courseData,
       status: finalStatus,
-      modules: modules,
+      modules: modules as Course["modules"],
     };
 
     try {
       if (isEditMode && courseId) {
-        // Redux Update Mutation
         const res = await updateCourse({
           id: courseId,
           ...completePayload,
-        }).unwrap();
+        } as Parameters<typeof updateCourse>[0]).unwrap();
         if (res?.success) {
           router.push("/dashboard/studio");
         }
       } else {
-        // Redux Create Mutation
         const res = await createCourse(completePayload).unwrap();
         if (res?.success) {
           router.push("/dashboard/studio");
@@ -135,6 +129,7 @@ const CreateCourseWizard = () => {
     }
   };
 
+  console.log(courseData);
   return (
     <div className="min-h-screen bg-[#F8F9FA] p-6 font-sans text-slate-900">
       <div className="max-w-6xl mx-auto">

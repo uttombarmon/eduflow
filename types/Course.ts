@@ -1,40 +1,40 @@
-import { LessonProgress, Quiz } from "./Progress";
-
-export type CourseStatus = "publish" | "draft" | "archive";
 export type CourseLevel = "beginner" | "intermediate" | "advanced";
-export interface Course {
+export type CourseStatus = "draft" | "publish";
+
+// 1. Add the Category interface
+export interface Category {
   id: string;
+  name: string;
+  slug: string;
+}
+
+export interface Lesson {
+  id?: string;
   title: string;
-  description: string;
-  thumbnail: string;
-  category: string;
-  totalDuration: string;
-  level: string;
-  price: number;
-  rating: number;
-  studentsCount: number;
-  status: CourseStatus;
-  createdAt: string;
-  updatedAt: string;
-  instructorId: string;
-  modules?: CourseModule[];
+  content?: string;
+  videoUrl?: string;
+  duration?: number;
 }
 
 export interface CourseModule {
-  id: string;
+  id?: string;
   title: string;
-  lessons: Partial<Lesson>[];
+  lessons: Lesson[];
 }
-export interface Lesson {
-  id: string;
+
+export interface Course {
+  id?: string;
   title: string;
-  duration: string;
-  videoUrl: string;
-  content: string;
-  order: number;
-  courseId: string;
-  quizzes?: Quiz[];
-  lessonProgress?: LessonProgress[];
+  description: string;
+  thumbnail: string;
+  level: CourseLevel;
+  price: number;
+  status: CourseStatus;
+  modules?: CourseModule[];
+  createdAt?: string;
+  updatedAt?: string;
+  categoryId: string;
+  category?: Category;
 }
 export interface CourseDetail extends Course {
   instructor?: {

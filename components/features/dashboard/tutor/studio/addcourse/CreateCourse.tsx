@@ -7,7 +7,12 @@ import {
   useUpdateCourseMutation,
   useGetCourseByIdQuery,
 } from "@/lib/features/courses/courseApi";
-import { Course, CourseLevel, CourseStatus } from "@/types/Course";
+import {
+  Course,
+  CourseLevel,
+  CourseModule,
+  CourseStatus,
+} from "@/types/Course";
 import type { CourseModule as CurriculumCourseModule } from "./StepCurriculum";
 
 import WizardHeader from "./WizardHeader";
@@ -60,7 +65,7 @@ const CreateCourseWizard = () => {
     ) {
       const course = existingCourseData?.data;
 
-      console.log("Raw Course Data from API:", course);
+      // console.log("Raw Course Data from API:", course);
       setCourseData({
         title: course.title || "",
         description: course.description || "",
@@ -74,8 +79,11 @@ const CreateCourseWizard = () => {
       if (course.modules) {
         setModules(
           course.modules
-            .filter((module) => typeof module.id === "string")
-            .map((module) => ({ ...module }) as CurriculumCourseModule),
+            .filter((module: CourseModule) => typeof module.id === "string")
+            .map(
+              (module: CourseModule) =>
+                ({ ...module }) as CurriculumCourseModule,
+            ),
         );
       }
       isInitialized.current = true;
@@ -129,7 +137,7 @@ const CreateCourseWizard = () => {
     }
   };
 
-  console.log(courseData);
+  // console.log(courseData);
   return (
     <div className="min-h-screen bg-[#F8F9FA] p-6 font-sans text-slate-900">
       <div className="max-w-6xl mx-auto">
@@ -167,6 +175,7 @@ const CreateCourseWizard = () => {
             <StepReview
               courseData={courseData}
               modules={modules}
+              isEditMode={isEditMode}
               onPrev={handlePrevStep}
               onSave={handleSaveCourse}
             />

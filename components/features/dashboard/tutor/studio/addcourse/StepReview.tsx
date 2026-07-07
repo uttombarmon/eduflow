@@ -15,6 +15,7 @@ import { CourseModule } from "./StepCurriculum"; // Import the interface
 interface StepReviewProps {
   courseData: Partial<Course>;
   modules: CourseModule[];
+  isEditMode: boolean;
   onPrev: () => void;
   onSave: () => Promise<void>;
 }
@@ -22,6 +23,7 @@ interface StepReviewProps {
 const StepReview = ({
   courseData,
   modules,
+  isEditMode,
   onPrev,
   onSave,
 }: StepReviewProps) => {
@@ -81,8 +83,15 @@ const StepReview = ({
                   Category & Level
                 </span>
                 <p className="font-bold text-slate-700">
-                  {courseData?.category || "Not Selected"} •{" "}
-                  <span className="text-blue-600">{courseData?.level}</span>
+                  {typeof courseData?.category === "string"
+                    ? courseData?.category
+                    : // try common fields if category is an object
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      (courseData?.category as any)?.name ||
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      (courseData?.category as any)?.title ||
+                      "Not Selected"}{" "}
+                  • <span className="text-blue-600">{courseData?.level}</span>
                 </p>
               </div>
             </div>
@@ -175,11 +184,12 @@ const StepReview = ({
               {isSaving ? (
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Publishing...
+                  {isEditMode ? "Updating..." : "Publishing..."}
                 </div>
               ) : (
                 <>
-                  Publish Course <Save size={20} />
+                  {isEditMode ? "Update Course" : "Publish Course"}{" "}
+                  <Save size={20} />
                 </>
               )}
             </button>

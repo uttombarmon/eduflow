@@ -15,7 +15,7 @@ import { redirect } from "next/navigation";
 
 const TutorDashboard = () => {
   const { data, isLoading, error } = useGetTutorDashboardQuery();
-  console.log(data);
+  // console.log(data);
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">

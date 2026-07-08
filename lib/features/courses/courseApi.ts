@@ -1,5 +1,5 @@
 import { ApiResponse } from "@/types/ApiResponse";
-import { Course, CourseDetail, Lesson } from "@/types/Course";
+import { Category, Course, CourseDetail, Lesson } from "@/types/Course";
 import { PopularCourse } from "@/types/PopularCourseTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -108,6 +108,11 @@ export const coursesApi = createApi({
         { type: "TutorCourse", id: "LIST" },
       ],
     }),
+
+    //get course categories
+    getCategories: builder.query<ApiResponse<Category[]>, void>({
+      query: () => "categories/all",
+    }),
   }),
 });
 
@@ -120,4 +125,5 @@ export const {
   useGetTutorCoursesQuery,
   useGetCourseDetailByIdQuery,
   useDeleteCourseMutation,
+  useGetCategoriesQuery,
 } = coursesApi;

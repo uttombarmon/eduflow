@@ -1,10 +1,12 @@
+import { useGetCategoriesQuery } from "@/lib/features/courses/courseApi";
 import { AlignLeft, Sparkles } from "lucide-react";
 
 // --- LEFT COLUMN: CORE DETAILS ---
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CoreDetailsForm = ({ courseData, setCourseData }: any) => {
   const levels = ["Beginner", "Intermediate", "Advanced"];
-
+  const { data: categories } = useGetCategoriesQuery();
+  console.log(categories);
   return (
     <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
       <div className="flex items-center gap-2 mb-8 text-slate-800">

@@ -38,8 +38,8 @@ const StudioPage = () => {
   const handleDeleteCourse = async (id: string) => {
     try {
       await deleteCourse(id);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error(err);
     }
   };
 

@@ -1,7 +1,7 @@
 import { Pagination } from "./Course";
 
 export interface ApiResponse<T> {
-  status: string;
+  status?: string;
   success?: boolean;
   message?: string;
   token?: string;
